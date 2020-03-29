@@ -26,7 +26,7 @@ public class createProject extends AppCompatActivity {
     String TAG = "CreateProject", pName, pDesc;
     FirebaseFirestore db;
     int newProjectID=0;
-
+    TableLayout skillsetDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,11 @@ public class createProject extends AppCompatActivity {
                                 Log.d("LOGGER","onSuccess: "+document.get("idNumber"));
                                 newProjectID = Integer.parseInt(document.get("idNumber").toString()) + 1 ;
                                 makeDatabaseEntry();
+                                projName.setText("");
+                                projDescription.setText("");
+                                if(skillsetDisplay.getChildCount() > 0){
+                                    skillsetDisplay.removeAllViews();
+                                }
                             } else {
                                 Log.d("LOGGER", "No such document");
                             }
@@ -127,7 +132,7 @@ public class createProject extends AppCompatActivity {
         }
 */
 
-        TableLayout skillsetDisplay = (TableLayout) findViewById(R.id.skilssDisplay);
+        skillsetDisplay = (TableLayout) findViewById(R.id.skilssDisplay);
         Button b = new Button(this);
         skillsetDisplay.addView(b);
         b.setText(skillName);
