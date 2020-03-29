@@ -11,6 +11,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText loginEmail,loginPassword;
     private Button loginButton;
+    private TextView signupInLogin;
 
     private FirebaseAuth firebaseAuth;
 
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton=findViewById(R.id.loginBtn);
         loginEmail=findViewById(R.id.loginEmail);
         loginPassword=findViewById(R.id.loginPassword);
+        signupInLogin=findViewById(R.id.signupInLogin);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +78,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+
+        signupInLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
             }
         });
 
