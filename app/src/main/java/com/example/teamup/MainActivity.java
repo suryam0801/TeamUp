@@ -32,10 +32,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
-
     }
 
 
@@ -48,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this,LoginActivity.class));
             finish();
         }
-
 
     }
 }

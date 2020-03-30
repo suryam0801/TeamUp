@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class createProject extends AppCompatActivity {
@@ -27,14 +31,16 @@ public class createProject extends AppCompatActivity {
     FirebaseFirestore db;
     int newProjectID=0;
     TableLayout skillsetDisplay;
+    private FirebaseAuth currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project2);
 
-        //Initializing cloud firestore
+        //Initializing firestore
         db = FirebaseFirestore.getInstance();
+        currentUser=FirebaseAuth.getInstance();
 
         //initializing all UI elements
         final EditText projName = (EditText)findViewById(R.id.projectName);
@@ -71,13 +77,13 @@ public class createProject extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document != null) {
-                                Log.d("LOGGER","onSuccess: "+document.get("idNumber"));
                                 newProjectID = Integer.parseInt(document.get("idNumber").toString()) + 1 ;
                                 makeDatabaseEntry();
                                 projName.setText("");
                                 projDescription.setText("");
                                 if(skillsetDisplay.getChildCount() > 0){
                                     skillsetDisplay.removeAllViews();
+                                    listOfSkills.clear();
                                 }
                             } else {
                                 Log.d("LOGGER", "No such document");
@@ -87,27 +93,32 @@ public class createProject extends AppCompatActivity {
                         }
                     }
                 });
-
             }
         });
     }
 
     public void makeDatabaseEntry(){
+
         //creating document of new project
         Map<String, Object> docData = new HashMap<>();
         docData.put("projectId", newProjectID);
         docData.put("projectName", pName);
         docData.put("projectDescription", pDesc);
         docData.put("skillsRequired", listOfSkills.toString());
+        docData.put("creatorID", currentUser.getUid());
         // use: docData.put("regions", Arrays.asList("item1", "item2")); to add list of applicants
         docData.put("applicants","");
+
+        //adding created project to user profile in User Database
+        DocumentReference docRef = db.collection("Users").document(currentUser.getUid());
+        docRef.update("CreatedProjects", FieldValue.arrayUnion(pName + ":" + newProjectID));
 
         //updating projectIdCounter
         Map<String, Object> newID = new HashMap<>();
         newID.put("idNumber", newProjectID);
 
         //adding a new project
-        db.collection("Projects").document(pName + ":" + newProjectID).set(docData);
+        db.collection("Projects").document(pName + ":" + newProjectID).set(docData, SetOptions.merge());
         //updating projectIdValue
         db.collection("Projects").document("ProjectIdCounter").set(newID);
     }
