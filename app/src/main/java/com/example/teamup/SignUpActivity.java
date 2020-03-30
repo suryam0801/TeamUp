@@ -49,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
                 {
-                    firebaseAuth.signInWithEmailAndPassword(email,password)
+                    firebaseAuth.createUserWithEmailAndPassword(email,password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
