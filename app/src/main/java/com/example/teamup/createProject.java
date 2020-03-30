@@ -31,7 +31,7 @@ public class createProject extends AppCompatActivity {
     FirebaseFirestore db;
     int newProjectID=0;
     TableLayout skillsetDisplay;
-    private FirebaseAuth currentUser;
+    FirebaseAuth currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +104,7 @@ public class createProject extends AppCompatActivity {
         docData.put("projectId", newProjectID);
         docData.put("projectName", pName);
         docData.put("projectDescription", pDesc);
-        docData.put("skillsRequired", listOfSkills.toString());
+        docData.put("skillsRequired", listOfSkills);
         docData.put("creatorID", currentUser.getUid());
         // use: docData.put("regions", Arrays.asList("item1", "item2")); to add list of applicants
         docData.put("applicants","");
