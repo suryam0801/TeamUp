@@ -16,15 +16,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
 
-    private EditText signUpEmail,signUpPassword;
+    private EditText signUpEmail,signUpPassword,signUpFirstName,signUpLastName;
     private Button signUpButton;
     private TextView loginInSignup;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +38,15 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         firebaseAuth=FirebaseAuth.getInstance();
+        firebaseFirestore=FirebaseFirestore.getInstance();
 
         signUpButton=findViewById(R.id.signUpBtn);
         signUpEmail=findViewById(R.id.signUpEmail);
         signUpPassword=findViewById(R.id.signUpPassword);
         loginInSignup=findViewById(R.id.loginInSignup);
+        signUpFirstName=findViewById(R.id.signUpFirstName);
+        signUpLastName=findViewById(R.id.signUpLastName);
+
 
 
 
@@ -44,10 +54,12 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email=signUpEmail.getText().toString();
+                final String email=signUpEmail.getText().toString();
                 String password=signUpPassword.getText().toString();
+                final String fName=signUpFirstName.getText().toString();
+                final String lName=signUpLastName.getText().toString();
 
-                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
+                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName))
                 {
                     firebaseAuth.createUserWithEmailAndPassword(email,password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -62,14 +74,37 @@ public class SignUpActivity extends AppCompatActivity {
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if(task.isSuccessful())
                                                         {
-                                                            Toast.makeText(SignUpActivity.this,"Verification link has  been sent " +
-                                                                    "to your email, Please verify and Login",Toast.LENGTH_LONG).show();
-                                                            firebaseAuth.signOut();
 
-                                                            startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
-                                                            finish();
+                                                            Map<String,String> map= new HashMap<>();
+                                                            map.put("Email",email);
+                                                            map.put("First Name",fName);
+                                                            map.put("Last Name",lName);
+
+                                                            firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(map)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if(task.isSuccessful())
+                                                                            {
+                                                                                Toast.makeText(SignUpActivity.this,"Verification link has  been sent " +
+                                                                                        "to your email, Please verify and Login",Toast.LENGTH_LONG).show();
+                                                                                firebaseAuth.signOut();
+
+                                                                                startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
+                                                                                finish();
+                                                                            }
+                                                                            else {
+                                                                                Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                                                                firebaseAuth.signOut();
+                                                                                firebaseAuth.getCurrentUser().delete();
+                                                                            }
+                                                                        }
+                                                                    });
+
                                                         }
                                                         else {
+                                                            firebaseAuth.signOut();
+                                                            firebaseAuth.getCurrentUser().delete();
                                                             Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
                                                         }
 
@@ -84,7 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
                             });
                 }
                 else {
-                    Toast.makeText(SignUpActivity.this,"Enter Valid detials",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this,"Enter Valid details",Toast.LENGTH_LONG).show();
                 }
 
             }
