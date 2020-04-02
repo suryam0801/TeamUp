@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".createProject">
+    tools:context=".CreateProject">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,43 +41,7 @@
             android:id="@+id/projectDescription">
         </EditText>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <EditText
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:hint="Enter Required Skills"
-                android:gravity="center_horizontal"
-                android:id="@+id/skillEntry">
-            </EditText>
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:text="ADD"
-                android:textSize="20dp"
-                android:id="@+id/skillEntrySubmit">
-            </Button>
-        </LinearLayout>
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="250dp"
-            android:layout_weight="1"
-            android:scrollbars="vertical">
-
-            <TableLayout
-                android:id="@+id/skilssDisplay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </TableLayout>
-        </ScrollView>
-    </LinearLayout>
     <Button
         android:layout_width="100dp"
         android:layout_height="50dp"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MyProjectsView">
+    tools:context=".ApplicantDisplay">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,16 +22,37 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:text=""
-            android:id="@+id/projectNameDisplay"
+            android:id="@+id/myProjectNameDisplay"
             android:textSize="18dp"
             android:gravity="center">
         </TextView>
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="300dp"
+        android:orientation="vertical">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/listview_applicant"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:dividerHeight="10dp"
+                android:divider="#d1d1d1">
+            </ListView>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/skillSetTeamSelector">
+        </Spinner>
     </LinearLayout>
 
 </LinearLayout>

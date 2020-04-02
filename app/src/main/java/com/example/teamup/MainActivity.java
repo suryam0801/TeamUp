@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -27,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentUser.signOut();
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                //changed for testing purpose
+                //currentUser.signOut();
+                startActivity(new Intent(MainActivity.this, CreateProject.class));
                 finish();
             }
         });
