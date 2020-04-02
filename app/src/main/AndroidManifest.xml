@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SignUpActivity"></activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MyProjectsView"></activity>
-        <activity android:name=".createProject" />
+        <activity android:name=".ApplicantDisplay"></activity>
+        <activity android:name=".CreateProject" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
