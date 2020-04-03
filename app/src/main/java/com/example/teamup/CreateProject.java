@@ -1,27 +1,19 @@
 package com.example.teamup;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.teamup.Explore.ExploreActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CreateProject extends AppCompatActivity {
@@ -53,6 +45,9 @@ public class CreateProject extends AppCompatActivity {
                 makeDatabaseEntry();
                 projName.setText("");
                 projDescription.setText("");
+
+                startActivity(new Intent(CreateProject.this, ExploreActivity.class));
+                finish();
             }
         });
     }

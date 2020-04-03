@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.Explore;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,11 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.example.teamup.R;
 
 public class Dialogue extends AppCompatDialogFragment {
     private EditText shtdesc;

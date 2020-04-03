@@ -1,7 +1,4 @@
-package com.example.teamup;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.teamup.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -45,8 +46,6 @@ public class SignUpActivity extends AppCompatActivity {
         loginInSignup=findViewById(R.id.loginInSignup);
         signUpFirstName=findViewById(R.id.signUpFirstName);
         signUpLastName=findViewById(R.id.signUpLastName);
-
-
 
 
         signUpButton.setOnClickListener(new View.OnClickListener() {

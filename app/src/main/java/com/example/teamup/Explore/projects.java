@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.Explore;
 
 public class projects {
 
