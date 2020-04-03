@@ -32,7 +32,7 @@ public class ApplicantDisplay extends AppCompatActivity {
     FirebaseAuth currentUser;
     String TAG = "MY_PROJECTS_VIEW_ACTIVITY";
     ListView lvApplicant;
-    private List<Applicant> ApplicantList, tempStore;
+    private List<Applicant> ApplicantList,   tempStore;
     private ApplicantListAdapter adapter;
 
     @Override
