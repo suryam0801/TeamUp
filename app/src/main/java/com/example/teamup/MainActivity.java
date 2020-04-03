@@ -2,7 +2,6 @@ package com.example.teamup;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,15 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser=FirebaseAuth.getInstance();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //changed for testing purpose
-                //currentUser.signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
+        if(currentUser.getCurrentUser()!=null)
+        {
+            startActivity(new Intent(MainActivity.this, ExploreActivity.class));
+            finish();
+        } else {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
     }
 
 
@@ -39,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(currentUser.getCurrentUser()==null)
+        if(currentUser.getCurrentUser()!=null)
         {
+            startActivity(new Intent(MainActivity.this, ExploreActivity.class));
+            finish();
+        } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-
     }
 }

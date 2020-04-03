@@ -13,10 +13,10 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".ApplicantDisplay"></activity>
         <activity android:name=".CreateProject" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ExploreActivity">
 
         </activity>
-        <activity android:name=".ExploreActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
