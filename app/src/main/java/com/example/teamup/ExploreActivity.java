@@ -5,10 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -102,10 +99,11 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                                     // add to menu
                                     menu.addMenuItem(openItem);
 
+
                                     // create "delete" item
 //                                    SwipeMenuItem deleteItem = new SwipeMenuItem(
 //                                            getApplicationContext());
-//                                    // set item background
+//                                    // set item backgroundmenu.getViewType()
 //                                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
 //                                            0x3F, 0x25)));
 //                                    // set item width
@@ -126,7 +124,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                                     switch (index) {
                                         case 0:
                                             apply();
-                                            globalIndex = index;
+                                            globalIndex = position;
                                             break;
                                     }
                                     return false;
@@ -163,7 +161,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         String refId = addedDocRef.getId();
         String applicanid=currentUser.getUid();
         String pitch=shortdesc;
-        String pid=projects.getPid();
+        String pid=ProjectList.get(globalIndex).getPid();
 
         Map<String,Object> docData=new HashMap<>();
         docData.put("applicantID",applicanid);
@@ -171,9 +169,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         docData.put("projectID",pid);
 
         db.collection("Applicants").add(docData);
-        proid="";
 
         Toast.makeText(this,"Your Application Has been Successfully sended to Project Creator!!!",Toast.LENGTH_LONG).show();
-
     }
 }
