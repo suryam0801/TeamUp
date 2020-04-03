@@ -14,11 +14,15 @@
         <activity android:name=".ApplicantDisplay"></activity>
         <activity android:name=".CreateProject" />
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".ExploreActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
