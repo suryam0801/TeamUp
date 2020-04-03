@@ -40,9 +40,8 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     private List<projects> ProjectList;
     ProgressBar progressBar;
     projects projects;
-
+    int globalIndex;
     private ProjectAdapter adapter;
-    TextView apply;
     String proid="";
 
     @Override
@@ -75,8 +74,8 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                             String proname=querySnapshot.getString("projectName");
                             String prodesc=querySnapshot.getString("projectDescription");
                             proid=querySnapshot.getString("projectId");
-                            projects proj=new projects(proname, prodesc, proid);
-                            ProjectList.add(proj);
+                            projects =new projects(proname, prodesc, proid);
+                            ProjectList.add(projects);
                         }
 
                             adapter= new ProjectAdapter(getApplicationContext(),ProjectList);
@@ -126,14 +125,10 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                                     switch (index) {
                                         case 0:
-//                                            Toast.makeText(ExploreActivity.this,"Applied",Toast.LENGTH_SHORT).show();
                                             apply();
+                                            globalIndex = index;
                                             break;
-//                                        case 1:
-//                                            Toast.makeText(ExploreActivity.this,"Apply",Toast.LENGTH_SHORT).show();
-//                                            break;
                                     }
-                                    // false : close the menu; true : not close the menu
                                     return false;
                                 }
                             });
@@ -157,28 +152,23 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     }
 
     private void apply() {
-//        Toast.makeText(ExploreActivity.this,"Clicked",Toast.LENGTH_LONG).show();
         Dialogue dialog=new Dialogue();
         dialog.show(getSupportFragmentManager(),"Dialogue");
-
-
-
     }
 
     @Override
     public void applydesc(String shortdesc) {
-//        Toast.makeText(this,shortdesc,Toast.LENGTH_LONG).show();
 
         DocumentReference addedDocRef = db.collection("Projects").document();
         String refId = addedDocRef.getId();
         String applicanid=currentUser.getUid();
         String pitch=shortdesc;
-        String pid=projects.getPid().toString();
+        String pid=projects.getPid();
 
         Map<String,Object> docData=new HashMap<>();
         docData.put("applicantID",applicanid);
         docData.put("pitch",pitch);
-        docData.put("projectID",proid);
+        docData.put("projectID",pid);
 
         db.collection("Applicants").add(docData);
         proid="";
