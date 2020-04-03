@@ -1,10 +1,12 @@
-package com.example.teamup;
+package com.example.teamup.Explore;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,6 +18,8 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.teamup.CreateProject;
+import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +44,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     int globalIndex;
     private ProjectAdapter adapter;
     String proid="";
+    Button createProject;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +52,17 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         setContentView(R.layout.activity_explore);
         progressBar=findViewById(R.id.progress_bar);
         currentUser=FirebaseAuth.getInstance();
+
+        createProject = findViewById(R.id.addproject);
+
+        createProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ExploreActivity.this, CreateProject.class));
+                finish();
+            }
+        });
+
         projects=new projects();
         loadprojectlist();
     }
