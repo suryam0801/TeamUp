@@ -1,11 +1,11 @@
 package com.example.teamup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //changed for testing purpose
                 //currentUser.signOut();
-                startActivity(new Intent(MainActivity.this, CreateProject.class));
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
             }
         });
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser.getCurrentUser()==null)
         {
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
 

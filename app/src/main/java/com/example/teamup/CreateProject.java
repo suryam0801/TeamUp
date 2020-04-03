@@ -42,7 +42,7 @@ public class CreateProject extends AppCompatActivity {
         //initializing all UI elements
         final EditText projName = findViewById(R.id.projectName);
         final EditText projDescription = findViewById(R.id.projectDescription);
-        Button createProjectSubmit = findViewById(R.id.createProjectSubmit);
+        Button createProjectSubmit = (Button)findViewById(R.id.createProjectSubmit);
 
         createProjectSubmit.setOnClickListener(new View.OnClickListener() {
 
@@ -59,7 +59,7 @@ public class CreateProject extends AppCompatActivity {
 
     public void makeDatabaseEntry(){
         //retrieving document reference ID
-        DocumentReference addedDocRef = db.collection("cities").document();
+        DocumentReference addedDocRef = db.collection("Projects").document();
         String refId = addedDocRef.getId();
 
         //creating document of new project
