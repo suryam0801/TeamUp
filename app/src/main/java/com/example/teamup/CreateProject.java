@@ -68,4 +68,12 @@ public class CreateProject extends AppCompatActivity {
         //adding a new project
         db.collection("Projects").add(docData);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent about_intent=new Intent(this,ExploreActivity.class);
+        startActivity(about_intent);
+        about_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    }
 }

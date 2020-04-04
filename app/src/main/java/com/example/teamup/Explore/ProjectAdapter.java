@@ -11,7 +11,7 @@ import com.example.teamup.R;
 import java.util.List;
 
 public class ProjectAdapter extends BaseAdapter  {
-    private Context mContext;
+        private Context mContext;
     private List<projects> Projectlist;
 
     public ProjectAdapter(Context mContext, List<projects> Projectlist) {
