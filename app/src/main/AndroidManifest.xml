@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WorkBenchActivity"></activity>
+        <activity android:name=".ProjectActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".WorkBenchActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MyProjectsView" />
