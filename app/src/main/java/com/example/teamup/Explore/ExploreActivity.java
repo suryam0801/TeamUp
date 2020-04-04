@@ -18,6 +18,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.teamup.ControlPanel;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +45,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     int globalIndex;
     private ProjectAdapter adapter;
     String proid="";
-    Button createProject;
+    Button createProject,workbench;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,11 +55,20 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         currentUser=FirebaseAuth.getInstance();
 
         createProject = findViewById(R.id.addproject);
+        workbench=findViewById(R.id.workbench);
+
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(ExploreActivity.this, CreateProject.class));
+                finish();
+            }
+        });
+        workbench.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ExploreActivity.this, ControlPanel.class));
                 finish();
             }
         });
