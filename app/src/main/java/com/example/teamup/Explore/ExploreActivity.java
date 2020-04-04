@@ -188,4 +188,12 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
 
         Toast.makeText(this,"Your Application Has been Successfully sended to Project Creator!!!",Toast.LENGTH_LONG).show();
     }
+
+    @Override
+    public void onBackPressed() {
+
+        Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
+        finishAffinity();
+        System.exit(0);
+    }
 }
