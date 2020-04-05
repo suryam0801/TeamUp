@@ -2,7 +2,6 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -11,16 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
+import java.util.Objects;
 
 public class ApplicantDisplay extends AppCompatActivity {
 
@@ -36,42 +37,52 @@ public class ApplicantDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
-        loadApplicants("SmartHostel:5");
+        loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
         projectNameDisplay.setText("SmartHotel");
     }
 
     public void loadApplicants(String projectQueryID){
         db = FirebaseFirestore.getInstance();
-        final Button applicant = new Button(this);
         lvApplicant = findViewById(R.id.listview_applicant);
         ApplicantList = new ArrayList<>();
-        DocumentReference docRef = db.collection("Projects").document(projectQueryID);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        Query myProjects = db.collection("Projects").whereEqualTo("projectId", Objects.requireNonNull(projectQueryID));
+        myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        List<String> group = (List<String>) document.get("applicants");
-                        Log.d(TAG, "ListOfApplicants: " + group.toString());
-                        for(int i = 0; i < group.size(); i+=2){
-                            Scanner delimiter = new Scanner(group.get(i));
-                            delimiter.useDelimiter(" /// ");
-                            String id = delimiter.next();
-                            String nme = delimiter.next();
-                            ApplicantList.add(new Applicant(nme, id, group.get(i+1)));
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    //each object in the array is a hashmap. We need to read the arrays using key and value from hashmap
+                    List<Map<String, String>> group = (List<Map<String, String>>) document.get("applicantList");
+                    //reads each object in the array
+                    for (Map<String, String> entry : group) {
+                        //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
+                        Log.d("EXPLORE ACTIVITY", "------------------------------------------------------");
+                        //reads each element in the hashmap
+                        String name = "";
+                        String id = "";
+                        String pitch = "";
+                        
+                        for (String key : entry.keySet()) {
+                            if(key.equals("applicantName"))
+                                name = entry.get(key);
+                            else if(key.equals("userId"))
+                                id = entry.get(key);
+                            else if(key.equals("shortPitch"))
+                                pitch = entry.get(key);
+                            Log.d("EXPLORE ACTIVITY", "On Success: " + key + ":" + entry.get(key));
                         }
-                        adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
-                        lvApplicant.setAdapter(adapter);
-                    } else {
-                        Log.d("LOGGER", "No such document");
+                        ApplicantList.add(new Applicant(name, id, pitch));
                     }
-                } else {
-                    Log.d("LOGGER", "get failed with ", task.getException());
                 }
+                adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
+                lvApplicant.setAdapter(adapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("EXPLORE ACTIVITY", "onFailure: "+e.getMessage());
             }
         });
     }
