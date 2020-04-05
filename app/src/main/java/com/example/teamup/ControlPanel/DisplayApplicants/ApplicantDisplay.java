@@ -63,6 +63,7 @@ public class ApplicantDisplay extends AppCompatActivity {
                         String name = "";
                         String id = "";
                         String pitch = "";
+                        
                         for (String key : entry.keySet()) {
                             if(key.equals("applicantName"))
                                 name = entry.get(key);
