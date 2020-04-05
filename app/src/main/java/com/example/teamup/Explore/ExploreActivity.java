@@ -18,7 +18,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.example.teamup.ControlPanel;
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;

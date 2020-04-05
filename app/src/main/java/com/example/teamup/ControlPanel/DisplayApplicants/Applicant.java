@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel.DisplayApplicants;
 
 public class Applicant {
     private String applicantName;

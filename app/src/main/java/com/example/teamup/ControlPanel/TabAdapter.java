@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
+import com.example.teamup.R;
 
 import java.util.List;
 
@@ -91,10 +94,28 @@ public class TabAdapter extends PagerAdapter implements Adapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, DetailActivity.class);
-//                intent.putExtra("param", models.get(position).getTitle());
-//                context.startActivity(intent);
-                // finish();
+                //intent.putExtra("param", models.get(position).getTitle());
+                switch(position)
+                {
+                    case 0 :
+                        Intent intentWall = new Intent(context, ProjectWall.class);
+                        context.startActivity(intentWall);
+                        break;
+                    case 1 :
+                        Intent intentTask = new Intent(context, TaskList.class);
+                        context.startActivity(intentTask);
+                        break;
+                    case 2 :
+                        Intent intentChatRoom = new Intent(context, ChatRoom.class);
+                        context.startActivity(intentChatRoom);
+                        break;
+                    case 3 :
+                        Intent intentApplicants = new Intent(context, ApplicantDisplay.class);
+                        context.startActivity(intentApplicants);
+                        break;
+                    default :
+                }
+
                 Toast.makeText(context,"You Clicked "+position+" tab",Toast.LENGTH_SHORT).show();
             }
         });

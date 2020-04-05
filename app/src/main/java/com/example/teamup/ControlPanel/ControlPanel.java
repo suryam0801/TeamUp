@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.Explore.ExploreActivity;
+import com.example.teamup.R;
 
 import java.util.ArrayList;
 import java.util.List;

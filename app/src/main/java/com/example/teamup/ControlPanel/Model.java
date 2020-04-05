@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel;
 
 public class Model {
 

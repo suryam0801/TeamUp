@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.teamup.R;
 
 import java.util.List;
 

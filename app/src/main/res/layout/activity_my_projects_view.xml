@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ApplicantDisplay">
+    tools:context=".ControlPanel.DisplayApplicants.ApplicantDisplay">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
             <ListView
                 android:id="@+id/listview_applicant"
@@ -42,17 +42,6 @@
                 android:dividerHeight="10dp"
                 android:divider="#d1d1d1">
             </ListView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/skillSetTeamSelector">
-        </Spinner>
     </LinearLayout>
 
 </LinearLayout>
