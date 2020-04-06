@@ -10,8 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ControlPanel.Notification.NotificationActivity">
-
+        <activity android:name=".Notification.NotificationActivity">
 
         </activity>
         <activity android:name=".ControlPanel.ChatRoom" />
@@ -32,7 +31,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".ControlPanel.Notification.FireBaseInstanceIDService"
+            android:name=".Notification.FireBaseInstanceIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

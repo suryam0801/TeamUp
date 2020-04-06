@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.Notification;
+package com.example.teamup.Notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -86,7 +86,7 @@ public class NotificationActivity extends AppCompatActivity {
 
                                 // Log and toast
                                 String msg = "InstanceID Token:"+ token;
-                                Log.d(TAG, msg);
+                                Log.d(TAG, "InstanceID Token: " + msg);
                                 Toast.makeText(NotificationActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                         });

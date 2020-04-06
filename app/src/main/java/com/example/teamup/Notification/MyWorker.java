@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.Notification;
+package com.example.teamup.Notification;
 
 
 import android.content.Context;
