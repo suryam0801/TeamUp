@@ -31,13 +31,14 @@ public class ApplicantDisplay extends AppCompatActivity {
     ListView lvApplicant;
     private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
+    Project project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
         lvApplicant = findViewById(R.id.listview_applicant);
-        Project project=getIntent().getParcelableExtra("project");
+        project=getIntent().getParcelableExtra("project");
         assert project != null;
         db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
@@ -47,16 +48,10 @@ public class ApplicantDisplay extends AppCompatActivity {
     }
 
     public void populateApplicantList(Project project){
-        List<Applicant> list=new ArrayList<>();
-        list=project.getApplicantList();
-        adapter=new ApplicantListAdapter(getApplicationContext(), list);
-        lvApplicant.setAdapter(adapter);
-
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
-        Log.d(TAG, "PROJECT ID: " + project.getProjectId());
-        loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
-        projectNameDisplay.setText("SmartHotel");
+        loadApplicants(project.getProjectId());
+        projectNameDisplay.setText(project.getProjectName());
     }
 
     public void loadApplicants(String projectQueryID){
@@ -73,7 +68,6 @@ public class ApplicantDisplay extends AppCompatActivity {
                     //reads each object in the array
                     for (Map<String, String> entry : group) {
                         //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
-                        Log.d("EXPLORE ACTIVITY", "------------------------------------------------------");
                         //reads each element in the hashmap
                         String applicantName = "";
                         String applicantId = "";
@@ -95,13 +89,12 @@ public class ApplicantDisplay extends AppCompatActivity {
                                 projectID = entry.get(key);
                             else if(key.equals("applicantEmail"))
                                 applicantEmail = entry.get(key);
-
-                            Log.d("EXPLORE ACTIVITY", "On Success: " + key + ":" + entry.get(key));
                         }
                         ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                     }
                 }
                 adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
+                project.setApplicantList(ApplicantList);
                 lvApplicant.setAdapter(adapter);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -111,5 +104,4 @@ public class ApplicantDisplay extends AppCompatActivity {
             }
         });
     }
-
 }
