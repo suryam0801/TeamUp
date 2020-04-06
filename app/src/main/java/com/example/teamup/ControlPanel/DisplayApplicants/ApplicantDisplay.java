@@ -3,7 +3,6 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,7 +27,7 @@ public class ApplicantDisplay extends AppCompatActivity {
 
     FirebaseFirestore db;
     FirebaseAuth currentUser;
-    String TAG = "MY_PROJECTS_VIEW_ACTIVITY";
+    String TAG = "APPLICANTS_DISPLAY";
     ListView lvApplicant;
     private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
@@ -37,30 +36,30 @@ public class ApplicantDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
-        /*lvApplicant = findViewById(R.id.listview_applicant);
+        lvApplicant = findViewById(R.id.listview_applicant);
         Project project=getIntent().getParcelableExtra("project");
         assert project != null;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
         projectNameDisplay.setText(project.getProjectName());
-        populateApplicantList(project);*/
+        populateApplicantList(project);
     }
 
     public void populateApplicantList(Project project){
-        /*List<Applicant> list=new ArrayList<>();
+        List<Applicant> list=new ArrayList<>();
         list=project.getApplicantList();
         adapter=new ApplicantListAdapter(getApplicationContext(), list);
-        lvApplicant.setAdapter(adapter);*/
-        
+        lvApplicant.setAdapter(adapter);
+
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
+        Log.d(TAG, "PROJECT ID: " + project.getProjectId());
         loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
         projectNameDisplay.setText("SmartHotel");
     }
 
     public void loadApplicants(String projectQueryID){
-        db = FirebaseFirestore.getInstance();
         lvApplicant = findViewById(R.id.listview_applicant);
         ApplicantList = new ArrayList<>();
 
@@ -76,20 +75,30 @@ public class ApplicantDisplay extends AppCompatActivity {
                         //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
                         Log.d("EXPLORE ACTIVITY", "------------------------------------------------------");
                         //reads each element in the hashmap
-                        String name = "";
-                        String id = "";
-                        String pitch = "";
-                        
+                        String applicantName = "";
+                        String applicantId = "";
+                        String applicantPitch = "";
+                        String acceptedStatus = "";
+                        String projectID = "";
+                        String applicantEmail = "";
+
                         for (String key : entry.keySet()) {
                             if(key.equals("applicantName"))
-                                name = entry.get(key);
+                                applicantName = entry.get(key);
                             else if(key.equals("userId"))
-                                id = entry.get(key);
+                                applicantId = entry.get(key);
                             else if(key.equals("shortPitch"))
-                                pitch = entry.get(key);
+                                applicantPitch = entry.get(key);
+                            else if(key.equals("acceptedStatus"))
+                                acceptedStatus = entry.get(key);
+                            else if(key.equals("projectId"))
+                                projectID = entry.get(key);
+                            else if(key.equals("applicantEmail"))
+                                applicantEmail = entry.get(key);
+
                             Log.d("EXPLORE ACTIVITY", "On Success: " + key + ":" + entry.get(key));
                         }
-                        ApplicantList.add(new Applicant(name, id, pitch));
+                        ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                     }
                 }
                 adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
