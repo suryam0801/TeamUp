@@ -180,16 +180,16 @@ public class Project implements Parcelable{
     @Override
     public String toString() {
         return "Project{" +
-                "creatorId='" + creatorId + '\'' +
-                ", creatorEmail='" + creatorEmail + '\'' +
-                ", creatorName='" + creatorName + '\'' +
-                ", projectId='" + projectId + '\'' +
-                ", projectName='" + projectName + '\'' +
-                ", projectDescription='" + projectDescription + '\'' +
+                "creatorId='" + creatorId + '\n' +
+                ", creatorEmail='" + creatorEmail + '\n' +
+                ", creatorName='" + creatorName + '\n' +
+                ", projectId='" + projectId + '\n' +
+                ", projectName='" + projectName + '\n' +
+                ", projectDescription='" + projectDescription + '\n' +
                 ", requiredSkills=" + requiredSkills +
                 ", applicantList=" + applicantList +
                 ", applicantId=" + applicantId +
-                ", projectStatus='" + projectStatus + '\'' +
+                ", projectStatus='" + projectStatus + '\n' +
                 '}';
     }
 }
