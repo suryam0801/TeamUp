@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -123,7 +122,6 @@ public class TabAdapter extends PagerAdapter implements Adapter {
                     default :
                 }
 
-                Toast.makeText(context,"You Clicked "+position+" tab",Toast.LENGTH_SHORT).show();
             }
         });
 

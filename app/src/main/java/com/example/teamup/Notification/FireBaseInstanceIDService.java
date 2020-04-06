@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.Notification;
+package com.example.teamup.Notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -16,8 +16,6 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.teamup.Explore.ExploreActivity;
-import com.example.teamup.MainActivity;
-import com.example.teamup.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -47,7 +45,7 @@ public class FireBaseInstanceIDService  extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
-//        super.onMessageReceived(remoteMessage);
+        super.onMessageReceived(remoteMessage);
     }
 
     @Override
