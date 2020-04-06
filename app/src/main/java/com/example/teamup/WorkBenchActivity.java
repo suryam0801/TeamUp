@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.Explore.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -75,7 +75,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
     @Override
     public void onItemClick(Project project) {
         if (project.getCreatorId().equals(firebaseUser.getUid())) {
-            Intent intent = new Intent(this, ApplicantDisplay.class);
+            Intent intent = new Intent(this, ControlPanel.class);
             intent.putExtra("project", project);
             startActivity(intent);
         }
@@ -98,7 +98,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
                         myProjectList.add(project);
                         findViewById(R.id.linear_1_wb).setVisibility(View.VISIBLE);
                     }
-                    Log.d(TAG, "onSuccess: "+project.toString());
+                    //Log.d(TAG, "onSuccess: "+project.toString());
                 }
             }
         });
