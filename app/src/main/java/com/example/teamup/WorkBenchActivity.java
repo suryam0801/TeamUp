@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
-import com.example.teamup.adapter.WorkBenchRecyclerAdapter;
-import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Project;
+
+import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
+import com.example.teamup.Explore.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,9 +72,11 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
 
     @Override
     public void onItemClick(Project project) {
-        Intent intent=new Intent(this,ProjectActivity.class);
-        intent.putExtra("project", project);
-        startActivity(intent);
+        if (project.getCreatorId().equals(firebaseUser.getUid())) {
+            Intent intent = new Intent(this, ApplicantDisplay.class);
+            intent.putExtra("project", project);
+            startActivity(intent);
+        }
     }
 
     public void getMyProjects(){
@@ -113,7 +115,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
                         List<Applicant> applicantList = project.getApplicantList();
                         for(Applicant applicant:applicantList)
                         {
-                            if (applicant.getUserId().equals(firebaseUser.getUid())&& applicant.getAcceptedStatus()) {
+                            if (applicant.getUserId().equals(firebaseUser.getUid())&& applicant.getAcceptedStatus().equals("Accepted")) {
                                 Log.d(TAG, "onSuccess: "+project.toString());
                                 Log.d(TAG, "onSuccess: "+applicant.toString());
                                 if (project.getProjectStatus().equals("Completed"))

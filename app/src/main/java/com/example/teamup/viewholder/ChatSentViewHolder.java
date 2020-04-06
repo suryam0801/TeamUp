@@ -19,6 +19,4 @@ public class ChatSentViewHolder extends RecyclerView.ViewHolder {
         mTextViewMesgage=itemView.findViewById(R.id.tv_chat_sent_message);
     }
 
-
-
 }

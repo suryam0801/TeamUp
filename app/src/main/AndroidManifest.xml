@@ -9,13 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProjectActivity"></activity>
-        <activity android:name=".ChatActivity" />
+        <activity android:name=".ControlPanel.ChatRoom"></activity>
+        <activity android:name=".ControlPanel.TaskList" />
+        <activity android:name=".ControlPanel.ProjectWall" />
+        <activity android:name=".ControlPanel.ControlPanel" />
+        <activity android:name=".login.SignUpActivity" />
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".ControlPanel.DisplayApplicants.ApplicantDisplay" />
+        <activity android:name=".CreateProject" />
+        <activity android:name=".Explore.ExploreActivity" />
         <activity android:name=".WorkBenchActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MyProjectsView" />
-        <activity android:name=".createProject" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

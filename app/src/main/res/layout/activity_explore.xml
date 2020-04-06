@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Explore.ExploreActivity"
+    android:orientation="vertical"
+    android:background="@color/card_back">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_back"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/workbench"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="100px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@color/card_back"
+            android:foreground="@mipmap/workbench"
+            />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:text="Explore"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/addproject"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="100px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/card_back"
+            android:foreground="@mipmap/plus"
+
+            android:text="" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+
+        />
+
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:dividerHeight="10dp"
+        android:divider="#d1d1d1"/>
+
+</LinearLayout>

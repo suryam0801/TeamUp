@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:context=".WorkBenchFragment">
+            tools:context=".WorkBenchActivity">
 
             <TextView
                 android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:context=".WorkBenchFragment">
+            tools:context=".WorkBenchActivity">
 
             <TextView
                 android:layout_width="match_parent"
@@ -88,7 +88,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:context=".WorkBenchFragment">
+            tools:context=".WorkBenchActivity">
 
             <TextView
                 android:layout_width="match_parent"
