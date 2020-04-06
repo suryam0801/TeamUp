@@ -12,9 +12,9 @@ import java.util.List;
 
 public class ProjectAdapter extends BaseAdapter  {
         private Context mContext;
-    private List<projects> Projectlist;
+    private List<Project> Projectlist;
 
-    public ProjectAdapter(Context mContext, List<projects> Projectlist) {
+    public ProjectAdapter(Context mContext, List<Project> Projectlist) {
         this.mContext = mContext;
         this.Projectlist = Projectlist;
     }
@@ -44,15 +44,15 @@ public class ProjectAdapter extends BaseAdapter  {
         TextView proid=pview.findViewById(R.id.p_id);
 
         //set text for textview
-         final String projectname=Projectlist.get(position).getPname();
-         final String projectdesc=Projectlist.get(position).getPdesc();
-         final String projectid=Projectlist.get(position).getPid();
+         final String projectname=Projectlist.get(position).getProjectName();
+         final String projectdesc=Projectlist.get(position).getProjectDescription();
+         final String projectid=Projectlist.get(position).getProjectId();
 
          proname.setText(projectname);
          prodesc.setText(projectdesc);
          proid.setText(projectid);
 
-//         Apply.setOnClickListener(new View.OnClickListener() {
+//         Apply.setOnClickListener(new View.OnClickListeneger() {
 //             @Override
 //             public void onClick(View v) {
 //                 Toast.makeText(pview.getContext(),"Applied",Toast.LENGTH_LONG);

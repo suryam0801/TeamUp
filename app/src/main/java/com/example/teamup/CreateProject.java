@@ -2,19 +2,24 @@ package com.example.teamup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.Explore.ExploreActivity;
+import com.example.teamup.Explore.Project;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class CreateProject extends AppCompatActivity {
 
@@ -40,40 +45,49 @@ public class CreateProject extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                pName = projName.getText().toString();
-                pDesc = projDescription.getText().toString();
-                makeDatabaseEntry();
-                projName.setText("");
-                projDescription.setText("");
-
-                startActivity(new Intent(CreateProject.this, ExploreActivity.class));
-                finish();
+                createProject(projName.getText().toString(),projDescription.getText().toString());
             }
         });
     }
 
-    public void makeDatabaseEntry(){
-        //retrieving document reference ID
-        DocumentReference addedDocRef = db.collection("Projects").document();
-        String refId = addedDocRef.getId();
-
-        //creating document of new project
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("projectId", refId);
-        docData.put("projectName", pName);
-        docData.put("projectDescription", pDesc);
-        docData.put("projectStatus", "In Progress");
-        docData.put("creatorID", currentUser.getUid());
-
-        //adding a new project
-        db.collection("Projects").add(docData);
-    }
-
     @Override
     public void onBackPressed() {
-
         Intent about_intent=new Intent(this,ExploreActivity.class);
         startActivity(about_intent);
         about_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    }
+
+    public void createProject(String projectName,String projecDesc){
+            Project project=new Project();
+            project.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
+            project.setCreatorName("Gowtham K K");
+            project.setProjectName(projectName);
+            project.setProjectDescription(projecDesc);
+            project.setCreatorEmail(currentUser.getCurrentUser().getEmail());
+            project.setApplicantId(null);
+            project.setApplicantList(null);
+            project.setProjectStatus("Created");
+            project.setRequiredSkills(null);
+            project.setProjectId(UUID.randomUUID().toString()
+            );
+            db.collection("Projects")
+                    .document(project.getProjectId())
+                    .set(project)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "onSuccess: Project Added");
+                            Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_LONG).show();
+                            onBackPressed();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Failed to create project", Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "onSuccess: Project Not Added");
+                        }
+                    });
+
     }
 }

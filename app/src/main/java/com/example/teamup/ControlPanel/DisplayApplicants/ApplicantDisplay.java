@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,18 +26,33 @@ import java.util.Objects;
 
 public class ApplicantDisplay extends AppCompatActivity {
 
-    TableLayout applicantsDisplay;
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     String TAG = "MY_PROJECTS_VIEW_ACTIVITY";
     ListView lvApplicant;
-    private List<Applicant> ApplicantList,   tempStore;
+    private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
+        /*lvApplicant = findViewById(R.id.listview_applicant);
+        Project project=getIntent().getParcelableExtra("project");
+        assert project != null;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        currentUser=FirebaseAuth.getInstance();
+        TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
+        projectNameDisplay.setText(project.getProjectName());
+        populateApplicantList(project);*/
+    }
+
+    public void populateApplicantList(Project project){
+        /*List<Applicant> list=new ArrayList<>();
+        list=project.getApplicantList();
+        adapter=new ApplicantListAdapter(getApplicationContext(), list);
+        lvApplicant.setAdapter(adapter);*/
+        
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
         loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
@@ -86,4 +102,5 @@ public class ApplicantDisplay extends AppCompatActivity {
             }
         });
     }
+
 }

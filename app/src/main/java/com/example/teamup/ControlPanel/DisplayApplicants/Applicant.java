@@ -1,38 +1,88 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 public class Applicant {
+
+    private String projectId;
+
     private String applicantName;
+
+    private String applicantEmail;
+
     private String userId;
-    private String pitch;
 
-    //constructor
+    private String acceptedStatus;
 
-    public Applicant(String applicantName, String userId, String pitch) {
+    private String shortPitch;
+
+    public Applicant() {
+    }
+
+    public Applicant(String projectId, String applicantName, String applicantEmail, String userId,String acceptedStatus, String shortPitch) {
+        this.projectId = projectId;
         this.applicantName = applicantName;
+        this.applicantEmail = applicantEmail;
         this.userId = userId;
-        this.pitch = pitch;
+        this.acceptedStatus = acceptedStatus;
+        this.shortPitch = shortPitch;
     }
 
-    //setters and getters
+    public String getProjectId() {
+        return projectId;
+    }
 
-    public String getUserId() {
-        return userId;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
-    public String getPitch() {
-        return pitch;
-    }
+
     public String getApplicantName() {
         return applicantName;
     }
 
-    public void setApplicantName(String applicantName){
+    public void setApplicantName(String applicantName) {
         this.applicantName = applicantName;
     }
-    public void setuserID(String userId){
+
+    public String getApplicantEmail() {
+        return applicantEmail;
+    }
+
+    public void setApplicantEmail(String applicantEmail) {
+        this.applicantEmail = applicantEmail;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-    public void setpitch(String pitch){
-        this.pitch = pitch;
+
+    public String getAcceptedStatus() {
+        return acceptedStatus;
+    }
+
+    public void setAcceptedStatus(String acceptedStatus) {
+        this.acceptedStatus = acceptedStatus;
+    }
+
+    public String getShortPitch() {
+        return shortPitch;
+    }
+
+    public void setShortPitch(String shortPitch) {
+        this.shortPitch = shortPitch;
+    }
+
+    @Override
+    public String toString() {
+        return "Applicant{" +
+                "applicantName='" + applicantName + '\'' +
+                ", applicantEmail='" + applicantEmail + '\'' +
+                ", userId='" + userId + '\'' +
+                ", acceptedStatus=" + acceptedStatus +
+                ", shortPitch='" + shortPitch + '\'' +
+                '}';
     }
 
 }

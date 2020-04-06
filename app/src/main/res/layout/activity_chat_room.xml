@@ -1,9 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ControlPanel.ChatRoom">
+    android:orientation="vertical"
+    android:id="@+id/parent_layout"
+    tools:context=".ChatActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        app:title="Chat"
+        android:paddingStart="20dp"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:titleTextColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:id="@+id/chat_toolbar"
+        android:layout_height="?android:actionBarSize"
+        tools:ignore="RtlSymmetry" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/chat_toolbar"
+        android:id="@+id/teams_chat_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linear_chat"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/message_editext"
+            android:layout_weight="9"
+            android:layout_width="0dp"
+            android:hint="Enter Message"
+            android:layout_height="60dp" />
+        <Button
+            android:id="@+id/button_send"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

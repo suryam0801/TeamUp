@@ -19,6 +19,7 @@
         <activity android:name=".ControlPanel.DisplayApplicants.ApplicantDisplay" />
         <activity android:name=".CreateProject" />
         <activity android:name=".Explore.ExploreActivity" />
+        <activity android:name=".WorkBenchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

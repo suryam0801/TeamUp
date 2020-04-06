@@ -42,7 +42,6 @@
             android:id="@+id/addproject"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="100px"
-
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@color/card_back"
@@ -70,7 +69,5 @@
         android:layout_marginRight="10dp"
         android:dividerHeight="10dp"
         android:divider="#d1d1d1"/>
-
-
 
 </LinearLayout>

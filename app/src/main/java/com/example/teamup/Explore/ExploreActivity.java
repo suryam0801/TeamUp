@@ -19,14 +19,19 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.teamup.ControlPanel.ControlPanel;
+import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
+import com.example.teamup.WorkBenchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -34,14 +39,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ExploreActivity extends AppCompatActivity implements Dialogue.DialogueInterfaceListener {
+
+    public final String TAG=ExploreActivity.this.getClass().getSimpleName();
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     SwipeMenuListView lvproject;
-    private List<projects> ProjectList;
+    private List<Project> ProjectList;
     ProgressBar progressBar;
-    projects projects;
+    Project projects;
     int globalIndex;
     private ProjectAdapter adapter;
     String proid="";
@@ -53,7 +61,6 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         setContentView(R.layout.activity_explore);
         progressBar=findViewById(R.id.progress_bar);
         currentUser=FirebaseAuth.getInstance();
-
         createProject = findViewById(R.id.addproject);
         workbench=findViewById(R.id.workbench);
 
@@ -68,14 +75,15 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         workbench.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ExploreActivity.this, ControlPanel.class));
+                startActivity(new Intent(ExploreActivity.this, WorkBenchActivity.class));
                 finish();
             }
         });
 
-        projects=new projects();
+        projects=new Project();
         loadprojectlist();
     }
+
     public void loadprojectlist()
     {
         lvproject=(SwipeMenuListView) findViewById(R.id.listview);
@@ -83,24 +91,18 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         ProjectList=new ArrayList<>();
         if (ProjectList.size()>0)
             ProjectList.clear();
-
         db.collection("Projects")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (task.isSuccessful())
+                        if (task.isSuccessful()&&task.getResult()!=null)
                         {
-                            for (DocumentSnapshot querySnapshot: task.getResult())
-                        {
-                            String proname=querySnapshot.getString("projectName");
-                            String prodesc=querySnapshot.getString("projectDescription");
-                            proid=querySnapshot.getString("projectId");
-                            projects =new projects(proname, prodesc, proid);
-                            ProjectList.add(projects);
-                        }
-
+                            for (DocumentSnapshot documentSnapshot:task.getResult())
+                            {
+                                Project project= documentSnapshot.toObject(Project.class);
+                                ProjectList.add(project);
+                            }
                             adapter= new ProjectAdapter(getApplicationContext(),ProjectList);
                             lvproject.setAdapter(adapter);
 
@@ -149,7 +151,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                                     switch (index) {
                                         case 0:
-                                            apply();
+                                            apply(ProjectList.get(position).getProjectId());
                                             globalIndex = position;
                                             break;
                                     }
@@ -175,35 +177,66 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
         });
     }
 
-    private void apply() {
-        Dialogue dialog=new Dialogue();
+    private void apply(String projectId) {
+        Dialogue dialog=new Dialogue(projectId);
         dialog.show(getSupportFragmentManager(),"Dialogue");
     }
 
     @Override
-    public void applydesc(String shortdesc) {
-
-        DocumentReference addedDocRef = db.collection("Projects").document();
-        String refId = addedDocRef.getId();
-        String applicanid=currentUser.getUid();
-        String pitch=shortdesc;
-        String pid=ProjectList.get(globalIndex).getPid();
-
-        Map<String,Object> docData=new HashMap<>();
-        docData.put("applicantID",applicanid);
-        docData.put("pitch",pitch);
-        docData.put("projectID",pid);
-
-        db.collection("Applicants").add(docData);
-
-        Toast.makeText(this,"Your Application Has been Successfully sended to Project Creator!!!",Toast.LENGTH_LONG).show();
+    public void applydesc(String shortdesc,String projectId) {
+            saveApplicant(shortdesc,projectId);
+//        DocumentReference addedDocRef = db.collection("Projects").document();
+//        String refId = addedDocRef.getId();
+//        String applicanid=currentUser.getUid();
+//        String pitch=shortdesc;
+//        String pid=ProjectList.get(globalIndex).getProjectId();
+//        Map<String,Object> docData=new HashMap<>();
+//        docData.put("applicantID",applicanid);
+//        docData.put("pitch",pitch);
+//        docData.put("projectID",pid);
+//        db.collection("Applicants").add(docData);
+//        Toast.makeText(this,"Your Application Has been Successfully sended to Project Creator!!!",Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onBackPressed() {
-
         Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
         finishAffinity();
         System.exit(0);
     }
+
+    public void saveApplicant(String shortPitch, final String projectId){
+        final Applicant applicant=new Applicant();
+        applicant.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        applicant.setApplicantName("Surya");
+        applicant.setProjectId(projectId);
+        applicant.setAcceptedStatus("Applied");
+        applicant.setShortPitch(shortPitch);
+        applicant.setApplicantEmail(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
+        Object[] array={applicant};
+        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                        {
+                            Log.d(TAG, "onComplete: "+"Success");
+                            db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                }
+                            });
+                        }else {
+                            Log.d(TAG, "onComplete: "+"Failure");
+                        }
+                    }
+                });
+    }
+
 }
