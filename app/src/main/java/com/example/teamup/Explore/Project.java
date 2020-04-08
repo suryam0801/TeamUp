@@ -143,6 +143,7 @@ public class Project implements Parcelable{
     }
 
     public List<Applicant> getApplicantList() {
+
         return applicantList;
     }
 
@@ -220,4 +221,5 @@ public class Project implements Parcelable{
         dest.writeTypedList(workersList);
         dest.writeString(projectStatus);
     }
+\
 }

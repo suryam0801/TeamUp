@@ -1,16 +1,17 @@
 package com.example.teamup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.Explore.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -73,7 +75,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
     @Override
     public void onItemClick(Project project) {
         if (project.getCreatorId().equals(firebaseUser.getUid())) {
-            Intent intent = new Intent(this, ApplicantDisplay.class);
+            Intent intent = new Intent(this, ControlPanel.class);
             intent.putExtra("project", project);
             Log.d(TAG, "onItemClick: "+project.toString());
             startActivity(intent);
@@ -97,7 +99,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
                         myProjectList.add(project);
                         findViewById(R.id.linear_1_wb).setVisibility(View.VISIBLE);
                     }
-                    Log.d(TAG, "onSuccess: "+project.toString());
+                    //Log.d(TAG, "onSuccess: "+project.toString());
                 }
             }
         });

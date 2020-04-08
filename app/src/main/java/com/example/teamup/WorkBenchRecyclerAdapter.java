@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamup.ControlPanel.ChatRoom;
 import com.example.teamup.Explore.Project;
-import com.example.teamup.R;
 
 import java.util.ArrayList;
 

@@ -52,6 +52,8 @@ public class ApplicantListAdapter extends BaseAdapter{
         //Set text for TextView
         final String nameDisplay = ApplicantList.get(position).getApplicantName();
         final String pitchDisplay = String.valueOf(ApplicantList.get(position).getShortPitch());
+        final String applicantID = String.valueOf(ApplicantList.get(position).getUserId());
+
         name.setText(nameDisplay);
         pitch.setText(pitchDisplay);
 

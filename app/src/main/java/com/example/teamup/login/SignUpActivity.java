@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -74,7 +75,33 @@ public class SignUpActivity extends AppCompatActivity {
                                                         if(task.isSuccessful())
                                                         {
 
-                                                            Map<String,String> map= new HashMap<>();
+
+                                                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                                    .setDisplayName(fName+" "+lName)
+                                                                    .build();
+
+                                                            firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                                            if(task.isSuccessful()) {
+                                                                                Toast.makeText(SignUpActivity.this, "Verification link has  been sent " +
+                                                                                        "to your email, Please verify and Login", Toast.LENGTH_LONG).show();
+                                                                                firebaseAuth.signOut();
+
+                                                                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                                                                                finish();
+                                                                            }
+                                                                            else {
+                                                                                Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                                                                firebaseAuth.signOut();
+                                                                                firebaseAuth.getCurrentUser().delete();
+                                                                            }
+                                                                        }
+                                                                    });
+
+                                                       /*     Map<String,String> map= new HashMap<>();
                                                             map.put("Email",email);
                                                             map.put("First Name",fName);
                                                             map.put("Last Name",lName);
@@ -99,6 +126,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                                             }
                                                                         }
                                                                     });
+                                                            */
 
                                                         }
                                                         else {

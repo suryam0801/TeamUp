@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public class CreateProject extends AppCompatActivity {
 
-    String TAG = "CreateProject", pName, pDesc;
+    String TAG = "CreateProject";
     FirebaseFirestore db;
     FirebaseAuth currentUser;
 

@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser.getCurrentUser()!=null)
         {
             startActivity(new Intent(MainActivity.this, ExploreActivity.class));
+            //Toast.makeText(MainActivity.this,currentUser.getCurrentUser().getDisplayName(),Toast.LENGTH_LONG).show();
             finish();
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
