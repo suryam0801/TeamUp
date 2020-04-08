@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/parent_layout"
-    tools:context=".ChatActivity">
+    tools:context=".ControlPanel.ChatRoom">
 
     <androidx.appcompat.widget.Toolbar
         app:title="Chat"
@@ -37,6 +37,7 @@
             android:hint="Enter Message"
             android:layout_height="60dp" />
         <Button
+            android:background="@drawable/ic_send_black_24dp"
             android:id="@+id/button_send"
             android:layout_weight="1"
             android:layout_width="0dp"

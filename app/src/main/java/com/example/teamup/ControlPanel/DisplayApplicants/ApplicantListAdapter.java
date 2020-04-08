@@ -9,16 +9,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teamup.R;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 public class ApplicantListAdapter extends BaseAdapter{
     private Context mContext;
     private List<Applicant> ApplicantList;
+    private String projectId;
 
-    public ApplicantListAdapter(Context mContext, List<Applicant> ApplicantList) {
+    public ApplicantListAdapter(Context mContext, List<Applicant> ApplicantList,String projectId) {
         this.mContext = mContext;
         this.ApplicantList = ApplicantList;
+        this.projectId=projectId;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class ApplicantListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         View v = View.inflate(mContext, R.layout.applicant_view_list, null);
         final TextView name = v.findViewById(R.id.applicant_name);
         TextView pitch = v.findViewById(R.id.applicant_pitch);
@@ -50,9 +55,15 @@ public class ApplicantListAdapter extends BaseAdapter{
         name.setText(nameDisplay);
         pitch.setText(pitchDisplay);
 
+        final CollectionReference collectionReference=FirebaseFirestore.getInstance().collection("Projects");
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Applicant applicant=ApplicantList.get(position);
+                collectionReference.document(projectId).update("applicantList", FieldValue.arrayRemove(applicant));
+                collectionReference.document(projectId).update("applicantId",FieldValue.arrayRemove(applicant.getUserId()));
+                applicant.setAcceptedStatus("Accepted");
+                collectionReference.document(projectId).update("workersList", FieldValue.arrayUnion(applicant));
                 Toast.makeText(view.getContext(), nameDisplay,Toast.LENGTH_SHORT).show();
             }
         });

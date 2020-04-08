@@ -37,26 +37,27 @@ public class ApplicantDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
-        /*lvApplicant = findViewById(R.id.listview_applicant);
+        lvApplicant = findViewById(R.id.listview_applicant);
         Project project=getIntent().getParcelableExtra("project");
         assert project != null;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
         projectNameDisplay.setText(project.getProjectName());
-        populateApplicantList(project);*/
+        populateApplicantList(project);
     }
 
     public void populateApplicantList(Project project){
-        /*List<Applicant> list=new ArrayList<>();
+        List<Applicant> list=new ArrayList<>();
         list=project.getApplicantList();
-        adapter=new ApplicantListAdapter(getApplicationContext(), list);
-        lvApplicant.setAdapter(adapter);*/
+        Log.d(TAG, "populateApplicantList: "+list.toString());
+        adapter=new ApplicantListAdapter(getApplicationContext(), list,project.getProjectId());
+        lvApplicant.setAdapter(adapter);
         
-        currentUser=FirebaseAuth.getInstance();
+      //  currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
-        loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
-        projectNameDisplay.setText("SmartHotel");
+     //   loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
+       // projectNameDisplay.setText("SmartHotel");
     }
 
     public void loadApplicants(String projectQueryID){
@@ -89,10 +90,10 @@ public class ApplicantDisplay extends AppCompatActivity {
                                 pitch = entry.get(key);
                             Log.d("EXPLORE ACTIVITY", "On Success: " + key + ":" + entry.get(key));
                         }
-                        ApplicantList.add(new Applicant(name, id, pitch));
+                       // ApplicantList.add(new Applicant(name, id, pitch));
                     }
                 }
-                adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
+              //  adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
                 lvApplicant.setAdapter(adapter);
             }
         }).addOnFailureListener(new OnFailureListener() {
