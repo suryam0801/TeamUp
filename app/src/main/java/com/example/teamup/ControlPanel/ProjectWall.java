@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.R;
 
-public class ChatRoom extends AppCompatActivity {
+public class ProjectWall extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_room);
+        setContentView(R.layout.activity_project_wall);
     }
 }

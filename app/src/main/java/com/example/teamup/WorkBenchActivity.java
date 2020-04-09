@@ -77,7 +77,6 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
         if (project.getCreatorId().equals(firebaseUser.getUid())) {
             Intent intent = new Intent(this, ControlPanel.class);
             intent.putExtra("project", project);
-            Log.d(TAG, "onItemClick: "+project.toString());
             startActivity(intent);
         }
     }
@@ -107,18 +106,18 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
 
     public void getWorkingProjects(){
         //Gets the projects the user is working for
-        Query myProjects = db.collection("Projects").whereArrayContains("workersId", Objects.requireNonNull(firebaseUser.getUid()));
+        Query myProjects = db.collection("Projects").whereArrayContains("applicantId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d(TAG, "onSuccess: "+queryDocumentSnapshots.size());
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    if (project!=null&&project.getWorkersList()!=null) {
-                        List<Applicant> workersList = project.getWorkersList();
-                        for(Applicant applicant:workersList)
+                    if (project!=null&&project.getApplicantList()!=null) {
+                        List<Applicant> applicantList = project.getApplicantList();
+                        for(Applicant applicant:applicantList)
                         {
-                            if (applicant.getUserId().equals(firebaseUser.getUid())) {
+                            if (applicant.getUserId().equals(firebaseUser.getUid())&& applicant.getAcceptedStatus().equals("Accepted")) {
                                 Log.d(TAG, "onSuccess: "+project.toString());
                                 Log.d(TAG, "onSuccess: "+applicant.toString());
                                 if (project.getProjectStatus().equals("Completed"))
