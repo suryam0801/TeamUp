@@ -79,6 +79,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                 finish();
             }
         });
+
         projects=new Project();
         loadprojectlist();
     }
