@@ -14,7 +14,7 @@
 
         </activity>
         <activity android:name=".ControlPanel.ChatRoom" />
-        <activity android:name=".ControlPanel.TaskList" />
+        <activity android:name=".ControlPanel.TaskList.TaskList" />
         <activity android:name=".ControlPanel.ProjectWall" />
         <activity android:name=".ControlPanel.ControlPanel" />
         <activity android:name=".login.SignUpActivity" />
