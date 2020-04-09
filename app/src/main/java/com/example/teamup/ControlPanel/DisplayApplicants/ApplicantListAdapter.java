@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,6 +35,7 @@ public class ApplicantListAdapter extends BaseAdapter{
         this.mContext = mContext;
         this.ApplicantList = ApplicantList;
         this.project = project;
+
     }
 
     @Override
@@ -70,6 +72,7 @@ public class ApplicantListAdapter extends BaseAdapter{
         name.setText(nameDisplay);
         pitch.setText(pitchDisplay);
 
+        final CollectionReference collectionReference=FirebaseFirestore.getInstance().collection("Projects");
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
