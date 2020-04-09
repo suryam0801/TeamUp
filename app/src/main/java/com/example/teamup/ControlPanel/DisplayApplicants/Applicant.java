@@ -1,6 +1,9 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
-public class Applicant {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Applicant implements Parcelable {
 
     private String projectId;
 
@@ -25,6 +28,27 @@ public class Applicant {
         this.acceptedStatus = acceptedStatus;
         this.shortPitch = shortPitch;
     }
+
+    protected Applicant(Parcel in) {
+        projectId = in.readString();
+        applicantName = in.readString();
+        applicantEmail = in.readString();
+        userId = in.readString();
+        acceptedStatus = in.readString();
+        shortPitch = in.readString();
+    }
+
+    public static final Creator<Applicant> CREATOR = new Creator<Applicant>() {
+        @Override
+        public Applicant createFromParcel(Parcel in) {
+            return new Applicant(in);
+        }
+
+        @Override
+        public Applicant[] newArray(int size) {
+            return new Applicant[size];
+        }
+    };
 
     public String getProjectId() {
         return projectId;
@@ -85,4 +109,18 @@ public class Applicant {
                 '}';
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(projectId);
+        dest.writeString(applicantName);
+        dest.writeString(applicantEmail);
+        dest.writeString(userId);
+        dest.writeString(acceptedStatus);
+        dest.writeString(shortPitch);
+    }
 }
