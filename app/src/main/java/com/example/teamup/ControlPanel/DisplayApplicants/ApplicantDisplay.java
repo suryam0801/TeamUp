@@ -48,16 +48,6 @@ public class ApplicantDisplay extends AppCompatActivity {
     }
 
     public void populateApplicantList(Project project){
-        List<Applicant> list=new ArrayList<>();
-        list=project.getApplicantList();
-        Log.d(TAG, "populateApplicantList: "+list.toString());
-        adapter=new ApplicantListAdapter(getApplicationContext(), list,project.getProjectId());
-        lvApplicant.setAdapter(adapter);
-        
-      //  currentUser=FirebaseAuth.getInstance();
-        TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
-     //   loadApplicants("d7e55e3b-364f-4b51-bd13-1f457e96aa13");
-       // projectNameDisplay.setText("SmartHotel");
         currentUser=FirebaseAuth.getInstance();
         TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
         loadApplicants(project.getProjectId());
@@ -100,10 +90,6 @@ public class ApplicantDisplay extends AppCompatActivity {
                             else if(key.equals("applicantEmail"))
                                 applicantEmail = entry.get(key);
                         }
-                       // ApplicantList.add(new Applicant(name, id, pitch));
-                    }
-                }
-              //  adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
                         ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                     }
                 }

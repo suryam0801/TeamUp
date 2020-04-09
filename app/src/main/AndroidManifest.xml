@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.teamup">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ControlPanel.ProjectWall.UploadFile"></activity>
-        <activity android:name=".Notification.NotificationActivity"></activity>
+
+        <activity android:name=".Notification.NotificationActivity">
+
+        </activity>
         <activity android:name=".ControlPanel.ChatRoom" />
         <activity android:name=".ControlPanel.TaskList" />
-        <activity android:name=".ControlPanel.ProjectWall.ProjectWall" />
+        <activity android:name=".ControlPanel.ProjectWall" />
         <activity android:name=".ControlPanel.ControlPanel" />
         <activity android:name=".login.SignUpActivity" />
         <activity android:name=".login.LoginActivity" />
@@ -31,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <service
             android:name=".Notification.FireBaseInstanceIDService"
             android:exported="false">
