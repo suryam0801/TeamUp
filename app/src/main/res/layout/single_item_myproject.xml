@@ -29,5 +29,10 @@
         android:id="@+id/project_desc_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        <Button
+            android:text="Go To Chat"
+            android:id="@+id/goto_chat_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
