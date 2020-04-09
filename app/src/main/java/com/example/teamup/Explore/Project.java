@@ -26,8 +26,9 @@ public class Project implements Parcelable{
     private List<String> requiredSkills=new ArrayList<>();
     private List<Applicant> applicantList=new ArrayList<>();
     private List<String> applicantId=new ArrayList<>();
-    private List<String> workersId=new ArrayList<>();
-    private List<Applicant> workersList=new ArrayList<>();
+    private List<String> workersId = new ArrayList<>();
+    private List<Applicant> workersName =new ArrayList<>();
+
     private String projectStatus;
 
 
@@ -143,12 +144,25 @@ public class Project implements Parcelable{
     }
 
     public List<Applicant> getApplicantList() {
-
         return applicantList;
     }
 
     public void setApplicantList(List<Applicant> applicantList) {
         this.applicantList = applicantList;
+    }
+
+    public List<Applicant> getWorkersList() {
+        return workersName;
+    }
+    public void setWorkersList(List<Applicant> workersList) {
+        this.workersName = workersList;
+    }
+
+    public List<String> getWorkersIdList() {
+        return workersId;
+    }
+    public void setWorkersIdList(List<String> workersId) {
+        this.workersId = workersId;
     }
 
     public void addApplicant(Applicant applicant){
@@ -168,7 +182,7 @@ public class Project implements Parcelable{
     public Project() {
     }
 
-    public Project(String creatorId, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, List<Applicant> applicantList, List<String> applicantId, List<String> workersId, List<Applicant> workersList, String projectStatus) {
+    public Project(String creatorId, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Applicant> workersName) {
         this.creatorId = creatorId;
         this.creatorEmail = creatorEmail;
         this.creatorName = creatorName;
@@ -178,9 +192,7 @@ public class Project implements Parcelable{
         this.requiredSkills = requiredSkills;
         this.applicantList = applicantList;
         this.applicantId = applicantId;
-        this.workersId = workersId;
-        this.workersList = workersList;
-        this.projectStatus = projectStatus;
+        this.workersName = workersName;
     }
 
     @Override
@@ -221,5 +233,20 @@ public class Project implements Parcelable{
         dest.writeTypedList(workersList);
         dest.writeString(projectStatus);
     }
-\
+    @Override
+    public String toString() {
+        return "Project{" +
+                "creatorId='" + creatorId + '\n' +
+                ", creatorEmail='" + creatorEmail + '\n' +
+                ", creatorName='" + creatorName + '\n' +
+                ", projectId='" + projectId + '\n' +
+                ", projectName='" + projectName + '\n' +
+                ", projectDescription='" + projectDescription + '\n' +
+                ", requiredSkills=" + requiredSkills + '\n' +
+                ", applicantList=" + applicantList + '\n' +
+                ", applicantId=" + applicantId + '\n' +
+                ", projectStatus='" + projectStatus + '\n' +
+                ", workersId='" + workersName + '\n' +
+                '}';
+    }
 }

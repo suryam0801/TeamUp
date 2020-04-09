@@ -1,6 +1,8 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,7 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,12 +27,15 @@ import java.util.List;
 public class ApplicantListAdapter extends BaseAdapter{
     private Context mContext;
     private List<Applicant> ApplicantList;
-    private String projectId;
+    FirebaseFirestore db;
+    Project project;
+    String TAG = "APPLICANT_LIST_ADAPTER";
 
-    public ApplicantListAdapter(Context mContext, List<Applicant> ApplicantList,String projectId) {
+    public ApplicantListAdapter(Context mContext, List<Applicant> ApplicantList, Project project) {
         this.mContext = mContext;
         this.ApplicantList = ApplicantList;
-        this.projectId=projectId;
+        this.project = project;
+
     }
 
     @Override
@@ -48,12 +60,15 @@ public class ApplicantListAdapter extends BaseAdapter{
         TextView pitch = v.findViewById(R.id.applicant_pitch);
         Button accept = v.findViewById(R.id.applicant_accept);
         Button reject = v.findViewById(R.id.applicant_reject);
+        db = FirebaseFirestore.getInstance();
+
+        final Applicant a = ApplicantList.get(position);
 
         //Set text for TextView
-        final String nameDisplay = ApplicantList.get(position).getApplicantName();
-        final String pitchDisplay = String.valueOf(ApplicantList.get(position).getShortPitch());
-        final String applicantID = String.valueOf(ApplicantList.get(position).getUserId());
-
+        final String nameDisplay = a.getApplicantName();
+        final String pitchDisplay = String.valueOf(a.getShortPitch());
+        final String applicantID = String.valueOf(a.getUserId());
+        final String acceptedStatus = String.valueOf(a.getAcceptedStatus());
         name.setText(nameDisplay);
         pitch.setText(pitchDisplay);
 
@@ -61,12 +76,52 @@ public class ApplicantListAdapter extends BaseAdapter{
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Applicant applicant=ApplicantList.get(position);
-                collectionReference.document(projectId).update("applicantList", FieldValue.arrayRemove(applicant));
-                collectionReference.document(projectId).update("applicantId",FieldValue.arrayRemove(applicant.getUserId()));
-                applicant.setAcceptedStatus("Accepted");
-                collectionReference.document(projectId).update("workersList", FieldValue.arrayUnion(applicant));
-                Toast.makeText(view.getContext(), nameDisplay,Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "POSITION: " + position);
+                a.setAcceptedStatus("accepted");
+                ApplicantList.remove(a);
+                db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(a))
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful())
+                                {
+                                    db.collection("Projects").document(project.getProjectId()).update("applicantList",ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            db.collection("Projects").document(project.getProjectId()).update("applicantId",FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Intent i = new Intent(mContext, ApplicantDisplay.class);  //your class
+                                                    i.putExtra("project", project);
+                                                    mContext.startActivity(i);
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                }
+                                            });
+                                            db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayUnion(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Intent i = new Intent(mContext, ApplicantDisplay.class);  //your class
+                                                    i.putExtra("project", project);
+                                                    mContext.startActivity(i);
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                }
+                                            });
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                        }
+                                    });
+                                }else {
+                                }
+                            }
+                        });
             }
         });
 

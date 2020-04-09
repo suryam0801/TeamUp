@@ -107,7 +107,7 @@ public class ApplicantDisplay extends AppCompatActivity {
                         ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                     }
                 }
-                adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList);
+                adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList, project);
                 project.setApplicantList(ApplicantList);
                 lvApplicant.setAdapter(adapter);
             }

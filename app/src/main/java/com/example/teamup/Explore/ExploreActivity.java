@@ -207,12 +207,14 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     public void saveApplicant(String shortPitch, final String projectId){
         final Applicant applicant=new Applicant();
         applicant.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
-        applicant.setApplicantName("Surya");
+        applicant.setApplicantName(currentUser.getCurrentUser().getDisplayName());
         applicant.setProjectId(projectId);
         applicant.setAcceptedStatus("Applied");
         applicant.setShortPitch(shortPitch);
         applicant.setApplicantEmail(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
+
         Object[] array={applicant};
+
         db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -220,17 +222,34 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                         if (task.isSuccessful())
                         {
                             Log.d(TAG, "onComplete: "+"Success");
-                            db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "onSuccess: "+"Applicant Id update");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "onFailure: "+"Applicant Id update");
-                                }
-                            });
+                            List<String> applicantIds = new ArrayList<>();
+                            if(projects.getApplicantId()==null){
+                                applicantIds.add(applicant.getUserId());
+                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                    }
+                                });
+                            } else {
+                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                    }
+                                });
+                            }
+
                         }else {
                             Log.d(TAG, "onComplete: "+"Failure");
                         }
