@@ -45,7 +45,14 @@ public class CreateProject extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                createProject(projName.getText().toString(),projDescription.getText().toString());
+                String pName = String.valueOf(projName.getText());
+                String pDescription = String.valueOf(projDescription.getText());
+                if(pName.equals("") || pDescription.equals("") || pName.replaceAll("\\s", "").equals("") || pDescription.replaceAll("\\s", "").equals("")){
+                    Toast.makeText(getApplicationContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show();
+                } else {
+                    createProject(projName.getText().toString(),projDescription.getText().toString());
+                }
+
             }
         });
     }
@@ -60,7 +67,7 @@ public class CreateProject extends AppCompatActivity {
     public void createProject(String projectName,String projecDesc){
             Project project=new Project();
             project.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
-            project.setCreatorName("Gowtham K K");
+            project.setCreatorName(currentUser.getCurrentUser().getDisplayName());
             project.setProjectName(projectName);
             project.setProjectDescription(projecDesc);
             project.setCreatorEmail(currentUser.getCurrentUser().getEmail());
@@ -68,6 +75,7 @@ public class CreateProject extends AppCompatActivity {
             project.setApplicantList(null);
             project.setProjectStatus("Created");
             project.setRequiredSkills(null);
+            project.setWorkersList(null);
             project.setProjectId(UUID.randomUUID().toString()
             );
             db.collection("Projects")

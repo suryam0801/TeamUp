@@ -2,17 +2,7 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 
 public class Applicant {
 
-    private String projectId;
-
-    private String applicantName;
-
-    private String applicantEmail;
-
-    private String userId;
-
-    private String acceptedStatus;
-
-    private String shortPitch;
+    private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch;
 
     public Applicant() {
     }

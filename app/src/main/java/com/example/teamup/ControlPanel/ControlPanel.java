@@ -38,6 +38,7 @@ public class ControlPanel extends AppCompatActivity {
                 finish();
             }
         });
+
         models = new ArrayList<>();
         models.add(new Model(R.drawable.brochure, "Project Wall", "Post all the media content for your project and discuss about it as a team on this shared wall"));
         models.add(new Model(R.drawable.sticker, "Task List", "Decide amongst yourselves what tasks need to be accomplished and manage your priorities using this Task List"));

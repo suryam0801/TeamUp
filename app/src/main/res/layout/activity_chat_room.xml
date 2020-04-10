@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/parent_layout"
-    tools:context=".ChatActivity">
+    tools:context=".ControlPanel.ChatRoom">
 
     <androidx.appcompat.widget.Toolbar
         app:title="Chat"
