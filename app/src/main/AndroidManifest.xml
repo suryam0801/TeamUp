@@ -15,7 +15,7 @@
         <activity android:name=".ControlPanel.ProjectWall.UploadFile"></activity>
         <activity android:name=".Notification.NotificationActivity"></activity>
         <activity android:name=".ControlPanel.ChatRoom" />
-        <activity android:name=".ControlPanel.TaskList" />
+        <activity android:name=".ControlPanel.TaskList.TaskList" />
         <activity android:name=".ControlPanel.ProjectWall.ProjectWall" />
         <activity android:name=".ControlPanel.ControlPanel" />
         <activity android:name=".login.SignUpActivity" />

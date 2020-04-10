@@ -14,6 +14,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.ControlPanel.ProjectWall.ProjectWall;
+import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
 
