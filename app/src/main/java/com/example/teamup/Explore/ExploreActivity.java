@@ -101,6 +101,8 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                             for (DocumentSnapshot documentSnapshot:task.getResult())
                             {
                                 Project project= documentSnapshot.toObject(Project.class);
+//                                Log.d(TAG, project.toString());
+//                                Log.d(TAG, "____________________________________________________");
                                 ProjectList.add(project);
                             }
                             adapter= new ProjectAdapter(getApplicationContext(),ProjectList);

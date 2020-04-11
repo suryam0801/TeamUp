@@ -76,8 +76,10 @@ public class CreateProject extends AppCompatActivity {
             project.setProjectStatus("Created");
             project.setRequiredSkills(null);
             project.setWorkersList(null);
-            project.setProjectId(UUID.randomUUID().toString()
-            );
+            project.setWorkersId(null);
+            project.setProjectId(UUID.randomUUID().toString());
+            project.setTaskList(null);
+
             db.collection("Projects")
                     .document(project.getProjectId())
                     .set(project)

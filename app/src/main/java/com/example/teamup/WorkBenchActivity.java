@@ -77,6 +77,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
         if (project.getCreatorId().equals(firebaseUser.getUid())) {
             Intent intent = new Intent(this, ControlPanel.class);
             intent.putExtra("project", project);
+            Log.d(TAG, "My Project:"+project.toString());
             startActivity(intent);
         }
     }
@@ -122,6 +123,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
                                 Log.d(TAG, "onSuccess: "+applicant.toString());
                                 if (project.getProjectStatus().equals("Completed"))
                                 {
+
                                     completedProjectsList.add(project);
                                     findViewById(R.id.linear_3_wb).setVisibility(View.VISIBLE);
                                 }else{
@@ -141,6 +143,4 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
             }
         });
     }
-
-
 }

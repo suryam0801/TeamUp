@@ -3,6 +3,7 @@ package com.example.teamup.ControlPanel;
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,7 +30,7 @@ public class ControlPanel extends AppCompatActivity {
         setContentView(R.layout.activity_control_panel);
 
         Project project=getIntent().getParcelableExtra("project");
-
+        Log.d("CONTROL PANEL", "PROJECT ATTRIBUTES: " + project.toString());
         back=findViewById(R.id.btnback);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

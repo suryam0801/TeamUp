@@ -16,8 +16,8 @@ import com.example.teamup.R;
 
 
 public class TaskDialog extends AppCompatDialogFragment {
-    private EditText editTextUsername;
-    private EditText editTextPassword;
+    private EditText taskNameGet;
+    private EditText taskDescriptionGet;
     private TaskDialogListener listener;
 
     @Override
@@ -38,15 +38,14 @@ public class TaskDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String username = editTextUsername.getText().toString();
-                        String password = editTextPassword.getText().toString();
-                        listener.applyTexts(username, password);
-
+                        String taskName = taskNameGet.getText().toString();
+                        String taskDescription = taskDescriptionGet.getText().toString();
+                        listener.applyTexts(taskName, taskDescription);
                     }
                 });
 
-        editTextUsername = view.findViewById(R.id.edit_username);
-        editTextPassword = view.findViewById(R.id.edit_password);
+        taskNameGet = view.findViewById(R.id.edit_name);
+        taskDescriptionGet = view.findViewById(R.id.edit_description);
 
         return builder.create();
     }

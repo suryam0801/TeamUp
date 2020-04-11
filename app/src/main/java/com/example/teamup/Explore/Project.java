@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+import com.example.teamup.ControlPanel.TaskList.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Project implements Parcelable{
     private List<String> applicantId=new ArrayList<>();
     private List<String> workersId = new ArrayList<>();
     private List<Applicant> workersName =new ArrayList<>();
-
+    private List<Task> taskList = new ArrayList<>();
     private String projectStatus;
 
     protected Project(Parcel in) {
@@ -42,6 +43,9 @@ public class Project implements Parcelable{
         projectStatus = in.readString();
         applicantId = in.createStringArrayList();
         workersId = in.createStringArrayList();
+        in.readTypedList(applicantList, Applicant.CREATOR);
+        in.readTypedList(taskList, Task.CREATOR);
+        in.readTypedList(workersName, Applicant.CREATOR);
     }
 
     public static final Creator<Project> CREATOR = new Creator<Project>() {
@@ -80,6 +84,13 @@ public class Project implements Parcelable{
         this.creatorName = creatorName;
     }
 
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
 
     public String getProjectId() {
         return projectId;
@@ -138,10 +149,10 @@ public class Project implements Parcelable{
         this.workersName = workersList;
     }
 
-    public List<String> getWorkersIdList() {
+    public List<String> getWorkersId() {
         return workersId;
     }
-    public void setWorkersIdList(List<String> workersId) {
+    public void setWorkersId(List<String> workersId) {
         this.workersId = workersId;
     }
 
@@ -157,12 +168,29 @@ public class Project implements Parcelable{
         this.projectStatus = projectStatus;
     }
 
-
-
     public Project() {
     }
 
-    public Project(String creatorId, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Applicant> workersName) {
+    @Override
+    public String toString() {
+        return "Project{" +
+                "creatorId='" + creatorId + '\n' +
+                ", creatorEmail='" + creatorEmail + '\n' +
+                ", creatorName='" + creatorName + '\n' +
+                ", projectId='" + projectId + '\n' +
+                ", projectName='" + projectName + '\n' +
+                ", projectDescription='" + projectDescription + '\n' +
+                ", requiredSkills=" + requiredSkills + '\n' +
+                ", applicantList=" + applicantList + '\n' +
+                ", applicantId=" + applicantId + '\n' +
+                ", workersId=" + workersId + '\n' +
+                ", workersName=" + workersName + '\n' +
+                ", taskList=" + taskList + '\n' +
+                ", projectStatus='" + projectStatus + '\'' +
+                '}';
+    }
+
+    public Project(String creatorId, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Applicant> workersName, List<Task> TaskList, List<String> workersId) {
         this.creatorId = creatorId;
         this.creatorEmail = creatorEmail;
         this.creatorName = creatorName;
@@ -174,6 +202,8 @@ public class Project implements Parcelable{
         this.applicantList = applicantList;
         this.applicantId = applicantId;
         this.workersName = workersName;
+        this.taskList = TaskList;
+        this.workersId = workersId;
     }
 
 
@@ -192,23 +222,10 @@ public class Project implements Parcelable{
         dest.writeString(projectDescription);
         dest.writeStringList(requiredSkills);
         dest.writeString(projectStatus);
+        dest.writeStringList(workersId);
         dest.writeStringList(applicantId);
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "creatorId='" + creatorId + '\n' +
-                ", creatorEmail='" + creatorEmail + '\n' +
-                ", creatorName='" + creatorName + '\n' +
-                ", projectId='" + projectId + '\n' +
-                ", projectName='" + projectName + '\n' +
-                ", projectDescription='" + projectDescription + '\n' +
-                ", requiredSkills=" + requiredSkills + '\n' +
-                ", applicantList=" + applicantList + '\n' +
-                ", applicantId=" + applicantId + '\n' +
-                ", projectStatus='" + projectStatus + '\n' +
-                ", workersId='" + workersName + '\n' +
-                '}';
+        dest.writeTypedList(applicantList);
+        dest.writeTypedList(taskList);
+        dest.writeTypedList(workersName);
     }
 }
