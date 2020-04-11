@@ -26,16 +26,15 @@ import java.util.List;
 public class TaskAdapter extends BaseAdapter{
     private Context mContext;
     private List<Task> TaskList;
-    String taskName;
-    String taskDescription;
-    FirebaseFirestore db;
-    Project project;
-    String TAG = "APPLICANT_LIST_ADAPTER";
+    private FirebaseFirestore db;
+    private Project project;
+    private String TAG = "APPLICANT_LIST_ADAPTER";
+    private TextView name, description;
 
-    public TaskAdapter(Context mContext, String taskName, String taskDescription, String taskId){
+
+    public TaskAdapter(Context mContext, List<Task> TaskList){
         this.mContext = mContext;
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
+        this.TaskList = TaskList;
     }
 
     @Override
@@ -57,6 +56,12 @@ public class TaskAdapter extends BaseAdapter{
     public View getView(final int position, View view, ViewGroup viewGroup) {
         View v = View.inflate(mContext, R.layout.task_object, null);
         db = FirebaseFirestore.getInstance();
+
+        name = v.findViewById(R.id.task_name);
+        description = v.findViewById(R.id.task_description);
+
+        name.setText(TaskList.get(position).getTaskName());
+        name.setText(TaskList.get(position).getTaskName());
 
         /*accept.setOnClickListener(new View.OnClickListener() {
             @Override
