@@ -3,6 +3,7 @@ package com.example.teamup.ControlPanel.ProjectWall;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -193,6 +195,10 @@ public class ProjectWall extends AppCompatActivity {
             alertDialog.dismiss();
 
 
+            ContentResolver contentResolver = getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+            String extension= mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(filePath));
+
             AlertDialog.Builder builder= new AlertDialog.Builder(ProjectWall.this);
 
             LayoutInflater  inflater=getLayoutInflater();
@@ -205,6 +211,23 @@ public class ProjectWall extends AppCompatActivity {
             final ImageView imageView=dialogue.findViewById(R.id.filePreviewImage);
             final EditText editText=dialogue.findViewById(R.id.fileNameEditText);
             final Button button=dialogue.findViewById(R.id.fileUploadAlertButton);
+
+
+            if(extension!=null) {
+                switch (extension) {
+                    case "pdf":
+                        imageView.setImageResource(R.drawable.pdf_image);
+                        break;
+                    case "ppt":
+                        imageView.setImageResource(R.drawable.ppt_image);
+                        break;
+                    case "doc":
+                        imageView.setImageResource(R.drawable.word_image);
+                        break;
+                    case "jpg":
+                        imageView.setImageURI(filePath);
+                }
+            }
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
