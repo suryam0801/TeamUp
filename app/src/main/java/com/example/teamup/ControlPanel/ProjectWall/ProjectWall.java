@@ -225,6 +225,9 @@ public class ProjectWall extends AppCompatActivity {
                         imageView.setImageResource(R.drawable.word_image);
                         break;
                     case "jpg":
+                    case "jpeg":
+                    case "png":
+                    case "webp":
                         imageView.setImageURI(filePath);
                 }
             }
