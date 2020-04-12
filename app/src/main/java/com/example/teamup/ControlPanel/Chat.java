@@ -1,6 +1,7 @@
 package com.example.teamup.ControlPanel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,4 +70,5 @@ public class Chat {
                 ", timeStamp='" + timeStamp + '\'' +
                 '}';
     }
+
 }
