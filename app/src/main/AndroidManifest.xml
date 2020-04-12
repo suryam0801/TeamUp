@@ -12,8 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ControlPanel.ProjectWall.UploadFile"></activity>
-        <activity android:name=".Notification.NotificationActivity"></activity>
+        <activity android:name=".Notification.NotificationActivity"/>
         <activity android:name=".ControlPanel.ChatRoom" />
         <activity android:name=".ControlPanel.TaskList.TaskList" />
         <activity android:name=".ControlPanel.ProjectWall.ProjectWall" />
