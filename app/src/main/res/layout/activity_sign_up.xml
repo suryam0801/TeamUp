@@ -28,7 +28,11 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:text="SignUp"
+        android:textSize="15dp"
+        android:fontFamily="@font/roboto_black"
+        android:textColor="#FFFFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/gradient_button"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
@@ -48,12 +52,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
+            android:fontFamily="@font/roboto_medium"
             android:layout_height="wrap_content"
             android:hint="Password (Min 6 characters)"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -67,6 +73,7 @@
             android:id="@+id/signUpEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:hint="Email  ID"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -82,7 +89,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:text="Already Registered ?"
         android:textSize="16sp"
@@ -94,9 +101,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="Login"
         android:textColor="#2196F3"
+        android:fontFamily="@font/roboto_black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
@@ -116,6 +124,7 @@
             android:id="@+id/signUpFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:hint="First Name" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,6 +143,32 @@
             android:id="@+id/signUpLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:hint="Last Name" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_black"
+        android:text="TeamUp"
+        android:textColor="#5B86E5"
+        android:layout_marginBottom="70dp"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/beneathTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_black"
+        android:text="Login to Continue"
+        android:textSize="14dp"
+        android:textColor="#D1D1D1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
