@@ -11,13 +11,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.Explore.ExploreActivity;
 import com.example.teamup.Explore.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -65,7 +69,7 @@ public class CreateProject extends AppCompatActivity {
     }
 
     public void createProject(String projectName,String projecDesc){
-            Project project=new Project();
+            final Project project=new Project();
             project.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
             project.setCreatorName(currentUser.getCurrentUser().getDisplayName());
             project.setProjectName(projectName);
@@ -80,6 +84,7 @@ public class CreateProject extends AppCompatActivity {
             project.setProjectId(UUID.randomUUID().toString());
             project.setTaskList(null);
 
+
             db.collection("Projects")
                     .document(project.getProjectId())
                     .set(project)
@@ -87,6 +92,17 @@ public class CreateProject extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "onSuccess: Project Added");
+                            db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayUnion(Objects.requireNonNull(currentUser.getCurrentUser()).getUid()))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
                             Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_LONG).show();
                             onBackPressed();
                         }
