@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -46,13 +47,12 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     public final String TAG=ExploreActivity.this.getClass().getSimpleName();
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
-    SwipeMenuListView lvproject;
+    ListView lvproject;
     private List<Project> ProjectList;
     ProgressBar progressBar;
     Project projects;
     int globalIndex;
     private ProjectAdapter adapter;
-    String proid="";
     Button createProject,workbench;
 
     @Override
@@ -86,7 +86,7 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
 
     public void loadprojectlist()
     {
-        lvproject=(SwipeMenuListView) findViewById(R.id.listview);
+        lvproject=findViewById(R.id.listview);
 
         ProjectList=new ArrayList<>();
         if (ProjectList.size()>0)
@@ -107,60 +107,6 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
                             }
                             adapter= new ProjectAdapter(getApplicationContext(),ProjectList);
                             lvproject.setAdapter(adapter);
-
-                            SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-                                @Override
-                                public void create(SwipeMenu menu) {
-                                    // create "open" item
-                                    SwipeMenuItem openItem = new SwipeMenuItem(
-                                            getApplicationContext());
-                                    // set item background
-                                    openItem.setBackground(new ColorDrawable(Color.rgb(0x00, 0x66,
-                                            0xff)));
-                                    // set item width
-                                    openItem.setWidth(250);
-                                    // set item title
-                                    openItem.setTitle("Apply");
-                                    // set item title fontsize
-                                    openItem.setTitleSize(18);
-                                    // set item title font color
-                                    openItem.setTitleColor(Color.WHITE);
-                                    // add to menu
-                                    menu.addMenuItem(openItem);
-
-
-                                    // create "delete" item
-//                                    SwipeMenuItem deleteItem = new SwipeMenuItem(
-//                                            getApplicationContext());
-//                                    // set item backgroundmenu.getViewType()
-//                                    deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-//                                            0x3F, 0x25)));
-//                                    // set item width
-//                                    deleteItem.setWidth(170);
-//                                    // set a icon
-//                                    deleteItem.setTitle("Apply");
-////                                    deleteItem.setIcon(R.drawable.ic_phone);
-//                                    // add to menu
-//                                    menu.addMenuItem(deleteItem);
-                                }
-                            };
-
-                            lvproject.setMenuCreator(creator);
-
-                            lvproject.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                                    switch (index) {
-                                        case 0:
-                                            apply(ProjectList.get(position).getProjectId());
-                                            globalIndex = position;
-                                            break;
-                                    }
-                                    return false;
-                                }
-                            });
-
 
                             progressBar.setVisibility(View.INVISIBLE);
 
@@ -187,17 +133,6 @@ public class ExploreActivity extends AppCompatActivity implements Dialogue.Dialo
     @Override
     public void applydesc(String shortdesc,String projectId) {
             saveApplicant(shortdesc,projectId);
-//        DocumentReference addedDocRef = db.collection("Projects").document();
-//        String refId = addedDocRef.getId();
-//        String applicanid=currentUser.getUid();
-//        String pitch=shortdesc;
-//        String pid=ProjectList.get(globalIndex).getProjectId();
-//        Map<String,Object> docData=new HashMap<>();
-//        docData.put("applicantID",applicanid);
-//        docData.put("pitch",pitch);
-//        docData.put("projectID",pid);
-//        db.collection("Applicants").add(docData);
-//        Toast.makeText(this,"Your Application Has been Successfully sended to Project Creator!!!",Toast.LENGTH_LONG).show();
     }
 
     @Override
