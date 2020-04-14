@@ -7,6 +7,7 @@
     android:paddingRight="10dp"
     android:paddingBottom="5dp"
     android:paddingTop="5dp"
+
     android:background="@drawable/explore_card_background"
 
     android:orientation="horizontal">
@@ -46,12 +47,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="80"
+        android:descendantFocusability="blocksDescendants"
         android:layout_gravity="center">
 
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/explore_card_arrow"
+            android:drawableStart="@drawable/right_keyboard_arrow"
+            android:paddingLeft="8dp"
+            android:focusable="true"
+            android:id="@+id/more_info_button"
            android:layout_gravity="center">
         </Button>
     </LinearLayout>
