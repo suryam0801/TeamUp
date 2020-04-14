@@ -41,7 +41,6 @@ public class ProjectAdapter extends BaseAdapter  {
         final View pview = View.inflate(mContext, R.layout.project_view_list, null);
         TextView proname=pview.findViewById(R.id.p_title);
         TextView prodesc=pview.findViewById(R.id.p_desc);
-        TextView proid=pview.findViewById(R.id.p_id);
 
         //set text for textview
          final String projectname=Projectlist.get(position).getProjectName();
@@ -50,7 +49,6 @@ public class ProjectAdapter extends BaseAdapter  {
 
          proname.setText(projectname);
          prodesc.setText(projectdesc);
-         proid.setText(projectid);
 
 //         Apply.setOnClickListener(new View.OnClickListeneger() {
 //             @Override
