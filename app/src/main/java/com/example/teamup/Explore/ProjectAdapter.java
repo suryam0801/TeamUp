@@ -44,21 +44,16 @@ public class ProjectAdapter extends BaseAdapter  {
         final View pview = View.inflate(mContext, R.layout.project_view_list, null);
         TextView proname=pview.findViewById(R.id.p_title);
         TextView prodesc=pview.findViewById(R.id.p_desc);
-        Button moreInfo =pview.findViewById(R.id.more_info_button);
+        TextView procreatorname=pview.findViewById(R.id.p_creatorName);
 
         //set text for textview
          final String projectname=Projectlist.get(position).getProjectName();
          final String projectdesc=Projectlist.get(position).getProjectDescription();
+         final String creatorName=Projectlist.get(position).getCreatorName();
 
          proname.setText(projectname);
          prodesc.setText(projectdesc);
-
-         moreInfo.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 Toast.makeText(pview.getContext(),"Applied",Toast.LENGTH_LONG);
-             }
-         });
+         procreatorname.setText(creatorName);
 
         pview.setTag(Projectlist.get(position).getProjectId());
 

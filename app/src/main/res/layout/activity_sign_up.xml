@@ -124,6 +124,7 @@
             android:id="@+id/signUpFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapWords"
             android:fontFamily="@font/roboto_medium"
             android:hint="First Name" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -143,6 +144,7 @@
             android:id="@+id/signUpLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapWords"
             android:fontFamily="@font/roboto_medium"
             android:hint="Last Name" />
     </com.google.android.material.textfield.TextInputLayout>

@@ -6,4 +6,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="msg_token_fmt">TeamUp</string>
+
+    <string-array name="categories">
+        <item>Physical Fitness</item>
+        <item>Technical</item>
+        <item>Startup</item>
+        <item>Volunteering</item>
+        <item>Arts</item>
+        <item>Photography</item>
+        <item>Graphics and Design</item>
+        <item>Construction</item>
+        <item>Fashion</item>
+        <item>Cooking</item>
+        <item>Cinema</item>
+    </string-array>
 </resources>
