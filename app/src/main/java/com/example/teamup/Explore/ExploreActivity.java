@@ -7,9 +7,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
@@ -28,6 +33,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.internal.FlowLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -41,6 +49,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.zip.Inflater;
 
 public class ExploreActivity extends Activity {
 
@@ -53,7 +63,8 @@ public class ExploreActivity extends Activity {
     Project projects;
     private ProjectAdapter adapter;
     Button createProject,workbench;
-    Dialog dialog;
+    Dialog dialog, dialogCreateProject;
+    ChipGroup chipGroup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +75,8 @@ public class ExploreActivity extends Activity {
         createProject = findViewById(R.id.addproject);
         workbench=findViewById(R.id.workbench);
         dialog = new Dialog(ExploreActivity.this);
-
+        dialogCreateProject = new Dialog(ExploreActivity.this);
+        chipGroup = findViewById(R.id.chip_group_create_skills);
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,4 +238,56 @@ public class ExploreActivity extends Activity {
                 });
     }
 
+    public void createProjectMethod(String projName, String projDescription){
+
+        if(projName.equals("") || projDescription.equals("") || projName.replaceAll("\\s", "").equals("") || projDescription.replaceAll("\\s", "").equals("")){
+            Toast.makeText(getApplicationContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show();
+        } else {
+            final Project project=new Project();
+            project.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
+            project.setCreatorName(currentUser.getCurrentUser().getDisplayName());
+            project.setProjectName(projName);
+            project.setProjectDescription(projDescription);
+            project.setCreatorEmail(currentUser.getCurrentUser().getEmail());
+            project.setApplicantId(null);
+            project.setApplicantList(null);
+            project.setProjectStatus("Created");
+            project.setRequiredSkills(null);
+            project.setWorkersList(null);
+            project.setWorkersId(null);
+            project.setProjectId(UUID.randomUUID().toString());
+            project.setTaskList(null);
+
+
+            db.collection("Projects")
+                    .document(project.getProjectId())
+                    .set(project)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "onSuccess: Project Added");
+                            db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayUnion(Objects.requireNonNull(currentUser.getCurrentUser()).getUid()))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+                            Toast.makeText(getApplicationContext(), "Created Successfully", Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Failed to create project", Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "onSuccess: Project Not Added");
+                        }
+                    });
+
+        }
+    }
 }
