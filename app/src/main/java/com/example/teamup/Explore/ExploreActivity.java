@@ -45,7 +45,9 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +65,7 @@ public class ExploreActivity extends Activity {
     Project projects;
     private ProjectAdapter adapter;
     Button createProject,workbench;
-    Dialog dialog, dialogCreateProject;
+    Dialog dialog;
     ChipGroup chipGroup;
 
     @Override
@@ -75,7 +77,6 @@ public class ExploreActivity extends Activity {
         createProject = findViewById(R.id.addproject);
         workbench=findViewById(R.id.workbench);
         dialog = new Dialog(ExploreActivity.this);
-        dialogCreateProject = new Dialog(ExploreActivity.this);
         chipGroup = findViewById(R.id.chip_group_create_skills);
 
         createProject.setOnClickListener(new View.OnClickListener() {
@@ -153,11 +154,55 @@ public class ExploreActivity extends Activity {
         TextView projectLongDescription = dialog.findViewById(R.id.popup_project_long_description);
         Button cancelButton = dialog.findViewById(R.id.popup_cancel_button);
         Button acceptButton = dialog.findViewById(R.id.popup_accept_button);
+        Chip chip1 = dialog.findViewById(R.id.chip1);
+        Chip chip2 = dialog.findViewById(R.id.chip2);
+        Chip chip3 = dialog.findViewById(R.id.chip3);
+        Chip chip4 = dialog.findViewById(R.id.chip4);
+        Chip chip5 = dialog.findViewById(R.id.chip5);
+        Chip chip6 = dialog.findViewById(R.id.chip6);
+        Chip chip7 = dialog.findViewById(R.id.chip7);
+        Chip chip8 = dialog.findViewById(R.id.chip8);
+        Chip chip9 = dialog.findViewById(R.id.chip9);
+        Chip chip10 = dialog.findViewById(R.id.chip10);
+        Chip chip11 = dialog.findViewById(R.id.chip11);
+        Chip chip12 = dialog.findViewById(R.id.chip12);
+        Chip chip13 = dialog.findViewById(R.id.chip13);
+        Chip chip14 = dialog.findViewById(R.id.chip14);
+        Chip chip15 = dialog.findViewById(R.id.chip15);
 
         projectName.setText(ProjectList.get(pos).getProjectName());
         creatorName.setText("Created By: " + ProjectList.get(pos).getCreatorName());
         projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
-        projectLongDescription.setText("Looks like this project's creator has not provided a detailed description.");
+
+        List<Chip> allChips = new ArrayList<>();
+        allChips.add(chip1);
+        allChips.add(chip2);
+        allChips.add(chip3);
+        allChips.add(chip4);
+        allChips.add(chip5);
+        allChips.add(chip6);
+        allChips.add(chip7);
+        allChips.add(chip8);
+        allChips.add(chip9);
+        allChips.add(chip10);
+        allChips.add(chip11);
+        allChips.add(chip12);
+        allChips.add(chip13);
+        allChips.add(chip14);
+        allChips.add(chip15);
+
+        List<String> skillsArray = new ArrayList<>();
+        skillsArray = (ProjectList.get(pos).getRequiredSkills());
+
+        int i = 0;
+
+        if(skillsArray!=null){
+            for(String s : skillsArray){
+                allChips.get(i).setText(s);
+                allChips.get(i).setVisibility(View.VISIBLE);
+                i++;
+            }
+        }
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +218,7 @@ public class ExploreActivity extends Activity {
             }
         });
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
@@ -182,6 +227,10 @@ public class ExploreActivity extends Activity {
         Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
         finishAffinity();
         System.exit(0);
+    }
+
+    private void setChips(List<String> skills) {
+
     }
 
     public void saveApplicant(String shortPitch, final String projectId){
