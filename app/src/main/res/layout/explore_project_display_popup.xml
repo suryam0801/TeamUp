@@ -1,63 +1,356 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:gravity="center"
+    android:background="@drawable/project_info_dialog"
+    android:paddingTop="28dp"
+    android:paddingLeft="19dp"
+    android:paddingRight="19dp"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Project Name"
-        android:textSize="30dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/roboto_black"
-        android:id="@+id/popup_project_name"
-        android:gravity="center"></TextView>
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto_bold"
+        android:id="@+id/popup_project_name">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Created By: "
+            android:textColor="#B6B6B6"
+            android:textSize="12dp"
+            android:fontFamily="@font/roboto_regular">
+        </TextView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Creator Name"
+            android:textColor="#6CACFF"
+            android:textSize="12dp"
+            android:fontFamily="@font/roboto_regular"
+
+            android:id="@+id/popup_project_creator">
+        </TextView>
+    </LinearLayout>
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Description"
+    android:textColor="@color/black"
+    android:fontFamily="@font/roboto_regular"
+    android:textSize="12dp"
+    android:layout_marginBottom="10dp">
+    </TextView>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Created By: "
-        android:textSize="15dp"
-        android:layout_marginBottom="5dp"
-        android:id="@+id/popup_project_creator"
-        android:gravity="center"></TextView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Short Description"
-        android:textSize="20dp"
-        android:background="@drawable/explore_card_arrow"
+        android:text="Description"
+        android:lineSpacingExtra="5dp"
+        android:textColor="#B6B6B6"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="12dp"
         android:id="@+id/popup_project_short_description"
-        android:layout_marginBottom="5dp"
-        android:gravity="center"></TextView>
+        android:layout_marginBottom="20dp">
+    </TextView>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Long Description"
-        android:textSize="20dp"
-        android:background="@drawable/explore_card_arrow"
-        android:id="@+id/popup_project_long_description"
-        android:gravity="center"></TextView>
+        android:text="Preferred Skills"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="12dp"
+        android:id="@+id/popup_project_long_description">
+    </TextView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp">
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/preferredSkillsDisplay">
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:visibility="invisible"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip1">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:fontFamily="@font/roboto_regular"
+                app:checkedIconVisible="false"
+                android:visibility="invisible"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip2">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:visibility="invisible"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip3">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:visibility="invisible"
+                android:fontFamily="@font/roboto_regular"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip4">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:fontFamily="@font/roboto_regular"
+                app:checkedIconVisible="false"
+                android:visibility="invisible"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip5">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="12dp"
+                android:visibility="invisible"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip6">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:fontFamily="@font/roboto_regular"
+                android:visibility="invisible"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip7">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:fontFamily="@font/roboto_regular"
+                android:visibility="invisible"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip8">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:visibility="invisible"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip9">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:visibility="invisible"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip10">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:fontFamily="@font/roboto_regular"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:visibility="invisible"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip11">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:fontFamily="@font/roboto_regular"
+                android:visibility="invisible"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip12">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                app:checkedIconVisible="false"
+                android:fontFamily="@font/roboto_regular"
+                android:textSize="12dp"
+                android:visibility="invisible"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip13">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:fontFamily="@font/roboto_regular"
+                android:visibility="invisible"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip14">
+            </com.google.android.material.chip.Chip>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                app:checkedIcon="@null"
+                android:paddingTop="10dp"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingBottom="10dp"
+                android:paddingLeft="3dp"
+                android:visibility="invisible"
+                app:checkedIconVisible="false"
+                android:textSize="12dp"
+                android:textColor="#6CACFF"
+                android:text=""
+                android:id="@+id/chip15">
+            </com.google.android.material.chip.Chip>
+
+        </com.google.android.material.chip.ChipGroup>
+    </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="17dp">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Cancel"
-            android:id="@+id/popup_cancel_button">
+            android:text="Request To Join"
+            android:textColor="#5B86E5"
+            android:textSize="14dp"
+            android:fontFamily="@font/roboto_medium"
+            android:background="@drawable/create_project_skill_add_button"
+            android:id="@+id/popup_accept_button">
         </Button>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Apply"
-            android:id="@+id/popup_accept_button">
+            android:text="Cancel"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="#828282"
+            android:background="@android:color/transparent"
+            android:id="@+id/popup_cancel_button">
         </Button>
     </LinearLayout>
 </LinearLayout>
