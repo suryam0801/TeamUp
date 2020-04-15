@@ -95,6 +95,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
                         findViewById(R.id.linear_3_wb).setVisibility(View.VISIBLE);
                     }else {
                         myProjectList.add(project);
+                        Log.d(TAG, "onSuccess: "+project.toString());
                         findViewById(R.id.linear_1_wb).setVisibility(View.VISIBLE);
                     }
                     Log.d(TAG, "onSuccess: "+project.toString());
@@ -142,4 +143,8 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

@@ -3,20 +3,29 @@ package com.example.teamup.ControlPanel;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.teamup.ChatRecyclerAdapter;
+import com.example.teamup.ChatRoomBaseActivity;
+import com.example.teamup.CustomChatDialogFragment;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.UsersModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -36,10 +46,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ChatRoom extends AppCompatActivity {
+public class ChatRoom extends Fragment {
 
     FirebaseUser user;
-    private String projectId;
     private RecyclerView mRecyclerView;
     private EditText mEditText;
     private ChatRecyclerAdapter adapter;
@@ -56,59 +65,67 @@ public class ChatRoom extends AppCompatActivity {
     private LinearLayoutManager lm;
     private int scrollPos=0;
     private static int firstVisibleInListview;
-
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private UsersModel usersModel;
+    private String currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: "+"Chat Room 1");
+        return inflater.inflate(R.layout.chat_room_fragment, null);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_room);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mSwipeRefreshLayout=view.findViewById(R.id.message_swipe_layout);
         mArrayList=new ArrayList<>();
-        mRecyclerView=findViewById(R.id.teams_chat_recycler_view);
-        lm=new LinearLayoutManager(getApplicationContext());
+        mRecyclerView=view.findViewById(R.id.teams_chat_recycler_view);
+        lm=new LinearLayoutManager(requireContext());
         mRecyclerView.setLayoutManager(lm);
-        mEditText=findViewById(R.id.message_editext);
+        mEditText=view.findViewById(R.id.message_editext);
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("chat");
         user= FirebaseAuth.getInstance().getCurrentUser();
-        Project project=getIntent().getParcelableExtra("project");
-        assert project != null;
-        projectId=project.getProjectId();
+
+        Bundle bundle=getArguments();
+        assert bundle != null;
+        final boolean isGroup=bundle.getBoolean("isgroup");
+        final String id=bundle.getString("id");
+        final String projectId=bundle.getString("projectId");
+        final String userid=bundle.getString("userid");
+        if (!isGroup)
+        {
+            usersModel=bundle.getParcelable("model");
+        }
+        loadMessages(isGroup,id,projectId,userid);
         mRecyclerView.scrollToPosition(mArrayList.size()-1);
-        loadMessages();
-        adapter=new ChatRecyclerAdapter(mArrayList, getApplicationContext());
+        adapter=new ChatRecyclerAdapter(mArrayList, requireContext());
         mRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        findViewById(R.id.button_send).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_send).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
+                sendMessage(isGroup,id,projectId,userid);
             }
         });
-        firstVisibleInListview = lm.findFirstVisibleItemPosition();
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        removeSwipeRefreshDrawable();
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                super.onScrolled(recyclerView, dx, dy);
+            public void onRefresh() {
 
-                int currentFirstVisible = lm.findFirstVisibleItemPosition();
+                mCurrentPage++;
 
-                if(currentFirstVisible > firstVisibleInListview){
-                    if (!isLoading) {
-                        loadMoreMessages();
-                    }
-                    Log.i("RecyclerView scrolled: ", "scroll up!");
-                    }
-                else {
-                    Log.i("RecyclerView scrolled: ", "scroll down!");
-                }
-                firstVisibleInListview = currentFirstVisible;
+                itemPos = 0;
+
+                loadMoreMessages(isGroup,id,projectId,userid);
+
+
             }
         });
     }
 
-    public void sendMessage() {
+    public void sendMessage(boolean isGroup,String id,String projectId,String userid) {
         Log.d(TAG, "sendMessage: ");
         String message=mEditText.getText().toString().trim();
         String senderId=user.getUid();
@@ -126,101 +143,142 @@ public class ChatRoom extends AppCompatActivity {
             Log.d(TAG, "sendMessage: "+databaseReference.toString());
             String key=databaseReference.push().getKey();
             chat.setMessageId(key);
-            databaseReference.child(projectId).child(key).setValue(chat).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "onFailure: "+e.getMessage());
-                    mRecyclerView.scrollToPosition(mArrayList.size()-1);
-                }
-            }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "onSuccess: "+"saved");
-                }
-            });
-            InputMethodManager inputManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (isGroup)
+            {
+                databaseReference=FirebaseDatabase.getInstance().getReference("chat").child(projectId).child("groups").child(id);
+                databaseReference.child(Objects.requireNonNull(key)).setValue(chat).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: "+e.getMessage());
+                        mRecyclerView.scrollToPosition(mArrayList.size()-1);
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: "+"saved");
+                    }
+                });
+            }else{
+                DatabaseReference dbReference=FirebaseDatabase.getInstance().getReference("chat").child(projectId).child("personal").child(userid).child(id);
+                dbReference.child(Objects.requireNonNull(key)).setValue(chat).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: "+e.getMessage());
+                        mRecyclerView.scrollToPosition(mArrayList.size()-1);
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: "+"saved");
+                    }
+                });
+                FirebaseDatabase.getInstance().getReference("chat").child(projectId).child("personal").child(id).child(userid).child(key).setValue(chat).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: 1"+"saved");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: "+e.getMessage());
+                    }
+                });
+                FirebaseDatabase.getInstance().getReference("personal").child(projectId).child(userid).child(id).setValue(usersModel);
+                UsersModel model=new UsersModel(currentUserName, userid);
+                FirebaseDatabase.getInstance().getReference("personal").child(projectId).child(id).child(userid).setValue(model);
+            }
+
+            InputMethodManager inputManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             assert inputManager != null;
-            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(requireActivity().getCurrentFocus()).getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         }
     }
 
 
 
-    private void loadMessages() {
-        DatabaseReference messageRef = databaseReference.child(projectId);
-        Query messageQuery = messageRef.limitToLast(mCurrentPage * TOTAL_ITEMS_TO_LOAD);
-        messageQuery.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
+    private void loadMessages(boolean isGroup,String id,String projectId,String userid) {
+        DatabaseReference messageRef;
+        if (isGroup) {
+             messageRef = databaseReference.child(projectId).child("groups").child(id);
+        }else{
+            messageRef=databaseReference.child(projectId).child("personal").child(userid).child(id);
+        }
+            Query messageQuery = messageRef.limitToLast(mCurrentPage * TOTAL_ITEMS_TO_LOAD);
+            messageQuery.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
 
-                Chat chat = dataSnapshot.getValue(Chat.class);
+                    Chat chat = dataSnapshot.getValue(Chat.class);
 
-                itemPos++;
-                if(itemPos == 1){
-                    String messageKey = dataSnapshot.getKey();
-                    mLastKey = messageKey;
-                    mPrevKey = messageKey;
+                    itemPos++;
+                    if (itemPos == 1) {
+                        String messageKey = dataSnapshot.getKey();
+                        mLastKey = messageKey;
+                        mPrevKey = messageKey;
+                    }
+                    mArrayList.add(chat);
+                    adapter.notifyDataSetChanged();
+                    assert chat != null;
+                    Log.i(TAG, "onChildAdded: ad Messages:   -->  " + chat.getMessage());
+                    mRecyclerView.scrollToPosition(mArrayList.size() - 1);
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
 
-                mArrayList.add(chat);
-                adapter.notifyDataSetChanged();
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
 
-                mRecyclerView.scrollToPosition(mArrayList.size() - 1-scrollPos);
-            }
+                }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+                }
+            });
     }
 
 
-    private void loadMoreMessages() {
-        isLoading=true;
-        DatabaseReference messageRef = databaseReference.child(projectId);
-
+    private void loadMoreMessages(boolean isGroup,String id,String projectId,String userid) {
+        DatabaseReference messageRef;
+        if (isGroup) {
+            messageRef = databaseReference.child(projectId).child("groups").child(id);
+        }else{
+            messageRef=databaseReference.child(projectId).child("child").child(userid).child(id);
+        }
         Query messageQuery = messageRef.orderByKey().endAt(mLastKey).limitToLast(10);
-
         messageQuery.addChildEventListener(new ChildEventListener() {
-            int count=0;
-
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                 Chat message = dataSnapshot.getValue(Chat.class);
                 String messageKey = dataSnapshot.getKey();
                 assert message != null;
-                Log.d(TAG, "onChildAdded: "+message.toString());
+                Log.d(TAG, "onChildAdded: Load More:  -->  "+message.getMessage());
                 if(!mPrevKey.equals(messageKey)){
 
-                    mArrayList.add(count++,message);
+                    mArrayList.add(itemPos++,message);
 
                 } else {
                     mPrevKey = mLastKey;
                 }
 
                 if(itemPos == 1) {
-
                     mLastKey = messageKey;
                 }
                 adapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+
+               // lm.scrollToPositionWithOffset(10, 0);
+
             }
 
             @Override
@@ -242,8 +300,19 @@ public class ChatRoom extends AppCompatActivity {
 
             }
         });
-        isLoading=false;
-        lm.scrollToPositionWithOffset(mArrayList.size()-1-scrollPos, 0);
     }
 
+    public void removeSwipeRefreshDrawable(){
+        try {
+            Field f = mSwipeRefreshLayout.getClass().getDeclaredField("mCircleView");
+            f.setAccessible(true);
+            ImageView img = (ImageView)f.get(mSwipeRefreshLayout);
+            assert img != null;
+            img.setImageResource(android.R.color.transparent);
+            img.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent));
+            img.setBackgroundResource(android.R.color.transparent);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

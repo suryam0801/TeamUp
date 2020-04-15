@@ -15,7 +15,11 @@ import com.example.teamup.viewholder.ChatSentViewHolder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -57,13 +61,13 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Log.d(TAG, "onBindViewHolder: sent");
             ChatSentViewHolder chatSentViewHolder=(ChatSentViewHolder)holder;
             chatSentViewHolder.mTextViewMesgage.setText(chat.getMessage());
-            chatSentViewHolder.mTextViewTime.setText(chat.getTimeStamp());
+            chatSentViewHolder.mTextViewTime.setText(formatDate(chat.getTimeStamp()));
             chatSentViewHolder.mTextViewUserName.setText(chat.getSenderName());
         }else{
             Log.d(TAG, "onBindViewHolder: received");
             ChatReceivedViewHolder chatReceivedViewHolder=(ChatReceivedViewHolder)holder;
             chatReceivedViewHolder.mTextViewMesgage.setText(chat.getMessage());
-            chatReceivedViewHolder.mTextViewTime.setText(chat.getTimeStamp());
+            chatReceivedViewHolder.mTextViewTime.setText(formatDate(chat.getTimeStamp()));
             chatReceivedViewHolder.mTextViewUserName.setText(chat.getSenderName());
         }
     }
@@ -80,6 +84,14 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return VIEW_TYPE_SENT;
         }
         return VIEW_TYPE_RECEIVED;
+    }
+
+    public String formatDate(String a){
+        long timeStamp=Long.parseLong(a);
+        Date today = new Date(timeStamp*1000L);
+        SimpleDateFormat formatter= new SimpleDateFormat("dd-M-yyyy hh:mm:ss a");
+        formatter.setTimeZone(TimeZone.getDefault());
+        return formatter.format(today);
     }
 
 }
