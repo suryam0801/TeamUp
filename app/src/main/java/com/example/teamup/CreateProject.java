@@ -12,8 +12,13 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,9 +41,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class CreateProject extends Activity {
+public class CreateProject extends Activity implements AdapterView.OnItemSelectedListener {
 
-    String TAG = "CreateProject";
+    String TAG = "CreateProject", selectedCategory = "";
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     ChipGroup chipGroup;
@@ -47,6 +52,8 @@ public class CreateProject extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_create_project2);
 
         //Initializing firestore
@@ -60,6 +67,13 @@ public class CreateProject extends Activity {
         skillSetEntry = findViewById(R.id.skill_entry_edittext);
         Button addSkillSet = findViewById(R.id.addSkillSet);
         chipGroup = findViewById(R.id.chip_group_create_skills);
+
+        Spinner spinner = findViewById(R.id.categorySpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         createProjectSubmit.setOnClickListener(new View.OnClickListener() {
 
@@ -147,6 +161,7 @@ public class CreateProject extends Activity {
         project.setWorkersId(null);
         project.setProjectId(UUID.randomUUID().toString());
         project.setTaskList(null);
+        project.setCategory(selectedCategory);
 
 
         db.collection("Projects")
@@ -178,6 +193,17 @@ public class CreateProject extends Activity {
                         Log.d(TAG, "onSuccess: Project Not Added");
                     }
                 });
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        String text = parent.getItemAtPosition(position).toString();
+        selectedCategory = text;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }

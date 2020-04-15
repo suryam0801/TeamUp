@@ -32,7 +32,6 @@
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_gravity="center"
             android:text="Explore"
             android:textSize="18sp"
@@ -51,26 +50,15 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-
-        />
-
     <ListView
         android:id="@+id/listview_explore_projects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:dividerHeight="10dp"
-        android:divider="@color/white">
-    </ListView>
-
+        android:divider="@android:color/transparent"
+        android:dividerHeight="18dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="10dp"
+        android:paddingRight="16dp"></ListView>
 
 
 </LinearLayout>
