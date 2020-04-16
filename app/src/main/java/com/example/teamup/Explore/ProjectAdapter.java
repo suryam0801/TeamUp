@@ -16,10 +16,12 @@ import java.util.List;
 public class ProjectAdapter extends BaseAdapter  {
     private Context mContext;
     private List<Project> Projectlist;
+    private int workbench;
 
-    public ProjectAdapter(Context mContext, List<Project> Projectlist) {
+    public ProjectAdapter(Context mContext, List<Project> Projectlist, int workbench) {
         this.mContext = mContext;
         this.Projectlist = Projectlist;
+        this.workbench = workbench;
     }
 
 
@@ -45,6 +47,7 @@ public class ProjectAdapter extends BaseAdapter  {
         TextView proname=pview.findViewById(R.id.p_title);
         TextView prodesc=pview.findViewById(R.id.p_desc);
         TextView procreatorname=pview.findViewById(R.id.p_creatorName);
+        View divider = pview.findViewById(R.id.project_item_divider);
 
         //set text for textview
          final String projectname=Projectlist.get(position).getProjectName();
@@ -54,6 +57,11 @@ public class ProjectAdapter extends BaseAdapter  {
          proname.setText(projectname);
          prodesc.setText(projectdesc);
          procreatorname.setText(creatorName);
+
+        if(workbench == 1){
+            prodesc.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
+        }
 
         pview.setTag(Projectlist.get(position).getProjectId());
 

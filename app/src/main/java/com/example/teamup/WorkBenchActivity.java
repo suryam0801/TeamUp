@@ -1,9 +1,13 @@
 package com.example.teamup;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+import com.example.teamup.Explore.ExploreActivity;
 import com.example.teamup.Explore.Project;
+import com.example.teamup.Explore.ProjectAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,21 +32,24 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRecyclerAdapter.OnItemClickListener {
+public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdapter.OnItemClickListener {
 
-    private RecyclerView myProjectsRv,workingProjectsRv,pastProjectsRv;
+    private ListView myProjectsRv,workingProjectsRv,pastProjectsRv;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG= WorkBenchActivity.class.getSimpleName();
-    private WorkBenchRecyclerAdapter wb1,wb2,wb3;
     private FirebaseUser firebaseUser;
     private ArrayList<Project> myProjectList=new ArrayList<>();
     private ArrayList<Project> workingProjectList=new ArrayList<>();
     private ArrayList<Project> completedProjectsList=new ArrayList<>();
+    private ProjectAdapter myAdapter;
+    private ProjectAdapter workingAdapter;
+    private ProjectAdapter completedAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_bench);
         initializeViews();
+        initializeAdapters();
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         getMyProjects();
         getWorkingProjects();
@@ -54,22 +63,39 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
         pastProjectsRv=findViewById(R.id.past_projects_recycler_view);
     }
 
+    public void initializeAdapters(){
+        myAdapter= new ProjectAdapter(getApplicationContext(),myProjectList, 1);
+        workingAdapter= new ProjectAdapter(getApplicationContext(),workingProjectList, 1);
+        completedAdapter= new ProjectAdapter(getApplicationContext(),completedProjectsList, 1);
+    }
+
     public void populateData(){
-        wb1 = new WorkBenchRecyclerAdapter(this, myProjectList, this);
-        myProjectsRv.setLayoutManager(new LinearLayoutManager(this));
-        myProjectsRv.setHasFixedSize(true);
-        myProjectsRv.setAdapter(wb1);
-        wb1.notifyDataSetChanged();
-        wb2 = new WorkBenchRecyclerAdapter(this, workingProjectList,this);
-        workingProjectsRv.setLayoutManager(new LinearLayoutManager(this));
-        workingProjectsRv.setHasFixedSize(true);
-        workingProjectsRv.setAdapter(wb2);
-        wb2.notifyDataSetChanged();
-        wb3 = new WorkBenchRecyclerAdapter(this, completedProjectsList, this);
-        pastProjectsRv.setLayoutManager(new LinearLayoutManager(this));
-        pastProjectsRv.setHasFixedSize(true);
-        pastProjectsRv.setAdapter(wb3);
-        wb3.notifyDataSetChanged();
+        myProjectsRv.setAdapter(myAdapter);
+        myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(WorkBenchActivity.this,i + "",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        workingProjectsRv.setAdapter(workingAdapter);
+        workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(WorkBenchActivity.this,i + "",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        pastProjectsRv.setAdapter(completedAdapter);
+        pastProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(WorkBenchActivity.this,i + "",Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
