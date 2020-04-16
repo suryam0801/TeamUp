@@ -54,15 +54,6 @@ public class WorkBenchRecyclerAdapter extends RecyclerView.Adapter<WorkBenchRecy
             this.onItemClickListener=onItemClickListener;
             projectNameTv=itemView.findViewById(R.id.project_name_text_view);
             projectDescTv=itemView.findViewById(R.id.project_desc_text_view);
-            chatButton=itemView.findViewById(R.id.goto_chat_btn);
-            chatButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, ChatRoomBaseActivity.class);
-                    intent.putExtra("project", project);
-                    mContext.startActivity(intent);
-                }
-            });
             itemView.setOnClickListener(this);
 
         }
