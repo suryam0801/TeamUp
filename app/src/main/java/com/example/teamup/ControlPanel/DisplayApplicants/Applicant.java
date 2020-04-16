@@ -5,17 +5,7 @@ import android.os.Parcelable;
 
 public class Applicant implements Parcelable {
 
-    private String projectId;
-
-    private String applicantName;
-
-    private String applicantEmail;
-
-    private String userId;
-
-    private String acceptedStatus;
-
-    private String shortPitch;
+    private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch;
 
     public Applicant() {
     }
@@ -28,27 +18,6 @@ public class Applicant implements Parcelable {
         this.acceptedStatus = acceptedStatus;
         this.shortPitch = shortPitch;
     }
-
-    protected Applicant(Parcel in) {
-        projectId = in.readString();
-        applicantName = in.readString();
-        applicantEmail = in.readString();
-        userId = in.readString();
-        acceptedStatus = in.readString();
-        shortPitch = in.readString();
-    }
-
-    public static final Creator<Applicant> CREATOR = new Creator<Applicant>() {
-        @Override
-        public Applicant createFromParcel(Parcel in) {
-            return new Applicant(in);
-        }
-
-        @Override
-        public Applicant[] newArray(int size) {
-            return new Applicant[size];
-        }
-    };
 
     public String getProjectId() {
         return projectId;
@@ -115,12 +84,32 @@ public class Applicant implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(projectId);
-        dest.writeString(applicantName);
-        dest.writeString(applicantEmail);
-        dest.writeString(userId);
-        dest.writeString(acceptedStatus);
-        dest.writeString(shortPitch);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(projectId);
+        parcel.writeString(applicantName);
+        parcel.writeString(applicantEmail);
+        parcel.writeString(userId);
+        parcel.writeString(acceptedStatus);
+        parcel.writeString(shortPitch);
     }
+
+    private Applicant(Parcel in) {
+        projectId = in.readString();
+        applicantName = in.readString();
+        applicantEmail = in.readString();
+        userId = in.readString();
+        acceptedStatus = in.readString();
+        shortPitch = in.readString();
+    }
+
+    public static final Parcelable.Creator<Applicant> CREATOR
+            = new Parcelable.Creator<Applicant>() {
+        public Applicant createFromParcel(Parcel in) {
+            return new Applicant(in);
+        }
+
+        public Applicant[] newArray(int size) {
+            return new Applicant[size];
+        }
+    };
 }

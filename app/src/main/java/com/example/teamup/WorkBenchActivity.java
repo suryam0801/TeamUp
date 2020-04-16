@@ -1,16 +1,17 @@
 package com.example.teamup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.Explore.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -73,9 +75,9 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
     @Override
     public void onItemClick(Project project) {
         if (project.getCreatorId().equals(firebaseUser.getUid())) {
-            Intent intent = new Intent(this, ApplicantDisplay.class);
+            Intent intent = new Intent(this, ControlPanel.class);
             intent.putExtra("project", project);
-            Log.d(TAG, "onItemClick: "+project.toString());
+            Log.d(TAG, "My Project:"+project.toString());
             startActivity(intent);
         }
     }
@@ -98,7 +100,7 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
                         Log.d(TAG, "onSuccess: "+project.toString());
                         findViewById(R.id.linear_1_wb).setVisibility(View.VISIBLE);
                     }
-                    Log.d(TAG, "onSuccess: "+project.toString());
+                    //Log.d(TAG, "onSuccess: "+project.toString());
                 }
             }
         });
@@ -106,22 +108,23 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
 
     public void getWorkingProjects(){
         //Gets the projects the user is working for
-        Query myProjects = db.collection("Projects").whereArrayContains("workersId", Objects.requireNonNull(firebaseUser.getUid()));
+        Query myProjects = db.collection("Projects").whereArrayContains("applicantId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d(TAG, "onSuccess: "+queryDocumentSnapshots.size());
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    if (project!=null&&project.getWorkersList()!=null) {
-                        List<Applicant> workersList = project.getWorkersList();
-                        for(Applicant applicant:workersList)
+                    if (project!=null&&project.getApplicantList()!=null) {
+                        List<Applicant> applicantList = project.getApplicantList();
+                        for(Applicant applicant:applicantList)
                         {
-                            if (applicant.getUserId().equals(firebaseUser.getUid())) {
+                            if (applicant.getUserId().equals(firebaseUser.getUid())&& applicant.getAcceptedStatus().equals("Accepted")) {
                                 Log.d(TAG, "onSuccess: "+project.toString());
                                 Log.d(TAG, "onSuccess: "+applicant.toString());
                                 if (project.getProjectStatus().equals("Completed"))
                                 {
+
                                     completedProjectsList.add(project);
                                     findViewById(R.id.linear_3_wb).setVisibility(View.VISIBLE);
                                 }else{
@@ -142,9 +145,5 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
         });
     }
 
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+}
 }

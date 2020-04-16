@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
+import com.example.teamup.ControlPanel.ProjectWall.ProjectWall;
+import com.example.teamup.ControlPanel.TaskList.TaskList;
+import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
 
 import java.util.List;
@@ -23,10 +25,12 @@ public class TabAdapter extends PagerAdapter implements Adapter {
     private List<Model> models;
     private LayoutInflater layoutInflater;
     private Context context;
+    private Project project;
 
-    public TabAdapter(List<Model> models, Context context) {
+    public TabAdapter(List<Model> models, Context context, Project project) {
         this.models = models;
         this.context = context;
+        this.project = project;
     }
 
     @Override
@@ -99,24 +103,27 @@ public class TabAdapter extends PagerAdapter implements Adapter {
                 {
                     case 0 :
                         Intent intentWall = new Intent(context, ProjectWall.class);
+                        intentWall.putExtra("project", project);
                         context.startActivity(intentWall);
                         break;
                     case 1 :
                         Intent intentTask = new Intent(context, TaskList.class);
+                        intentTask.putExtra("project", project);
                         context.startActivity(intentTask);
                         break;
                     case 2 :
                         Intent intentChatRoom = new Intent(context, ChatRoom.class);
+                        intentChatRoom.putExtra("project", project);
                         context.startActivity(intentChatRoom);
                         break;
                     case 3 :
                         Intent intentApplicants = new Intent(context, ApplicantDisplay.class);
+                        intentApplicants.putExtra("project", project);
                         context.startActivity(intentApplicants);
                         break;
                     default :
                 }
 
-                Toast.makeText(context,"You Clicked "+position+" tab",Toast.LENGTH_SHORT).show();
             }
         });
 

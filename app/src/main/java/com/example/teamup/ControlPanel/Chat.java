@@ -2,7 +2,6 @@ package com.example.teamup.ControlPanel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -18,6 +17,14 @@ public class Chat {
 
     private String timeStamp;
 
+    public boolean isSentMessage(){
+        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+        return user.getUid().equals(senderUserId);
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
@@ -31,6 +38,9 @@ public class Chat {
         this.message = message;
     }
 
+    public String getSenderUserId() {
+        return senderUserId;
+    }
 
     public void setSenderUserId(String senderUserId) {
         this.senderUserId = senderUserId;

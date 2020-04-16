@@ -1,19 +1,15 @@
 package com.example.teamup;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.teamup.ControlPanel.ChatRoom;
 import com.example.teamup.Explore.Project;
-import com.example.teamup.R;
 
 import java.util.ArrayList;
 
@@ -53,7 +49,6 @@ public class WorkBenchRecyclerAdapter extends RecyclerView.Adapter<WorkBenchRecy
         private TextView projectNameTv,projectDescTv;
         private OnItemClickListener onItemClickListener;
         private Project project;
-        private Button chatButton;
         public MyViewHolder(@NonNull View itemView,OnItemClickListener onItemClickListener) {
             super(itemView);
             this.onItemClickListener=onItemClickListener;

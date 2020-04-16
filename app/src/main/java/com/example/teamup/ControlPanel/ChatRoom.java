@@ -46,8 +46,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ChatRoom extends Fragment {
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.teamup.R;
+
+public class ChatRoom extends Fragment {
     FirebaseUser user;
     private RecyclerView mRecyclerView;
     private EditText mEditText;
@@ -300,6 +303,12 @@ public class ChatRoom extends Fragment {
 
             }
         });
+        
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat_room);
+
     }
 
     public void removeSwipeRefreshDrawable(){

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.teamup">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,14 +14,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".AddUsersChatActivity"></activity>
         <activity android:name=".ChatRoomBaseActivity" />
+        <activity android:name=".Notification.NotificationActivity"/>
         <activity android:name=".ControlPanel.ChatRoom" />
-        <activity android:name=".ControlPanel.TaskList" />
-        <activity android:name=".ControlPanel.ProjectWall" />
+        <activity android:name=".ControlPanel.TaskList.TaskList" />
+        <activity android:name=".ControlPanel.ProjectWall.ProjectWall" />
         <activity android:name=".ControlPanel.ControlPanel" />
         <activity android:name=".login.SignUpActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".ControlPanel.DisplayApplicants.ApplicantDisplay" />
-        <activity android:name=".CreateProject" />
+        <activity android:name=".CreateProject"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".Explore.ExploreActivity" />
         <activity android:name=".WorkBenchActivity" />
         <activity android:name=".MainActivity">
@@ -28,6 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Notification.FireBaseInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

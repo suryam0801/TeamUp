@@ -3,6 +3,7 @@ package com.example.teamup.ControlPanel;
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.Explore.ExploreActivity;
+import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
 
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class ControlPanel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_panel);
+
+        Project project=getIntent().getParcelableExtra("project");
+        Log.d("CONTROL PANEL", "PROJECT ATTRIBUTES: " + project.toString());
         back=findViewById(R.id.btnback);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,13 +39,14 @@ public class ControlPanel extends AppCompatActivity {
                 finish();
             }
         });
+
         models = new ArrayList<>();
         models.add(new Model(R.drawable.brochure, "Project Wall", "Post all the media content for your project and discuss about it as a team on this shared wall"));
         models.add(new Model(R.drawable.sticker, "Task List", "Decide amongst yourselves what tasks need to be accomplished and manage your priorities using this Task List"));
         models.add(new Model(R.drawable.poster, "Chatroom", "Enter the chatroom to have a conversation with everybody in your project and if needed, create your own chatroom with only those who are relevant"));
         models.add(new Model(R.drawable.namecard, "Applicants", "Since you have created this project, view a list of the applicants who want to join your project and accept or reject them"));
 
-        adapter =  new TabAdapter(models, this);
+        adapter =  new TabAdapter(models, this, project);
 
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
