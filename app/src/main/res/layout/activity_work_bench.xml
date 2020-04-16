@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".WorkBenchActivity"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/card_back"
     xmlns:tools="http://schemas.android.com/tools">
-
-<androidx.appcompat.widget.Toolbar
-    app:title="Work Bench"
-    android:paddingStart="20dp"
-    app:titleTextAppearance="@style/Toolbar.TitleText"
-    app:titleTextColor="@color/white"
-    android:background="@color/colorPrimary"
-    android:layout_width="match_parent"
-    android:layout_height="?android:actionBarSize"
-    tools:ignore="RtlSymmetry" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,22 +23,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone"
             tools:context=".WorkBenchActivity">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/rounded_corners_background"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="My Projects"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <ListView
                 android:id="@+id/my_projects_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -60,22 +48,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone"
             tools:context=".WorkBenchActivity">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/rounded_corners_background"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Working Projects"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <ListView
                 android:id="@+id/working_projects_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -87,22 +73,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone"
             tools:context=".WorkBenchActivity">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/rounded_corners_background"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="Past Projects"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <ListView
                 android:id="@+id/past_projects_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

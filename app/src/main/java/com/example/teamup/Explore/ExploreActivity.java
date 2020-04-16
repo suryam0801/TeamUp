@@ -123,7 +123,7 @@ public class ExploreActivity extends Activity {
 //                                Log.d(TAG, "____________________________________________________");
                                 ProjectList.add(project);
                             }
-                            adapter= new ProjectAdapter(getApplicationContext(),ProjectList);
+                            adapter= new ProjectAdapter(getApplicationContext(),ProjectList,0);
                             lvproject.setAdapter(adapter);
 
 

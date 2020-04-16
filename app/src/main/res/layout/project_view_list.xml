@@ -84,6 +84,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:id="@+id/project_item_divider"
             android:background="#F1F1F1" />
 
         <TextView
