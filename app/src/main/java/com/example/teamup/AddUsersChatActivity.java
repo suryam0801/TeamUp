@@ -56,7 +56,7 @@ public class AddUsersChatActivity extends AppCompatActivity {
         selectAllButton=findViewById(R.id.select_all_btn);
         updateList=new ArrayList<>();
         mListView=findViewById(R.id.users_listview);
-        project=getIntent().getParcelableExtra("project");
+        project=SessionStorage.getProject(this);
         populateData();
         createGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override

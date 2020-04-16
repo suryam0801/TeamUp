@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.teamup.ChatRoomBaseActivity;
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.R;
 
@@ -106,7 +107,7 @@ public class TabAdapter extends PagerAdapter implements Adapter {
                         context.startActivity(intentTask);
                         break;
                     case 2 :
-                        Intent intentChatRoom = new Intent(context, ChatRoom.class);
+                        Intent intentChatRoom = new Intent(context, ChatRoomBaseActivity.class);
                         context.startActivity(intentChatRoom);
                         break;
                     case 3 :

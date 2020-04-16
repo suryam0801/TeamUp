@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
 import com.example.teamup.Explore.Project;
@@ -72,12 +73,9 @@ public class WorkBenchActivity extends AppCompatActivity implements WorkBenchRec
 
     @Override
     public void onItemClick(Project project) {
-        if (project.getCreatorId().equals(firebaseUser.getUid())) {
-            Intent intent = new Intent(this, ApplicantDisplay.class);
-            intent.putExtra("project", project);
-            Log.d(TAG, "onItemClick: "+project.toString());
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, ControlPanel.class);
+        SessionStorage.saveProject(this, project);
+        startActivity(intent);
     }
 
     public void getMyProjects(){

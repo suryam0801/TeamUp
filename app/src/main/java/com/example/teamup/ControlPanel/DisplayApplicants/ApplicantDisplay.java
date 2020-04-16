@@ -1,6 +1,7 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.os.Bundle;
+import android.se.omapi.Session;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +40,7 @@ public class ApplicantDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
         lvApplicant = findViewById(R.id.listview_applicant);
-        Project project=getIntent().getParcelableExtra("project");
+        Project project= SessionStorage.getProject(this);
         assert project != null;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();

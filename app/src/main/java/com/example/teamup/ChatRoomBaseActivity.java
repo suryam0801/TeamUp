@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -59,7 +62,7 @@ public class ChatRoomBaseActivity extends AppCompatActivity implements OnItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room_base);
         userModelMap=new HashMap<>();
-        project=getIntent().getParcelableExtra("project");
+        project=SessionStorage.getProject(this);
         setUpFragment(true, "general",null,"#General");
         setUpDrawer();
     }
@@ -75,7 +78,6 @@ public class ChatRoomBaseActivity extends AppCompatActivity implements OnItemCli
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 Intent intent=new Intent(getApplicationContext(),AddUsersChatActivity.class);
-                intent.putExtra("project", project);
                 startActivityForResult(intent, 1);
                 return false;
             }
@@ -212,10 +214,11 @@ public class ChatRoomBaseActivity extends AppCompatActivity implements OnItemCli
 
     public void setUpFragment(boolean isGroup, String id, UsersModel usersModel,String title)
     {
+
+        Log.d(TAG, "setUpFragment: "+project.toString());
         String tbTitle=project.getProjectName()+"\n"+title;
         Toolbar toolbar=findViewById(R.id.toolbar_chat_room);
         toolbar.setTitle(tbTitle);
-
         Log.d(TAG, "setUpFragment: "+id);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
