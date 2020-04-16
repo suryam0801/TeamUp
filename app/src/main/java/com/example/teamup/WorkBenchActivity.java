@@ -38,9 +38,9 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG= WorkBenchActivity.class.getSimpleName();
     private FirebaseUser firebaseUser;
-    private ArrayList<Project> myProjectList=new ArrayList<>();
-    private ArrayList<Project> workingProjectList=new ArrayList<>();
-    private ArrayList<Project> completedProjectsList=new ArrayList<>();
+    private List<Project> myProjectList=new ArrayList<>();
+    private List<Project> workingProjectList=new ArrayList<>();
+    private List<Project> completedProjectsList=new ArrayList<>();
     private ProjectAdapter myAdapter;
     private ProjectAdapter workingAdapter;
     private ProjectAdapter completedAdapter;
@@ -110,7 +110,7 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
 
     public void getMyProjects(){
         //Lists the projects creted by the particular user
-        Query myProjects = db.collection("Projects").whereEqualTo("creatorId", Objects.requireNonNull(firebaseUser.getUid()));
+        final Query myProjects = db.collection("Projects").whereEqualTo("creatorId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -120,13 +120,11 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
                     if (project.getProjectStatus().equals("Completed"))
                     {
                         completedProjectsList.add(project);
-                        findViewById(R.id.linear_3_wb).setVisibility(View.VISIBLE);
                     }else {
                         myProjectList.add(project);
-                        findViewById(R.id.linear_1_wb).setVisibility(View.VISIBLE);
                     }
-                    //Log.d(TAG, "onSuccess: "+project.toString());
                 }
+                Log.d((TAG), "PROJECT: " + myProjects.toString());
             }
         });
     }
@@ -149,12 +147,9 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
                                 Log.d(TAG, "onSuccess: "+applicant.toString());
                                 if (project.getProjectStatus().equals("Completed"))
                                 {
-
                                     completedProjectsList.add(project);
-                                    findViewById(R.id.linear_3_wb).setVisibility(View.VISIBLE);
                                 }else{
                                     workingProjectList.add(project);
-                                    findViewById(R.id.linear_2_wb).setVisibility(View.VISIBLE);
                                 }
                             }
                         }

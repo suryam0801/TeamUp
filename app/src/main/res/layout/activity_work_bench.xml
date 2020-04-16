@@ -28,13 +28,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:padding="10dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginLeft="21dp"
                 android:text="My Projects"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="25sp"/>
 
             <ListView
                 android:id="@+id/my_projects_recycler_view"
@@ -54,12 +52,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:gravity="center"
-                android:padding="10dp"
                 android:text="Working Projects"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="25sp" />
 
             <ListView
                 android:id="@+id/working_projects_recycler_view"
@@ -79,12 +74,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:gravity="center"
-                android:padding="10dp"
                 android:text="Past Projects"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:textSize="25sp"/>
 
             <ListView
                 android:id="@+id/past_projects_recycler_view"
