@@ -1,5 +1,7 @@
 package com.example.teamup.ControlPanel;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -59,4 +61,24 @@ public class Chat {
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public String getSenderUserId() {
+        return senderUserId;
+    }
+
+    @Override
+    public String toString() {
+        return "Chat{" +
+                "messageId='" + messageId + '\'' +
+                ", message='" + message + '\'' +
+                ", senderUserId='" + senderUserId + '\'' +
+                ", senderName='" + senderName + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                '}';
+    }
+
 }

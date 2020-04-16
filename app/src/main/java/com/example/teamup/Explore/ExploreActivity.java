@@ -300,8 +300,6 @@ public class ExploreActivity extends Activity {
     @Override
     public void onBackPressed() {
         Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
-        finishAffinity();
-        System.exit(0);
     }
 
     public void saveApplicant(String shortPitch, final String projectId){
