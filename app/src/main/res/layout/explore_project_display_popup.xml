@@ -25,7 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="20dp">
+        android:id="@+id/popup_creatorname_display_view"
+        android:layout_marginBottom="10dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,19 +42,26 @@
             android:textColor="#6CACFF"
             android:textSize="12dp"
             android:fontFamily="@font/roboto_regular"
-
             android:id="@+id/popup_project_creator">
         </TextView>
+
     </LinearLayout>
-    <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Description"
-    android:textColor="@color/black"
-    android:fontFamily="@font/roboto_regular"
-    android:textSize="12dp"
-    android:layout_marginBottom="10dp">
-    </TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F1F1F1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Description"
+            android:textColor="@color/black"
+            android:id="@+id/placeholderDescription"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="12dp"
+            android:layout_marginBottom="10dp">
+        </TextView>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,8 +84,9 @@
     </TextView>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp">
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/SkillDisplayScrollView">
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -325,6 +334,47 @@
 
         </com.google.android.material.chip.ChipGroup>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter your reason to join / what are the skills you can contribute to the team?"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginBottom="10.5dp"
+            android:visibility="gone"
+            android:textSize="12dp"
+            android:id="@+id/applicationdisplaypopup"
+            android:textColor="@color/black">
+        </TextView>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:textColorHint="#B6B6B6"
+            android:id="@+id/applicationentrypopup"
+            android:background="@drawable/edittext_border_application_reason"
+            android:textSize="12dp"
+            android:visibility="gone"
+            android:padding="10dp"
+            android:textColor="#828282"
+            android:fontFamily="@font/roboto_regular"
+            >
+        </EditText>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

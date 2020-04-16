@@ -103,22 +103,22 @@ public class TabAdapter extends PagerAdapter implements Adapter {
                 {
                     case 0 :
                         Intent intentWall = new Intent(context, ProjectWall.class);
-                        intentWall.putExtra("project", project);
+                        //intentWall.putExtra("project", project);
                         context.startActivity(intentWall);
                         break;
                     case 1 :
                         Intent intentTask = new Intent(context, TaskList.class);
-                        intentTask.putExtra("project", project);
+                        //intentTask.putExtra("project", project);
                         context.startActivity(intentTask);
                         break;
                     case 2 :
                         Intent intentChatRoom = new Intent(context, ChatRoom.class);
-                        intentChatRoom.putExtra("project", project);
+                        //intentChatRoom.putExtra("project", project);
                         context.startActivity(intentChatRoom);
                         break;
                     case 3 :
                         Intent intentApplicants = new Intent(context, ApplicantDisplay.class);
-                        intentApplicants.putExtra("project", project);
+                        //intentApplicants.putExtra("project", project);
                         context.startActivity(intentApplicants);
                         break;
                     default :
