@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:background="@drawable/project_info_dialog"
+    android:paddingTop="27dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <ImageView
+            android:layout_width="24.5dp"
+            android:layout_height="24.5dp"
+            android:background="@drawable/ic_check_circle_black_24dp">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="16dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:text="Request send successfully!">
+        </TextView>
+        
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your request to teamup with the group has been sent successfully! We will notify you when your request is accepted."
+        android:textColor="#828282"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto_regular"></TextView>
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center"
+        android:background="@drawable/create_project_skill_add_button"
+        android:textColor="#6CACFF"
+        android:lineSpacingExtra="5dp"
+        android:fontFamily="@font/roboto_medium"
+        android:text="Done"
+        android:id="@+id/completedDialogeDoneButton"
+        android:layout_marginBottom="20dp">
+    </Button>
+
+</LinearLayout>

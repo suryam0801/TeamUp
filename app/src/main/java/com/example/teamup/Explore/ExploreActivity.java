@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,8 +66,10 @@ public class ExploreActivity extends Activity {
     Project projects;
     private ProjectAdapter adapter;
     Button createProject,workbench;
-    Dialog dialog;
+    Dialog dialog, completedDialog;
     ChipGroup chipGroup;
+    int butttonCounter = 0;
+    boolean requestExists = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +80,9 @@ public class ExploreActivity extends Activity {
         createProject = findViewById(R.id.addproject);
         workbench=findViewById(R.id.workbench);
         dialog = new Dialog(ExploreActivity.this);
+        completedDialog = new Dialog(ExploreActivity.this);
         chipGroup = findViewById(R.id.chip_group_create_skills);
+
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +131,14 @@ public class ExploreActivity extends Activity {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     Toast.makeText(ExploreActivity.this,i + "",Toast.LENGTH_LONG).show();
+                                    requestExists = false;
+
+                                    if(ProjectList.get(i).getApplicantId()!=null){
+                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                            requestExists = true;
+                                        }
+                                    }
+
                                     showDialogue(i);
                                 }
                             });
@@ -148,12 +161,17 @@ public class ExploreActivity extends Activity {
     public void showDialogue(final int pos){
         dialog.setContentView(R.layout.explore_project_display_popup);
 
-        TextView projectName = dialog.findViewById(R.id.popup_project_name);
-        TextView creatorName = dialog.findViewById(R.id.popup_project_creator);
-        TextView projectShortDescription = dialog.findViewById(R.id.popup_project_short_description);
-        TextView projectLongDescription = dialog.findViewById(R.id.popup_project_long_description);
-        Button cancelButton = dialog.findViewById(R.id.popup_cancel_button);
-        Button acceptButton = dialog.findViewById(R.id.popup_accept_button);
+        final TextView projectName = dialog.findViewById(R.id.popup_project_name);
+        final TextView creatorName = dialog.findViewById(R.id.popup_project_creator);
+        final TextView projectShortDescription = dialog.findViewById(R.id.popup_project_short_description);
+        final TextView projectLongDescription = dialog.findViewById(R.id.popup_project_long_description);
+        final TextView shortPlaceholder = dialog.findViewById(R.id.placeholderDescription);
+        final Button cancelButton = dialog.findViewById(R.id.popup_cancel_button);
+        final Button acceptButton = dialog.findViewById(R.id.popup_accept_button);
+        final TextView entryDisplay = dialog.findViewById(R.id.applicationdisplaypopup);
+        final EditText entryEdit = dialog.findViewById(R.id.applicationentrypopup);
+        final ScrollView scrollView = dialog.findViewById(R.id.SkillDisplayScrollView);
+
         Chip chip1 = dialog.findViewById(R.id.chip1);
         Chip chip2 = dialog.findViewById(R.id.chip2);
         Chip chip3 = dialog.findViewById(R.id.chip3);
@@ -171,8 +189,14 @@ public class ExploreActivity extends Activity {
         Chip chip15 = dialog.findViewById(R.id.chip15);
 
         projectName.setText(ProjectList.get(pos).getProjectName());
-        creatorName.setText("Created By: " + ProjectList.get(pos).getCreatorName());
+        creatorName.setText(ProjectList.get(pos).getCreatorName());
         projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
+
+        if(requestExists == true){
+            acceptButton.setText("Request send already");
+            acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
+            acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
+        }
 
         List<Chip> allChips = new ArrayList<>();
         allChips.add(chip1);
@@ -207,14 +231,52 @@ public class ExploreActivity extends Activity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                if(butttonCounter % 2 == 0){
+                    dialog.dismiss();
+                } else if (butttonCounter % 2 == 1){
+                    String reason = String.valueOf(entryEdit.getText());
+                    if(reason==null || reason.equals("") || reason.replaceAll("\\s", "").equals("")){
+                        Toast.makeText(ExploreActivity.this,"No such Document",Toast.LENGTH_LONG).show();
+                    } else {
+                        saveApplicant(reason, ProjectList.get(pos).getProjectId());
+                    }
+                }
             }
         });
 
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //call apply dialogue
+                if(requestExists == false && butttonCounter % 2 == 0){
+
+                    scrollView.setVisibility(View.GONE);
+                    projectShortDescription.setVisibility(View.GONE);
+                    shortPlaceholder.setVisibility(View.GONE);
+                    projectLongDescription.setVisibility(View.GONE);
+                    entryDisplay.setVisibility(View.VISIBLE);
+                    entryEdit.setVisibility(View.VISIBLE);
+                    acceptButton.setBackgroundColor(Color.TRANSPARENT);
+                    acceptButton.setTextColor(Color.parseColor("#828282"));
+                    acceptButton.setText("Back");
+                    cancelButton.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+                    cancelButton.setTextColor(Color.parseColor("#35C80B"));
+                    cancelButton.setText("Submit Application");
+                    butttonCounter++;
+                } else if (requestExists == false && butttonCounter % 2 == 1){
+                    scrollView.setVisibility(View.VISIBLE);
+                    projectShortDescription.setVisibility(View.VISIBLE);
+                    shortPlaceholder.setVisibility(View.VISIBLE);
+                    projectLongDescription.setVisibility(View.VISIBLE);
+                    entryDisplay.setVisibility(View.GONE);
+                    entryEdit.setVisibility(View.GONE);
+                    acceptButton.setBackground(getResources().getDrawable(R.drawable.create_project_skill_add_button));
+                    acceptButton.setTextColor(Color.parseColor("#6CACFF"));
+                    acceptButton.setText("Request To Join");
+                    cancelButton.setBackgroundColor(Color.TRANSPARENT);
+                    cancelButton.setTextColor(Color.parseColor("#828282"));
+                    cancelButton.setText("Cancel");
+                    butttonCounter++;
+                }
             }
         });
 
@@ -222,13 +284,22 @@ public class ExploreActivity extends Activity {
         dialog.show();
     }
 
+    public void showCompletedDialog(){
+        completedDialog.setContentView(R.layout.application_confirmation_popup);
+        Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completedDialog.dismiss();
+            }
+        });
+        completedDialog.show();
+    }
+
     @Override
     public void onBackPressed() {
         Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
-    }
-
-    private void setChips(List<String> skills) {
-
     }
 
     public void saveApplicant(String shortPitch, final String projectId){
@@ -268,6 +339,8 @@ public class ExploreActivity extends Activity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                        dialog.dismiss();
+                                        showCompletedDialog();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
