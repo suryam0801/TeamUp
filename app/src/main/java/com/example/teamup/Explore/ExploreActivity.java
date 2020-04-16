@@ -225,8 +225,6 @@ public class ExploreActivity extends Activity {
     @Override
     public void onBackPressed() {
         Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
-        finishAffinity();
-        System.exit(0);
     }
 
     private void setChips(List<String> skills) {
