@@ -41,9 +41,9 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
     private List<Project> myProjectList=new ArrayList<>();
     private List<Project> workingProjectList=new ArrayList<>();
     private List<Project> completedProjectsList=new ArrayList<>();
-    private ProjectAdapter myAdapter;
-    private ProjectAdapter workingAdapter;
-    private ProjectAdapter completedAdapter;
+    private WorkbenchDisplayAdapter myAdapter;
+    private WorkbenchDisplayAdapter workingAdapter;
+    private WorkbenchDisplayAdapter completedAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +64,9 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
     }
 
     public void initializeAdapters(){
-        myAdapter= new ProjectAdapter(getApplicationContext(),myProjectList, 1);
-        workingAdapter= new ProjectAdapter(getApplicationContext(),workingProjectList, 1);
-        completedAdapter= new ProjectAdapter(getApplicationContext(),completedProjectsList, 1);
+        myAdapter= new WorkbenchDisplayAdapter(getApplicationContext(),myProjectList, true);
+        workingAdapter= new WorkbenchDisplayAdapter(getApplicationContext(),workingProjectList, false);
+        completedAdapter= new WorkbenchDisplayAdapter(getApplicationContext(),completedProjectsList, false);
     }
 
     public void populateData(){
@@ -123,8 +123,8 @@ public class WorkBenchActivity extends Activity implements WorkBenchRecyclerAdap
                     }else {
                         myProjectList.add(project);
                     }
+                    Log.d((TAG), "PROJECT: " + myProjectList.toString());
                 }
-                Log.d((TAG), "PROJECT: " + myProjects.toString());
             }
         });
     }
