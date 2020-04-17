@@ -1,32 +1,26 @@
 package com.example.teamup.Explore;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
@@ -37,28 +31,27 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.internal.FlowLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.zip.Inflater;
 
-public class ExploreActivity extends Activity {
+public class ExploreTab extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    public final String TAG=ExploreActivity.this.getClass().getSimpleName();
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public final String TAG= ExploreTab.this.getClass().getSimpleName();
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     ListView lvproject;
@@ -71,83 +64,55 @@ public class ExploreActivity extends Activity {
     int butttonCounter = 0;
     boolean requestExists = false;
 
+    public ExploreTab() {
+        // Required empty public constructor
+    }
+
+    // TODO: Rename and change types and number of parameters
+    public static ExploreTab newInstance(String param1, String param2) {
+        ExploreTab fragment = new ExploreTab();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_explore);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        final View view = inflater.inflate(R.layout.activity_explore, container, false);
+
+        lvproject=view.findViewById(R.id.listview_explore_projects);
         currentUser=FirebaseAuth.getInstance();
-        createProject = findViewById(R.id.addproject);
-        dialog = new Dialog(ExploreActivity.this);
-        completedDialog = new Dialog(ExploreActivity.this);
-        chipGroup = findViewById(R.id.chip_group_create_skills);
+        createProject = view.findViewById(R.id.addproject);
+        dialog = new Dialog(getActivity());
+        completedDialog = new Dialog(getActivity());
+        chipGroup = view.findViewById(R.id.chip_group_create_skills);
 
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ExploreActivity.this, CreateProject.class));
-                finish();
+                startActivity(new Intent(getActivity(), CreateProject.class));
             }
         });
 
         projects=new Project();
         loadprojectlist();
-    }
 
-    public void loadprojectlist()
-    {
-        lvproject=findViewById(R.id.listview_explore_projects);
-        ProjectList=new ArrayList<>();
-        if (ProjectList.size()>0)
-            ProjectList.clear();
-        db.collection("Projects")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()&&task.getResult()!=null)
-                        {
-                            for (DocumentSnapshot documentSnapshot:task.getResult())
-                            {
-                                Project project= documentSnapshot.toObject(Project.class);
-//                                Log.d(TAG, project.toString());
-//                                Log.d(TAG, "____________________________________________________");
-                                ProjectList.add(project);
-                            }
-                            adapter= new ProjectAdapter(getApplicationContext(),ProjectList);
-                            lvproject.setAdapter(adapter);
-
-
-                            lvproject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    Toast.makeText(ExploreActivity.this,i + "",Toast.LENGTH_LONG).show();
-                                    requestExists = false;
-
-                                    if(ProjectList.get(i).getApplicantId()!=null){
-                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
-                                            requestExists = true;
-                                        }
-                                    }
-
-                                    showDialogue(i);
-                                }
-                            });
-
-                        }else {
-                            Log.d("Logger","No such Valid Item");
-                            Toast.makeText(ExploreActivity.this,"No such Document",Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ExploreActivity.this,e.toString(),Toast.LENGTH_LONG).show();
-
-            }
-        });
+        return view;
     }
 
     public void showDialogue(final int pos){
@@ -228,7 +193,6 @@ public class ExploreActivity extends Activity {
                 } else if (butttonCounter % 2 == 1){
                     String reason = String.valueOf(entryEdit.getText());
                     if(reason==null || reason.equals("") || reason.replaceAll("\\s", "").equals("")){
-                        Toast.makeText(ExploreActivity.this,"No such Document",Toast.LENGTH_LONG).show();
                     } else {
                         saveApplicant(reason, ProjectList.get(pos).getProjectId());
                     }
@@ -276,6 +240,7 @@ public class ExploreActivity extends Activity {
         dialog.show();
     }
 
+
     public void showCompletedDialog(){
         completedDialog.setContentView(R.layout.application_confirmation_popup);
         Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
@@ -289,11 +254,53 @@ public class ExploreActivity extends Activity {
         completedDialog.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        Toast.makeText(this,"Thank you Vist Again!!!!",Toast.LENGTH_SHORT).show();
-        finishAffinity();
-        System.exit(0);
+    public void loadprojectlist() {
+        ProjectList=new ArrayList<>();
+        if (ProjectList.size()>0)
+            ProjectList.clear();
+        db.collection("Projects")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()&&task.getResult()!=null)
+                        {
+                            for (DocumentSnapshot documentSnapshot:task.getResult())
+                            {
+                                Project project= documentSnapshot.toObject(Project.class);
+//                                Log.d(TAG, project.toString());
+//                                Log.d(TAG, "____________________________________________________");
+                                ProjectList.add(project);
+                            }
+                            adapter= new ProjectAdapter(getActivity(),ProjectList);
+                            lvproject.setAdapter(adapter);
+
+
+                            lvproject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    requestExists = false;
+
+                                    if(ProjectList.get(i).getApplicantId()!=null){
+                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                            requestExists = true;
+                                        }
+                                    }
+
+                                    showDialogue(i);
+                                }
+                            });
+
+                        }else {
+                            Log.d("Logger","No such Valid Item");
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
     }
 
     public void saveApplicant(String shortPitch, final String projectId){
@@ -350,4 +357,5 @@ public class ExploreActivity extends Activity {
                     }
                 });
     }
+
 }
