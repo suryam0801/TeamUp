@@ -10,15 +10,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.Explore.ExploreActivity;
 import com.example.teamup.Explore.Project;
-import com.example.teamup.Explore.ProjectAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

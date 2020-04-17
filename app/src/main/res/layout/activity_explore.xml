@@ -4,33 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Explore.ExploreActivity"
+    tools:context=".Explore.ExploreTab"
     android:orientation="vertical"
     android:background="@color/card_back">
 
-    <ListView
-        android:id="@+id/listview_explore_projects"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="18dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="10dp"
-        android:paddingRight="16dp"></ListView>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <ListView
+            android:id="@+id/listview_explore_projects"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="18dp"
+            android:paddingLeft="16dp"
+            android:layout_marginBottom="50dp"
+            android:paddingTop="10dp"
+            android:paddingRight="16dp"></ListView>
+
         <Button
             android:id="@+id/addproject"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="100px"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="@color/card_back"
-            android:foreground="@mipmap/plus"
-
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="20dp"
+            android:foreground="@drawable/ic_add_black_24dp"
+            android:background="@drawable/create_project_button_background"
+            android:layout_marginTop="20dp"
             android:text="" />
-    </LinearLayout>
+    </FrameLayout>
+
+
 
 </LinearLayout>

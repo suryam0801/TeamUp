@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.teamup.Explore.ExploreActivity;
+import com.example.teamup.Explore.ExploreTab;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -71,7 +71,7 @@ public class FireBaseInstanceIDService  extends FirebaseMessagingService {
         // TODO: Implement this method to send token to your app server.
     }
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, ExploreActivity.class);
+        Intent intent = new Intent(this, ExploreTab     .class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
