@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentUser.signOut();
-                startActivity(new Intent(MainActivity.this,WorkBenchActivity.class));
+                startActivity(new Intent(MainActivity.this,TabbedActivityMain.class));
                 finish();
             }
         });
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser.getCurrentUser()!=null)
         {
-            startActivity(new Intent(MainActivity.this, ExploreActivity.class));
+            startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
             //Toast.makeText(MainActivity.this,currentUser.getCurrentUser().getDisplayName(),Toast.LENGTH_LONG).show();
             finish();
         } else {
