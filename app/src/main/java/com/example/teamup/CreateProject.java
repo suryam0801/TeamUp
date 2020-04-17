@@ -1,16 +1,10 @@
 package com.example.teamup;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,15 +16,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplay;
-import com.example.teamup.Explore.ExploreActivity;
 import com.example.teamup.Explore.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
@@ -133,7 +123,7 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
 
     @Override
     public void onBackPressed() {
-        Intent about_intent=new Intent(this,ExploreActivity.class);
+        Intent about_intent=new Intent(this, TabbedActivityMain.class);
         startActivity(about_intent);
         about_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     }

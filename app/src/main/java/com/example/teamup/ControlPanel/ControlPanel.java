@@ -10,7 +10,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.teamup.Explore.ExploreActivity;
+import com.example.teamup.Explore.ExploreTab;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
 
@@ -35,7 +35,7 @@ public class ControlPanel extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ControlPanel.this, ExploreActivity.class));
+                startActivity(new Intent(ControlPanel.this, ExploreTab.class));
                 finish();
             }
         });
