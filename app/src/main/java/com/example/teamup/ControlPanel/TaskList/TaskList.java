@@ -13,6 +13,7 @@ import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantListAdapter;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,18 +33,20 @@ public class TaskList extends AppCompatActivity implements TaskDialog.TaskDialog
     private Button newTaskButton;
     private Project project;
     private List<Task> tasks = new ArrayList<>();
-    private List<Task> TaskList;
+    private List<Task> TaskList = new ArrayList<>();
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private TaskAdapter adapter;
     ListView lvApplicant;
+    private SessionStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        storage = new SessionStorage();
         setContentView(R.layout.activity_task_list);
         lvApplicant = findViewById(R.id.listview_applicant);
         newTaskButton = findViewById(R.id.new_task_button);
-        project=getIntent().getParcelableExtra("project");
+        project=storage.getProject(TaskList.this);
         newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,22 +69,24 @@ public class TaskList extends AppCompatActivity implements TaskDialog.TaskDialog
                     //each object in the array is a hashmap. We need to read the arrays using key and value from hashmap
                     List<Map<String, String>> group = (List<Map<String, String>>) document.get("taskList");
                     //reads each object in the array
-                    for (Map<String, String> entry : group) {
-                        //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
-                        //reads each element in the hashmap
-                        String taskName = "";
-                        String taskDescription = "";
-                        String taskId = "";
+                    if(group != null) {
+                        for (Map<String, String> entry : group) {
+                            //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
+                            //reads each element in the hashmap
+                            String taskName = "";
+                            String taskDescription = "";
+                            String taskId = "";
 
-                        for (String key : entry.keySet()) {
-                            if(key.equals("taskName"))
-                                taskName = entry.get(key);
-                            else if(key.equals("taskDescription"))
-                                taskDescription = entry.get(key);
-                            else if(key.equals("taskID"))
-                                taskId = entry.get(key);
+                            for (String key : entry.keySet()) {
+                                if(key.equals("taskName"))
+                                    taskName = entry.get(key);
+                                else if(key.equals("taskDescription"))
+                                    taskDescription = entry.get(key);
+                                else if(key.equals("taskID"))
+                                    taskId = entry.get(key);
+                            }
+                            TaskList.add(new Task(taskName, taskDescription, taskId));
                         }
-                        TaskList.add(new Task(taskName, taskDescription, taskId));
                     }
                 }
                 adapter = new TaskAdapter(getApplicationContext(), TaskList);

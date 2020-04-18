@@ -73,7 +73,7 @@ public class ApplicantListAdapter extends BaseAdapter{
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "POSITION: " + position);
+                Log.d(TAG, "POSITION: " + project.toString());
                 a.setAcceptedStatus("accepted");
                 ApplicantList.remove(a);
                 db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(a))
@@ -88,9 +88,7 @@ public class ApplicantListAdapter extends BaseAdapter{
                                             db.collection("Projects").document(project.getProjectId()).update("applicantId",FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Intent i = new Intent(mContext, ApplicantDisplay.class);  //your class
-                                                    i.putExtra("project", project);
-                                                    mContext.startActivity(i);
+                                                    Log.d(TAG, "JOB SUCCESSFUL!!!!");
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
@@ -100,9 +98,7 @@ public class ApplicantListAdapter extends BaseAdapter{
                                             db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayUnion(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Intent i = new Intent(mContext, ApplicantDisplay.class);  //your class
-                                                    i.putExtra("project", project);
-                                                    mContext.startActivity(i);
+                                                    Log.d(TAG, "JOB SUCCESSFUL!!!!");
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override

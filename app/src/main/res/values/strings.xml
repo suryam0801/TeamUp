@@ -9,15 +9,10 @@
 
     <string-array name="categories">
         <item>Physical Fitness</item>
-        <item>Technical</item>
-        <item>Startup</item>
+        <item>Creative &amp; Design</item>
+        <item>Engineering &amp; Architecture</item>
+        <item>Software Development</item>
+        <item>Sales &amp; Marketing</item>
         <item>Volunteering</item>
-        <item>Arts</item>
-        <item>Photography</item>
-        <item>Graphics and Design</item>
-        <item>Construction</item>
-        <item>Fashion</item>
-        <item>Cooking</item>
-        <item>Cinema</item>
     </string-array>
 </resources>

@@ -1,12 +1,11 @@
 package com.example.teamup;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.teamup.ControlPanel.WorkBench.WorkbenchTab;
 import com.example.teamup.Explore.ExploreTab;
 
 public class PageAdapter extends FragmentPagerAdapter {

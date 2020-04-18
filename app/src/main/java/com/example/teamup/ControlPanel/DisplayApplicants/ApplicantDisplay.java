@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,13 +33,14 @@ public class ApplicantDisplay extends AppCompatActivity {
     private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
     Project project;
+    private SessionStorage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_projects_view);
         lvApplicant = findViewById(R.id.listview_applicant);
-        project=getIntent().getParcelableExtra("project");
+        project=storage.getProject(ApplicantDisplay.this);
         assert project != null;
         db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();

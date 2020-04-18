@@ -10,7 +10,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:orientation="horizontal">
 
         <Button
@@ -19,7 +19,7 @@
             android:layout_marginLeft="25dp"
             android:layout_gravity="start"
             android:background="@drawable/ic_menu_black_24dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="5dp">
         </Button>
 
         <Button
@@ -27,7 +27,7 @@
             android:layout_height="35dp"
             android:background="@drawable/ic_search_black_24dp"
             android:layout_gravity="end"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="25dp">
         </Button>
     </FrameLayout>
@@ -36,11 +36,12 @@
         android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"
         app:tabIndicatorColor="#6CACFF"
+        app:tabIndicatorFullWidth="true"
         app:tabSelectedTextColor="#6CACFF"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
         app:tabTextColor="#D1D1D1"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
