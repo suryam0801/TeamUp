@@ -18,6 +18,8 @@ import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.chat.ChatRoom;
+import com.example.teamup.chat.ChatRoomBaseActivity;
 
 import java.util.List;
 
@@ -113,7 +115,7 @@ public class TabAdapter extends PagerAdapter implements Adapter {
                         context.startActivity(intentTask);
                         break;
                     case 2 :
-                        Intent intentChatRoom = new Intent(context, ChatRoom.class);
+                        Intent intentChatRoom = new Intent(context, ChatRoomBaseActivity.class);
                         context.startActivity(intentChatRoom);
                         break;
                     case 3 :

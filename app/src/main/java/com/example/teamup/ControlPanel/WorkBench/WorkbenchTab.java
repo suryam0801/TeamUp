@@ -57,7 +57,6 @@ public class WorkbenchTab extends Fragment{
     private WorkbenchDisplayAdapter myAdapter;
     private WorkbenchDisplayAdapter workingAdapter;
     private WorkbenchDisplayAdapter completedAdapter;
-    private SessionStorage sessionStorage;
 
     public WorkbenchTab() {
         // Required empty public constructor
@@ -89,7 +88,6 @@ public class WorkbenchTab extends Fragment{
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         getMyProjects();
         getWorkingProjects();
-        sessionStorage = new SessionStorage();
         assert firebaseUser != null;
 
         if (getArguments() != null) {
@@ -124,9 +122,8 @@ public class WorkbenchTab extends Fragment{
         myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                sessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                SessionStorage.saveProject(getActivity(), myProjectList.get(i));
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                intent.putExtra("project", myProjectList.get(i));
                 Log.d(TAG, "My Project:"+myProjectList.get(i).toString());
                 startActivity(intent);
             }
@@ -137,9 +134,8 @@ public class WorkbenchTab extends Fragment{
         workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                sessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                SessionStorage.saveProject(getActivity(), myProjectList.get(i));
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                intent.putExtra("project", workingProjectList.get(i));
                 Log.d(TAG, "My Project:"+workingProjectList.get(i).toString());
                 startActivity(intent);
             }

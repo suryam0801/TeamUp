@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.teamup.Explore.ExploreTab;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,7 @@ public class ControlPanel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_panel);
 
-        Project project=getIntent().getParcelableExtra("project");
-        Log.d("CONTROL PANEL", "PROJECT ATTRIBUTES: " + project.toString());
+        Project project= SessionStorage.getProject(this);
         back=findViewById(R.id.btnback);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

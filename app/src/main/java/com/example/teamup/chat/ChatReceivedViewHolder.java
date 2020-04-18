@@ -1,4 +1,4 @@
-package com.example.teamup.viewholder;
+package com.example.teamup.chat;
 
 import android.view.View;
 import android.widget.TextView;
