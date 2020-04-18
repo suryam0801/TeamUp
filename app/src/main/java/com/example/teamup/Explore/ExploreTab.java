@@ -185,11 +185,14 @@ public class ExploreTab extends Fragment {
 
         int i = 0;
 
-        if(skillsArray!=null){
-            for(String s : skillsArray){
+        if(skillsArray!=null) {
+            for (String s : skillsArray) {
                 allChips.get(i).setText(s);
                 allChips.get(i).setVisibility(View.VISIBLE);
                 i++;
+            }
+            for(int x = i; x < allChips.size(); x++){
+                allChips.get(x).setVisibility(View.GONE);
             }
         }
 

@@ -54,7 +54,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:text="Description"
             android:textColor="@color/black"
             android:id="@+id/placeholderDescription"
@@ -84,8 +84,9 @@
     </TextView>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/SkillDisplayScrollView">
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"
@@ -370,8 +371,7 @@
             android:visibility="gone"
             android:padding="10dp"
             android:textColor="#828282"
-            android:fontFamily="@font/roboto_regular"
-            >
+            android:fontFamily="@font/roboto_regular">
         </EditText>
 
         <View
@@ -385,7 +385,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="17dp">
         <Button
             android:layout_width="wrap_content"
