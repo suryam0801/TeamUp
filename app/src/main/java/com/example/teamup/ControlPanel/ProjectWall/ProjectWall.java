@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,7 +81,7 @@ public class ProjectWall extends AppCompatActivity {
 
         recyclerView=findViewById(R.id.projectViewRecyclerView);
 
-        project = getIntent().getParcelableExtra("project");
+        project = SessionStorage.getProject(this);
 
         final Query query=firebaseFirestore.collection("ProjectWall").document(project.getProjectId())
                 .collection("Files").orderBy("Time",Query.Direction.DESCENDING);
