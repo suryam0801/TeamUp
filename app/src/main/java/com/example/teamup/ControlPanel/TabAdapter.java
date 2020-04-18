@@ -17,6 +17,7 @@ import com.example.teamup.ControlPanel.ProjectWall.ProjectWall;
 import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.Explore.Project;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 
 import java.util.List;
 
@@ -95,6 +96,8 @@ public class TabAdapter extends PagerAdapter implements Adapter {
         title.setText(models.get(position).getTitle());
         desc.setText(models.get(position).getDesc());
 
+
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,22 +106,18 @@ public class TabAdapter extends PagerAdapter implements Adapter {
                 {
                     case 0 :
                         Intent intentWall = new Intent(context, ProjectWall.class);
-                        //intentWall.putExtra("project", project);
                         context.startActivity(intentWall);
                         break;
                     case 1 :
                         Intent intentTask = new Intent(context, TaskList.class);
-                        //intentTask.putExtra("project", project);
                         context.startActivity(intentTask);
                         break;
                     case 2 :
                         Intent intentChatRoom = new Intent(context, ChatRoom.class);
-                        //intentChatRoom.putExtra("project", project);
                         context.startActivity(intentChatRoom);
                         break;
                     case 3 :
                         Intent intentApplicants = new Intent(context, ApplicantDisplay.class);
-                        //intentApplicants.putExtra("project", project);
                         context.startActivity(intentApplicants);
                         break;
                     default :

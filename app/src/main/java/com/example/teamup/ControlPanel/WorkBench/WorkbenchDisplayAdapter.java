@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel.WorkBench;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.teamup.Explore.Project;
+import com.example.teamup.R;
 
 import java.util.List;
 

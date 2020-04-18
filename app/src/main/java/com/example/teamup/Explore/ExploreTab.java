@@ -1,6 +1,7 @@
 package com.example.teamup.Explore;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,13 +19,13 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
-import com.example.teamup.WorkBenchActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,7 +63,7 @@ public class ExploreTab extends Fragment {
     Dialog dialog, completedDialog;
     ChipGroup chipGroup;
     int butttonCounter = 0;
-    boolean requestExists = false;
+    boolean applicantExists = false, workerExists = false, sameCreator = false;
 
     public ExploreTab() {
         // Required empty public constructor
@@ -100,7 +101,6 @@ public class ExploreTab extends Fragment {
         dialog = new Dialog(getActivity());
         completedDialog = new Dialog(getActivity());
         chipGroup = view.findViewById(R.id.chip_group_create_skills);
-
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,8 +149,16 @@ public class ExploreTab extends Fragment {
         creatorName.setText(ProjectList.get(pos).getCreatorName());
         projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
 
-        if(requestExists == true){
+        if (sameCreator==true) {
+            acceptButton.setText("This is your project");
+            acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
+            acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
+        } else if(applicantExists==true) {
             acceptButton.setText("Request send already");
+            acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
+            acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
+        } else if (workerExists==true) {
+            acceptButton.setText("Already Accepted");
             acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
             acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
         }
@@ -203,7 +211,7 @@ public class ExploreTab extends Fragment {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(requestExists == false && butttonCounter % 2 == 0){
+                if(applicantExists == false  && sameCreator == false && workerExists == false && butttonCounter % 2 == 0){
 
                     scrollView.setVisibility(View.GONE);
                     projectShortDescription.setVisibility(View.GONE);
@@ -211,6 +219,7 @@ public class ExploreTab extends Fragment {
                     projectLongDescription.setVisibility(View.GONE);
                     entryDisplay.setVisibility(View.VISIBLE);
                     entryEdit.setVisibility(View.VISIBLE);
+
                     acceptButton.setBackgroundColor(Color.TRANSPARENT);
                     acceptButton.setTextColor(Color.parseColor("#828282"));
                     acceptButton.setText("Back");
@@ -218,7 +227,7 @@ public class ExploreTab extends Fragment {
                     cancelButton.setTextColor(Color.parseColor("#35C80B"));
                     cancelButton.setText("Submit Application");
                     butttonCounter++;
-                } else if (requestExists == false && butttonCounter % 2 == 1){
+                } else if (applicantExists == false && sameCreator == false && workerExists == false && butttonCounter % 2 == 1){
                     scrollView.setVisibility(View.VISIBLE);
                     projectShortDescription.setVisibility(View.VISIBLE);
                     shortPlaceholder.setVisibility(View.VISIBLE);
@@ -233,6 +242,15 @@ public class ExploreTab extends Fragment {
                     cancelButton.setText("Cancel");
                     butttonCounter++;
                 }
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(final DialogInterface arg0) {
+                applicantExists = false;
+                workerExists = false;
+                sameCreator = false;
             }
         });
 
@@ -279,11 +297,15 @@ public class ExploreTab extends Fragment {
                             lvproject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    requestExists = false;
+                                    applicantExists = false;
 
                                     if(ProjectList.get(i).getApplicantId()!=null){
-                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
-                                            requestExists = true;
+                                        if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                            sameCreator = true;
+                                        } else if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                            applicantExists = true;
+                                        } else if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                            workerExists = true;
                                         }
                                     }
 

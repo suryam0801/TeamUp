@@ -373,6 +373,12 @@
             android:fontFamily="@font/roboto_regular"
             >
         </EditText>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F1F1F1"/>
+
     </LinearLayout>
 
     <LinearLayout

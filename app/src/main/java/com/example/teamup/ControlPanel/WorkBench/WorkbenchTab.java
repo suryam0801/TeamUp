@@ -1,4 +1,4 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel.WorkBench;
 
 import android.os.Bundle;
 
@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.Explore.Project;
+import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +38,7 @@ import java.util.Objects;
  * Use the {@link WorkbenchTab#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WorkbenchTab extends Fragment implements WorkBenchRecyclerAdapter.OnItemClickListener {
+public class WorkbenchTab extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,6 +57,7 @@ public class WorkbenchTab extends Fragment implements WorkBenchRecyclerAdapter.O
     private WorkbenchDisplayAdapter myAdapter;
     private WorkbenchDisplayAdapter workingAdapter;
     private WorkbenchDisplayAdapter completedAdapter;
+    private SessionStorage sessionStorage;
 
     public WorkbenchTab() {
         // Required empty public constructor
@@ -86,22 +89,12 @@ public class WorkbenchTab extends Fragment implements WorkBenchRecyclerAdapter.O
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         getMyProjects();
         getWorkingProjects();
+        sessionStorage = new SessionStorage();
         assert firebaseUser != null;
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-
-    @Override
-    public void onItemClick(Project project) {
-        if (project.getCreatorId().equals(firebaseUser.getUid())) {
-            Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-            intent.putExtra("project", project);
-            Log.d(TAG, "My Project:"+project.toString());
-            startActivity(intent);
         }
     }
 
@@ -131,6 +124,11 @@ public class WorkbenchTab extends Fragment implements WorkBenchRecyclerAdapter.O
         myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                sessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                intent.putExtra("project", myProjectList.get(i));
+                Log.d(TAG, "My Project:"+myProjectList.get(i).toString());
+                startActivity(intent);
             }
         });
 
@@ -139,6 +137,11 @@ public class WorkbenchTab extends Fragment implements WorkBenchRecyclerAdapter.O
         workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                sessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                intent.putExtra("project", workingProjectList.get(i));
+                Log.d(TAG, "My Project:"+workingProjectList.get(i).toString());
+                startActivity(intent);
             }
         });
 
@@ -147,6 +150,7 @@ public class WorkbenchTab extends Fragment implements WorkBenchRecyclerAdapter.O
         pastProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //figuring out what to do when completed projects is selected
             }
         });
 

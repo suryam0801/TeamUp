@@ -24,7 +24,6 @@
         <activity
             android:name=".CreateProject"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".WorkBenchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

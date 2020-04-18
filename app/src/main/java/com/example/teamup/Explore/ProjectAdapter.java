@@ -22,8 +22,6 @@ public class ProjectAdapter extends BaseAdapter  {
         this.Projectlist = Projectlist;
     }
 
-
-
     @Override
     public int getCount() {
         return Projectlist.size();
