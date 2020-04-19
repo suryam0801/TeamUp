@@ -7,6 +7,58 @@
     tools:context=".Explore.ExploreTab"
     android:orientation="vertical"
     android:background="@color/card_back">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnmenu"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="start"
+            android:background="@drawable/ic_menu_black_24dp"
+            android:layout_marginTop="20dp">
+        </Button>
+
+        <EditText
+            android:id="@+id/editText"
+            style="@android:style/Widget.Holo.Light.AutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="60dp"
+            android:hint="Search here..."
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/et_style"
+
+            android:gravity="center"
+
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black">
+
+
+            <requestFocus />
+
+
+        </EditText>
+
+        <Button
+            android:id="@+id/btnsearch"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_search_black_24dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="25dp">
+        </Button>
+    </FrameLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"
