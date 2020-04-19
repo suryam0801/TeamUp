@@ -1,9 +1,7 @@
-package com.example.teamup.chat;
+package com.example.teamup.ControlPanel.chat;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.example.teamup.model.User;
 
 public class UsersModel implements Parcelable {
     private String name;

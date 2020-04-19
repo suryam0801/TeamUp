@@ -5,15 +5,26 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
+import com.example.teamup.ControlPanel.ProjectWall.ProjectWall;
+import com.example.teamup.ControlPanel.TaskList.TaskList;
+import com.example.teamup.ControlPanel.chat.ChatRoom;
+import com.example.teamup.ControlPanel.chat.ChatRoomBaseActivity;
 import com.example.teamup.Explore.ExploreTab;
+import com.example.teamup.TabbedActivityMain;
+import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -25,9 +36,10 @@ import java.util.Scanner;
 
 public class ControlPanel extends AppCompatActivity {
 
-    private LinearLayout projectWall, taskList, chatRoom, applicants;
+    private CardView projectWall, taskList, chatRoom, applicants;
     private Button projectWallbtn, chatroombtn, tasklistbtn, applicantsbtn;
     private String TAG = "CONTROL PANEL: ";
+    GridLayout gridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +52,9 @@ public class ControlPanel extends AppCompatActivity {
 
         setContentView(R.layout.activity_control_panel);
 
+        gridLayout = findViewById(R.id.gridLayoutControlPanel);
+        setSingleEvent(gridLayout);
+        
         projectWall = findViewById(R.id.control_panel_project_wall_navigation);
         taskList = findViewById(R.id.control_panel_task_list_navigation);
         chatRoom = findViewById(R.id.control_panel_chat_room_navigation);
@@ -70,6 +85,37 @@ public class ControlPanel extends AppCompatActivity {
         if(application > 0){
             applicantsbtn.setVisibility(View.VISIBLE);
             applicantsbtn.setText(application + " new");
+        }
+    }
+
+    private void setSingleEvent(GridLayout gridLayout) {
+
+        for(int i = 0; i < gridLayout.getChildCount(); i++){
+            CardView cardView = (CardView)gridLayout.getChildAt(i);
+            final int finalI = i;
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (finalI) {
+                        case 0:
+                            Intent projectWallIntent=new Intent(getApplicationContext(), ProjectWall.class);
+                            startActivity(projectWallIntent);
+                            break;
+                        case 1:
+                            Intent taskListIntent=new Intent(getApplicationContext(), TaskList.class);
+                            startActivity(taskListIntent);
+                            break;
+                        case 2:
+                            Intent chatRoomIntent=new Intent(getApplicationContext(), ChatRoomBaseActivity.class);
+                            startActivity(chatRoomIntent);
+                            break;
+                        case 3:
+                            Intent applicantsIntent=new Intent(getApplicationContext(), ApplicantsTabbedActivity.class);
+                            startActivity(applicantsIntent);
+                            break;
+                    }
+                }
+            });
         }
     }
 

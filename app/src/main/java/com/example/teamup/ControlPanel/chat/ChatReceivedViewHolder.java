@@ -1,4 +1,4 @@
-package com.example.teamup.chat;
+package com.example.teamup.ControlPanel.chat;
 
 import android.view.View;
 import android.widget.TextView;

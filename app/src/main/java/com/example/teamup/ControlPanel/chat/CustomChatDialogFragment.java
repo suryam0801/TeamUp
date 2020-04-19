@@ -1,15 +1,11 @@
-package com.example.teamup.chat;
+package com.example.teamup.ControlPanel.chat;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,15 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.teamup.chat.OnItemClick;
 import com.example.teamup.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 public class CustomChatDialogFragment extends DialogFragment implements OnItemClick {

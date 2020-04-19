@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ControlPanel.DisplayApplicants.ApplicantDisplay">
+    android:background="@color/white"
+    tools:context=".ControlPanel.DisplayApplicants.ApplicantDisplayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:textSize="30dp"
+            android:textColor="@color/black"
             android:text="My Projects View"
             android:gravity="center">
         </TextView>

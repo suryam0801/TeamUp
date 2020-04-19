@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".chat.AddUsersChatActivity">
+    tools:context=".ControlPanel.chat.AddUsersChatActivity">
     <EditText
         android:hint="Group Name"
         android:id="@+id/edit_text_group_name"

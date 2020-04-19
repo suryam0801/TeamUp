@@ -1,17 +1,21 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,40 +29,89 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class ApplicantDisplay extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ApplicantDisplayFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ApplicantDisplayFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     String TAG = "APPLICANTS_DISPLAY";
     ListView lvApplicant;
     private List<Applicant> ApplicantList;
+    private TextView projectNameDisplay;
     private ApplicantListAdapter adapter;
     Project project;
-    private SessionStorage storage;
+
+    public ApplicantDisplayFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment ApplicantDisplayFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static ApplicantDisplayFragment newInstance(String param1, String param2) {
+        ApplicantDisplayFragment fragment = new ApplicantDisplayFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_projects_view);
-        lvApplicant = findViewById(R.id.listview_applicant);
-        project=storage.getProject(ApplicantDisplay.this);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        final View view = inflater.inflate(R.layout.activity_my_projects_view, container, false);
+
+        projectNameDisplay= view.findViewById(R.id.myProjectNameDisplay);
+        lvApplicant = view.findViewById(R.id.listview_applicant);
+        project= SessionStorage.getProject(getActivity());
         assert project != null;
         db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
-        TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
+        TextView projectNameDisplay = view.findViewById(R.id.myProjectNameDisplay);
         projectNameDisplay.setText(project.getProjectName());
         populateApplicantList(project);
+
+        return view;
     }
 
     public void populateApplicantList(Project project){
         currentUser=FirebaseAuth.getInstance();
-        TextView projectNameDisplay = findViewById(R.id.myProjectNameDisplay);
+
         loadApplicants(project.getProjectId());
         projectNameDisplay.setText(project.getProjectName());
     }
 
     public void loadApplicants(String projectQueryID){
-        lvApplicant = findViewById(R.id.listview_applicant);
         ApplicantList = new ArrayList<>();
 
         Query myProjects = db.collection("Projects").whereEqualTo("projectId", Objects.requireNonNull(projectQueryID));
@@ -96,7 +149,7 @@ public class ApplicantDisplay extends AppCompatActivity {
                         ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                     }
                 }
-                adapter = new ApplicantListAdapter(getApplicationContext(), ApplicantList, project);
+                adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
                 project.setApplicantList(ApplicantList);
                 lvApplicant.setAdapter(adapter);
             }
