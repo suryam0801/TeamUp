@@ -59,4 +59,11 @@ public class TabbedActivityMain extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        System.exit(0);
+//        super.onBackPressed();
+    }
 }
