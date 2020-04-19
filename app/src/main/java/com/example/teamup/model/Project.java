@@ -22,14 +22,6 @@ public class Project implements Parcelable{
 
     private String category;
 
-    private int numberOfTasks;
-
-    private int numberOfApplicants;
-
-    private int numberOfChats;
-
-    private int numberOfDocuments;
-
 
     private List<String> requiredSkills=new ArrayList<>();
     private List<Applicant> applicantList=new ArrayList<>();
@@ -134,38 +126,6 @@ public class Project implements Parcelable{
         this.projectDescription = projectDescription;
     }
 
-    public int getNumberOfTasks() {
-        return numberOfTasks;
-    }
-
-    public void setNumberOfTasks(int numberOfTasks) {
-        this.numberOfTasks = numberOfTasks;
-    }
-
-    public int getNumberOfApplicants() {
-        return numberOfApplicants;
-    }
-
-    public void setNumberOfApplicants(int numberOfApplicants) {
-        this.numberOfApplicants = numberOfApplicants;
-    }
-
-    public int getNumberOfChats() {
-        return numberOfChats;
-    }
-
-    public void setNumberOfChats(int numberOfChats) {
-        this.numberOfChats = numberOfChats;
-    }
-
-    public int getNumberOfDocuments() {
-        return numberOfDocuments;
-    }
-
-    public void setNumberOfDocuments(int numberOfDocuments) {
-        this.numberOfDocuments = numberOfDocuments;
-    }
-
 
     public List<String> getRequiredSkills() {
         return requiredSkills;
@@ -221,7 +181,7 @@ public class Project implements Parcelable{
     public Project() {
     }
 
-    public Project(String creatorId, String category, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Applicant> workersName, List<Task> TaskList, List<String> workersId, int numberOfApplicants, int numberOfChats, int numberOfDocuments, int numberOfTasks) {
+    public Project(String creatorId, String category, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Applicant> workersName, List<Task> TaskList, List<String> workersId) {
         this.creatorId = creatorId;
         this.creatorEmail = creatorEmail;
         this.creatorName = creatorName;
@@ -236,10 +196,6 @@ public class Project implements Parcelable{
         this.taskList = TaskList;
         this.workersId = workersId;
         this.category = category;
-        this.numberOfApplicants = numberOfApplicants;
-        this.numberOfChats = numberOfChats;
-        this.numberOfDocuments = numberOfDocuments;
-        this.numberOfTasks = numberOfTasks;
     }
 
 
@@ -258,10 +214,6 @@ public class Project implements Parcelable{
         dest.writeString(category);
         dest.writeString(projectDescription);
         dest.writeStringList(requiredSkills);
-        dest.writeInt(numberOfApplicants);
-        dest.writeInt(numberOfChats);
-        dest.writeInt(numberOfDocuments);
-        dest.writeInt(numberOfTasks);
         dest.writeString(projectStatus);
         dest.writeStringList(workersId);
         dest.writeStringList(applicantId);
@@ -280,10 +232,6 @@ public class Project implements Parcelable{
                 ", projectName='" + projectName + '\n' +
                 ", projectDescription='" + projectDescription + '\n' +
                 ", category='" + category + '\n' +
-                ", numberOfTasks=" + numberOfTasks + '\n' +
-                ", numberOfApplicants=" + numberOfApplicants + '\n' +
-                ", numberOfChats=" + numberOfChats + '\n' +
-                ", numberOfDocuments=" + numberOfDocuments + '\n' +
                 ", requiredSkills=" + requiredSkills +  '\n' +
                 ", applicantList=" + applicantList + '\n' +
                 ", applicantId=" + applicantId + '\n' +

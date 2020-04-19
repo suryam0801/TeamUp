@@ -19,7 +19,9 @@ import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class ControlPanel extends AppCompatActivity {
 
@@ -50,6 +52,25 @@ public class ControlPanel extends AppCompatActivity {
 
         Project project = SessionStorage.getProject(ControlPanel.this);
         Log.d(TAG, project.toString());
+
+        // data stored in format: tasklist / applicants / chatroom / projectwall
+        String newValues = getIntent().getStringExtra("newValues");
+        int length = newValues.length();
+        newValues = newValues.substring(1, length-1);
+        Log.d(TAG, newValues);
+        Scanner scan = new Scanner(newValues);
+        scan.useDelimiter(",");
+        int task = Integer.parseInt(scan.next().trim());
+        int application = Integer.parseInt(scan.next().trim());
+
+        if(task > 0){
+            tasklistbtn.setVisibility(View.VISIBLE);
+            tasklistbtn.setText(task + " new");
+        }
+        if(application > 0){
+            applicantsbtn.setVisibility(View.VISIBLE);
+            applicantsbtn.setText(application + " new");
+        }
     }
 
 }

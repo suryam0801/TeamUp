@@ -119,6 +119,5 @@ public class TaskList extends AppCompatActivity implements TaskDialog.TaskDialog
                     Log.d(TAG, "onFailure: "+"Applicant Id update");
                 }
         });
-
     }
 }

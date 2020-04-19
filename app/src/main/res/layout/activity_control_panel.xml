@@ -74,6 +74,8 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="9dp"
                     android:fontFamily="@font/roboto_regular"
+                    android:textColor="#A274FF"
+                    android:textSize="12dp"
                     android:visibility="invisible"
                     android:id="@+id/projectWall_newNotifications_button"
                     android:background="@drawable/control_panel_new_display_buttons"></Button>
@@ -117,6 +119,8 @@
                     android:fontFamily="@font/roboto_regular"
                     android:id="@+id/taskList_newNotifications_button"
                     android:visibility="invisible"
+                    android:textColor="#FF74B5"
+                    android:textSize="12dp"
                     android:background="@drawable/control_panel_new_display_buttons"></Button>
 
             </LinearLayout>
@@ -165,6 +169,8 @@
                     android:fontFamily="@font/roboto_regular"
                     android:id="@+id/chatRoom_newNotifications_button"
                     android:visibility="invisible"
+                    android:textColor="#FF74B5"
+                    android:textSize="12dp"
                     android:background="@drawable/control_panel_new_display_buttons"></Button>
 
             </LinearLayout>
@@ -205,6 +211,8 @@
                     android:layout_marginTop="9dp"
                     android:fontFamily="@font/roboto_regular"
                     android:id="@+id/applicants_newNotifications_button"
+                    android:textColor="#74ACFF"
+                    android:textSize="12dp"
                     android:visibility="invisible"
                     android:background="@drawable/control_panel_new_display_buttons"></Button>
 
