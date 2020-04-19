@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +40,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class ExploreTab extends Fragment {
@@ -59,17 +56,14 @@ public class ExploreTab extends Fragment {
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     ListView lvproject;
+    private List<Project> ProjectList;
     Project projects;
-    private ArrayList<Project> ProjectList = new ArrayList<Project>() ;
     private ProjectAdapter adapter;
     Button createProject,workbench;
     Dialog dialog, completedDialog;
     ChipGroup chipGroup;
     int butttonCounter = 0;
     boolean applicantExists = false, workerExists = false, sameCreator = false;
-
-    Button search,menu;
-    private EditText prsearch;
 
     public ExploreTab() {
         // Required empty public constructor
@@ -107,37 +101,6 @@ public class ExploreTab extends Fragment {
         dialog = new Dialog(getActivity());
         completedDialog = new Dialog(getActivity());
         chipGroup = view.findViewById(R.id.chip_group_create_skills);
-
-        //search ET
-        prsearch =view.findViewById(R.id.editText);
-        prsearch.setVisibility(View.INVISIBLE);
-
-        //search btn
-        search=view.findViewById(R.id.btnsearch);
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String visi= String.valueOf(prsearch.getVisibility());
-//                Toast.makeText(getContext(),visi,Toast.LENGTH_SHORT).show();
-                if (visi.equals("0"))
-                {
-                    prsearch.setVisibility(View.INVISIBLE);
-                    search.setBackground(getResources().getDrawable(R.drawable.ic_search_black_24dp));
-                    loadprojectlist();
-                }
-                else
-                {
-                    prsearch.setVisibility(View.VISIBLE);
-                    prsearch.setTextColor(Color.parseColor("#5B86E5"));
-                    search.setBackground(getResources().getDrawable(R.drawable.ic_clear_black_24dp));
-                    prsearch.setFocusable(true);
-                    prsearch.setEnabled(true);
-                }
-
-
-            }
-        });
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,23 +297,6 @@ public class ExploreTab extends Fragment {
                             }
                             adapter= new ProjectAdapter(getActivity(),ProjectList);
                             lvproject.setAdapter(adapter);
-
-                            prsearch.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable s) {
-                                    String text = prsearch.getText().toString().toLowerCase(Locale.getDefault());
-                                    adapter.filter(text);
-                                }
-                            });
 
 
                             lvproject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
