@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.WorkBench;
+package com.example.teamup.WorkBench;
 
 import android.content.Context;
 import android.view.View;

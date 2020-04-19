@@ -1,6 +1,4 @@
-package com.example.teamup.chat;
-
-import com.example.teamup.chat.UsersModel;
+package com.example.teamup.ControlPanel.chat;
 
 public interface OnItemClick{
    void onUserSelected(UsersModel usersModel);

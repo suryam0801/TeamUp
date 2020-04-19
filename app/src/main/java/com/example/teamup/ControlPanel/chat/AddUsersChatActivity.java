@@ -1,4 +1,4 @@
-package com.example.teamup.chat;
+package com.example.teamup.ControlPanel.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

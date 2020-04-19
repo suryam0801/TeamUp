@@ -1,18 +1,19 @@
-package com.example.teamup;
+package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.teamup.ControlPanel.WorkBench.WorkbenchTab;
-import com.example.teamup.Explore.ExploreTab;
+import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplayFragment;
+import com.example.teamup.WorkBench.WorkbenchTab;
 
-public class PageAdapter extends FragmentPagerAdapter {
+
+public class PagerAdapterApplicants extends FragmentPagerAdapter {
 
     private int numberOfTabs;
 
-    public PageAdapter(@NonNull FragmentManager fm, int behavior) {
+    public PagerAdapterApplicants(@NonNull FragmentManager fm, int behavior) {
         super(fm);
         this.numberOfTabs = behavior;
     }
@@ -22,7 +23,7 @@ public class PageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new ExploreTab();
+                return new ApplicantDisplayFragment();
             case 1:
                 return new WorkbenchTab();
             default:
