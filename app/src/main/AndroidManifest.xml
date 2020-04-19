@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ControlPanel.DisplayApplicants.ApplicantsTabbedActivity"></activity>
+        <activity android:name=".login.GatherUserDetails"></activity>
+        <activity android:name=".ControlPanel.DisplayApplicants.ApplicantsTabbedActivity" />
         <activity android:name=".TabbedActivityMain" />
         <activity android:name=".Notification.NotificationActivity" />
         <activity android:name=".ControlPanel.TaskList.TaskList" />

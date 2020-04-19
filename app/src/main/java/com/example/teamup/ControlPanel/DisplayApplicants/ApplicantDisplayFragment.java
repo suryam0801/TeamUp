@@ -49,7 +49,6 @@ public class ApplicantDisplayFragment extends Fragment {
     String TAG = "APPLICANTS_DISPLAY";
     ListView lvApplicant;
     private List<Applicant> ApplicantList;
-    private TextView projectNameDisplay;
     private ApplicantListAdapter adapter;
     Project project;
 
@@ -91,14 +90,11 @@ public class ApplicantDisplayFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.activity_my_projects_view, container, false);
 
-        projectNameDisplay= view.findViewById(R.id.myProjectNameDisplay);
         lvApplicant = view.findViewById(R.id.listview_applicant);
         project= SessionStorage.getProject(getActivity());
         assert project != null;
         db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
-        TextView projectNameDisplay = view.findViewById(R.id.myProjectNameDisplay);
-        projectNameDisplay.setText(project.getProjectName());
         populateApplicantList(project);
 
         return view;
@@ -108,7 +104,6 @@ public class ApplicantDisplayFragment extends Fragment {
         currentUser=FirebaseAuth.getInstance();
 
         loadApplicants(project.getProjectId());
-        projectNameDisplay.setText(project.getProjectName());
     }
 
     public void loadApplicants(String projectQueryID){

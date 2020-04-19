@@ -4,15 +4,65 @@ import java.util.ArrayList;
 
 public class User {
 
+    public User(String firstName, String lastName, String email, String specialization, String secondarySkill, String location, String userId) {
+        this.lastName = lastName;
+        this.email = email;
+        this.specialization = specialization;
+        this.secondarySkill = secondarySkill;
+        this.location = location;
+        this.userId = userId;
+    }
+
     private String firstName;
 
     private String lastName;
 
     private String email;
 
-    private String userId;
+    private String specialization;
 
-    private String dateOfBirth;
+    private String secondarySkill;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", specialization='" + specialization + '\'' +
+                ", secondarySkill='" + secondarySkill + '\'' +
+                ", Location='" + location + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
+
+    private String location;
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getSecondarySkill() {
+        return secondarySkill;
+    }
+
+    public void setSecondarySkill(String secondarySkill) {
+        this.secondarySkill = secondarySkill;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        location = location;
+    }
+
+    private String userId;
 
     public String getFirstName() {
         return firstName;
