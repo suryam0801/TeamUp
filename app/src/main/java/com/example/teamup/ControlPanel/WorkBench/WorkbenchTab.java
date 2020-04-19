@@ -1,5 +1,7 @@
 package com.example.teamup.ControlPanel.WorkBench;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -29,10 +31,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.Scanner;
 
 
 /**
@@ -59,6 +62,7 @@ public class WorkbenchTab extends Fragment{
     private WorkbenchDisplayAdapter myAdapter;
     private WorkbenchDisplayAdapter workingAdapter;
     private WorkbenchDisplayAdapter completedAdapter;
+    private String MY_PREFS_NAME = "TeamUp", DEFAULT_RETRIEVE_VALUE = "no such project";
 
     public WorkbenchTab() {
         // Required empty public constructor
@@ -119,12 +123,16 @@ public class WorkbenchTab extends Fragment{
     }
 
     public void populateData(){
+
         myProjectsRv.setAdapter(myAdapter);
         myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                List<Integer> parcelable = newItemCounter();
+                Log.d(TAG, "onItemClick: " + parcelable);
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                intent.putExtra("newValues", parcelable.toString());
                 startActivity(intent);
             }
         });
@@ -134,7 +142,10 @@ public class WorkbenchTab extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                List<Integer> parcelable = newItemCounter();
+                Log.d(TAG, "onItemClick: " + parcelable);
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                intent.putExtra("newValues", parcelable.toString());
                 startActivity(intent);
             }
         });
@@ -148,6 +159,42 @@ public class WorkbenchTab extends Fragment{
             }
         });
 
+    }
+
+    public List<Integer> newItemCounter(){
+
+        Project p = SessionStorage.getProject(getActivity());
+
+        List<Integer> returnList = new ArrayList<>();
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if(prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE).equals(DEFAULT_RETRIEVE_VALUE)) {
+            // data stored in format: tasklist / applicants / chatroom / projectwall
+            editor.putString(p.getProjectName(),  0 + "/" + 0 + "/" + 0 + "/" + 0);
+            editor.commit();
+            returnList.add(0);
+            returnList.add(0);
+            returnList.add(0);
+            returnList.add(0);
+            return returnList;
+        } else {
+            String values = prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE);
+            Scanner scan = new Scanner(values);
+            scan.useDelimiter("/");
+            int t = p.getTaskList().size() - Integer.parseInt(scan.next());
+            int a = p.getApplicantId().size() - Integer.parseInt(scan.next());
+            returnList.add(t);
+            returnList.add(a);
+            returnList.add(0);
+            returnList.add(0);
+
+            editor.putString(p.getProjectName(),  t + "/" + a + "/" + 0 + "/" + 0);
+            editor.commit();
+
+            return returnList;
+        }
     }
 
     public void getMyProjects(){
