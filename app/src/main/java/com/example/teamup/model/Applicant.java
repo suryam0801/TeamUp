@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.DisplayApplicants;
+package com.example.teamup.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

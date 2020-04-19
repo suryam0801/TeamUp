@@ -2,16 +2,19 @@ package com.example.teamup.ControlPanel;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.Explore.ExploreTab;
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 
@@ -19,79 +22,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControlPanel extends AppCompatActivity {
-    ViewPager viewPager;
-    TabAdapter adapter;
-    List<Model> models;
-    Integer[] colors = null;
-    ArgbEvaluator argbEvaluator = new ArgbEvaluator();
-    Button back;
+
+    private LinearLayout projectWall, taskList, chatRoom, applicants;
+    private Button projectWallbtn, chatroombtn, tasklistbtn, applicantsbtn;
+    private String TAG = "CONTROL PANEL: ";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.WHITE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide(); //hide the title bar
+
         setContentView(R.layout.activity_control_panel);
 
-        Project project= SessionStorage.getProject(this);
-        back=findViewById(R.id.btnback);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ControlPanel.this, ExploreTab.class));
-                finish();
-            }
-        });
+        projectWall = findViewById(R.id.control_panel_project_wall_navigation);
+        taskList = findViewById(R.id.control_panel_task_list_navigation);
+        chatRoom = findViewById(R.id.control_panel_chat_room_navigation);
+        applicants = findViewById(R.id.control_panel_applicants_navigation);
 
-        models = new ArrayList<>();
-        models.add(new Model(R.drawable.brochure, "Project Wall", "Post all the media content for your project and discuss about it as a team on this shared wall"));
-        models.add(new Model(R.drawable.sticker, "Task List", "Decide amongst yourselves what tasks need to be accomplished and manage your priorities using this Task List"));
-        models.add(new Model(R.drawable.poster, "Chatroom", "Enter the chatroom to have a conversation with everybody in your project and if needed, create your own chatroom with only those who are relevant"));
-        models.add(new Model(R.drawable.namecard, "Applicants", "Since you have created this project, view a list of the applicants who want to join your project and accept or reject them"));
+        projectWallbtn = findViewById(R.id.projectWall_newNotifications_button);
+        chatroombtn = findViewById(R.id.chatRoom_newNotifications_button);
+        tasklistbtn = findViewById(R.id.taskList_newNotifications_button);
+        applicantsbtn = findViewById(R.id.applicants_newNotifications_button);
 
-        adapter =  new TabAdapter(models, this, project);
-
-        viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
-        viewPager.setPadding(130, 0, 130, 0);
-
-        Integer[] colors_temp = {
-                getResources().getColor(R.color.color1),
-                getResources().getColor(R.color.color2),
-                getResources().getColor(R.color.color3),
-                getResources().getColor(R.color.color4)
-        };
-
-        colors = colors_temp;
-
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                if (position < (adapter.getCount() -1) && position < (colors.length - 1)) {
-                    viewPager.setBackgroundColor(
-
-                            (Integer) argbEvaluator.evaluate(
-                                    positionOffset,
-                                    colors[position],
-                                    colors[position + 1]
-                            )
-                    );
-                }
-
-                else {
-                    viewPager.setBackgroundColor(colors[colors.length - 1]);
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
+        Project project = SessionStorage.getProject(ControlPanel.this);
+        Log.d(TAG, project.toString());
     }
 
 }

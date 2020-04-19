@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Project;
 import com.example.teamup.R;
 
 import java.util.List;

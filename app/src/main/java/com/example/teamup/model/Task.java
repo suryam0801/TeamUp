@@ -1,9 +1,7 @@
-package com.example.teamup.ControlPanel.TaskList;
+package com.example.teamup.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.List;
 
 public class Task implements Parcelable {
     private String taskName;

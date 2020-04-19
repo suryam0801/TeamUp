@@ -15,12 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.teamup.chat.OnItemClick;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.chat.ChatRoom;
-import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Project;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
