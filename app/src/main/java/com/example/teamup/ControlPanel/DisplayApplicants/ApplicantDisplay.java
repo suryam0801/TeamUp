@@ -8,7 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.OnFailureListener;

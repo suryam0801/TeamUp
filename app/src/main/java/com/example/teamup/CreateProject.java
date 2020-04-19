@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -148,11 +148,17 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         project.setProjectStatus("Created");
         project.setRequiredSkills(chipsTextList);
         project.setWorkersList(null);
+        project.setNumberOfApplicants(0);
+        project.setNumberOfChats(0);
+        project.setNumberOfDocuments(0);
+        project.setNumberOfTasks(0);
         project.setWorkersId(null);
         project.setProjectId(UUID.randomUUID().toString());
         project.setTaskList(null);
         project.setCategory(selectedCategory);
 
+
+        Log.d(TAG, project.toString());
 
         db.collection("Projects")
                 .document(project.getProjectId())

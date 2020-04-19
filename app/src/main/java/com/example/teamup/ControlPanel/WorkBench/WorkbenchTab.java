@@ -10,13 +10,15 @@ import android.view.ViewGroup;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.example.teamup.ControlPanel.ControlPanel;
-import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -118,25 +120,21 @@ public class WorkbenchTab extends Fragment{
 
     public void populateData(){
         myProjectsRv.setAdapter(myAdapter);
-        Log.d((TAG), "MYPROJECT: " + myProjectList.toString());
         myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SessionStorage.saveProject(getActivity(), myProjectList.get(i));
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                Log.d(TAG, "My Project:"+myProjectList.get(i).toString());
                 startActivity(intent);
             }
         });
 
         workingProjectsRv.setAdapter(workingAdapter);
-        Log.d((TAG), "MYPROJECT: " + completedProjectsList.toString());
         workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SessionStorage.saveProject(getActivity(), myProjectList.get(i));
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                Log.d(TAG, "My Project:"+workingProjectList.get(i).toString());
                 startActivity(intent);
             }
         });
@@ -168,6 +166,7 @@ public class WorkbenchTab extends Fragment{
                         myProjectList.add(project);
                     }
                 }
+
             }
         });
     }

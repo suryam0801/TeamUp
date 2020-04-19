@@ -21,13 +21,13 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+import com.example.teamup.model.Applicant;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
+import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -185,6 +185,8 @@ public class ExploreTab extends Fragment {
         projectName.setText(ProjectList.get(pos).getProjectName());
         creatorName.setText(ProjectList.get(pos).getCreatorName());
         projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
+
+        Log.d(TAG, "onClick: " + ProjectList.get(pos).toString());
 
         if (sameCreator==true) {
             acceptButton.setText("This is your project");
@@ -356,12 +358,18 @@ public class ExploreTab extends Fragment {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     applicantExists = false;
 
-                                    if(ProjectList.get(i).getApplicantId()!=null){
-                                        if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
-                                            sameCreator = true;
-                                        } else if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                    Log.d(TAG, ProjectList.get(i).getCreatorId() + "|||||" + Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
+
+                                    if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                        sameCreator = true;
+                                    }
+                                    if(ProjectList.get(i).getApplicantId()!=null) {
+                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
                                             applicantExists = true;
-                                        } else if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                        }
+                                    }
+                                    if(ProjectList.get(i).getWorkersId()!=null) {
+                                        if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             workerExists = true;
                                         }
                                     }
