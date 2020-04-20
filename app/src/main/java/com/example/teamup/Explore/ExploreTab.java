@@ -1,7 +1,9 @@
 package com.example.teamup.Explore;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -30,6 +31,7 @@ import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
+import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +43,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -360,6 +363,11 @@ public class ExploreTab extends Fragment {
     }
 
     public void saveApplicant(String shortPitch, final String projectId){
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("Current User", Activity.MODE_PRIVATE);
+        String string = sharedPref.getString("user","1234");
+        User user = new Gson().fromJson(string, User.class);
+
         final Applicant applicant=new Applicant();
         applicant.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         applicant.setApplicantName(currentUser.getCurrentUser().getDisplayName());
@@ -367,10 +375,13 @@ public class ExploreTab extends Fragment {
         applicant.setAcceptedStatus("Applied");
         applicant.setShortPitch(shortPitch);
         applicant.setApplicantEmail(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
+        applicant.setProfilePicURL(user.getProfileImageLink());
+        applicant.setSpecialization(user.getSpecialization());
+        applicant.setLocation(user.getLocation());
 
         Object[] array={applicant};
 
-        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document("c0f34109-09b3-48ad-bcde-a08bad8165c2").update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -380,7 +391,7 @@ public class ExploreTab extends Fragment {
                             List<String> applicantIds = new ArrayList<>();
                             if(projects.getApplicantId()==null){
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("c0f34109-09b3-48ad-bcde-a08bad8165c2").update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
@@ -392,7 +403,7 @@ public class ExploreTab extends Fragment {
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("c0f34109-09b3-48ad-bcde-a08bad8165c2").update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");

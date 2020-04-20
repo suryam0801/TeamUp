@@ -1,5 +1,7 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
+import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,7 +145,14 @@ public class ApplicantDisplayFragment extends Fragment {
                             else if(key.equals("applicantEmail"))
                                 applicantEmail = entry.get(key);
                         }
-                        ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
+
+                        SharedPreferences sharedPref = getActivity().getSharedPreferences("Current User", Activity.MODE_PRIVATE);
+                        String string = sharedPref.getString("user","1234");
+                        User user = new Gson().fromJson(string, User.class);
+
+                        ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId,
+                                acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
+                                user.getLocation()));
                     }
                 }
                 adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
