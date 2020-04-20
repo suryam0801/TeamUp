@@ -2,6 +2,7 @@ package com.example.teamup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -44,8 +45,10 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.parseColor("#158BF1"));
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+
         setContentView(R.layout.activity_create_project2);
 
         //Initializing firestore
@@ -156,6 +159,8 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         project.setTaskList(null);
         project.setCategory(selectedCategory);
 
+
+        Log.d(TAG, project.toString());
 
         db.collection("Projects")
                 .document(project.getProjectId())

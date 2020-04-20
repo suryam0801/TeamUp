@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,29 +8,283 @@
     android:orientation="vertical"
     android:background="@color/card_back">
 
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <androidx.viewpager.widget.ViewPager
-        android:foregroundGravity="center"
-        android:id="@+id/viewPager"
-        android:layout_centerInParent="true"
-        android:overScrollMode="never"
-        android:clipToPadding="false"
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_chevron_left_black_24dp">
+        </ImageButton>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="#3B3B3B"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginBottom="21dp"
+            android:text="Teamup Mobile Application">
+        </TextView>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="25dp"
+        android:background="#D3CECE">
+    </View>
+
+
+    <GridLayout
+        android:columnCount="2"
+        android:layout_marginBottom="35dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_gravity="fill"
+        android:id="@+id/gridLayoutControlPanel"
+        android:layout_weight="80"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </androidx.viewpager.widget.ViewPager>
-    
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:id="@+id/control_panel_project_wall_navigation"
+            android:layout_marginRight="16dp"
+            app:cardBackgroundColor="#A274FF"
+            android:elevation="8dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/projector_2x"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
+                    android:scaleY=".6"
+                    android:scaleX=".6">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="20dp"
+                    android:layout_marginTop="65dp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginLeft="15dp"
+                    android:text="Project Wall">
+                </TextView>
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="#A274FF"
+                    android:textSize="12dp"
+                    android:visibility="invisible"
+                    android:id="@+id/projectWall_newNotifications_button"
+                    android:background="@drawable/control_panel_new_display_buttons"></Button>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/control_panel_task_list_navigation"
+            app:cardBackgroundColor="#FF74B5"
+            android:elevation="8dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/clipboards_2x"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="20dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="20dp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="75dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="Task List">
+                </TextView>
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:id="@+id/taskList_newNotifications_button"
+                    android:visibility="invisible"
+                    android:textColor="#FF74B5"
+                    android:textSize="12dp"
+                    android:background="@drawable/control_panel_new_display_buttons"></Button>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:cardBackgroundColor="#F7aa35"
+            android:id="@+id/control_panel_chat_room_navigation"
+            android:elevation="8dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/comment_2x"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:scaleY=".9"
+                    android:scaleX=".9">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="20dp"
+                    android:layout_marginTop="80dp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginLeft="15dp"
+                    android:text="Chat room">
+                </TextView>
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:id="@+id/chatRoom_newNotifications_button"
+                    android:visibility="invisible"
+                    android:textColor="#FF74B5"
+                    android:textSize="12dp"
+                    android:background="@drawable/control_panel_new_display_buttons"></Button>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:cardBackgroundColor="#18a4e0"
+            android:id="@+id/control_panel_applicants_navigation"
+            android:elevation="8dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/resume_document_2x"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="20dp">
+                </androidx.appcompat.widget.AppCompatImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="20dp"
+                    android:layout_marginTop="80dp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginLeft="15dp"
+                    android:text="Applicants">
+                </TextView>
+
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="9dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:id="@+id/applicants_newNotifications_button"
+                    android:textColor="#74ACFF"
+                    android:textSize="12dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/control_panel_new_display_buttons"></Button>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+
     <Button
-        android:id="@+id/btnback"
-        android:text="Back"
-        android:textColor="#fff"
-        android:background="@drawable/round"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:background="@drawable/edit_project_button_background"
+        android:fontFamily="@font/roboto_regular"
+        android:paddingLeft="20dp"
+        android:paddingRight="30dp"
+        android:drawableStart="@drawable/edit_drawable"
+        android:drawablePadding="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="30dp"
+        android:text="edit">
+    </Button>
 
-</RelativeLayout>
+</LinearLayout>

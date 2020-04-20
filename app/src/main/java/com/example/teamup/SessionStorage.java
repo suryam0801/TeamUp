@@ -1,11 +1,10 @@
 package com.example.teamup;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Project;
 import com.google.gson.Gson;
 
 public class SessionStorage {

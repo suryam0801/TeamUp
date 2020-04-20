@@ -5,28 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ControlPanel.DisplayApplicants.ApplicantDisplay">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="30dp"
-            android:text="My Projects View"
-            android:gravity="center">
-        </TextView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text=""
-            android:id="@+id/myProjectNameDisplay"
-            android:textSize="18dp"
-            android:gravity="center">
-        </TextView>
-    </LinearLayout>
+    android:background="@color/white"
+    tools:context=".ControlPanel.DisplayApplicants.ApplicantDisplayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,11 +16,11 @@
                 android:id="@+id/listview_applicant"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="43.5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:dividerHeight="10dp"
-                android:divider="#d1d1d1">
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10dp">
             </ListView>
     </LinearLayout>
 

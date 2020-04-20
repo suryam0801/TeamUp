@@ -9,11 +9,10 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantListAdapter;
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.Task;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -96,7 +95,7 @@ public class TaskList extends AppCompatActivity implements TaskDialog.TaskDialog
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("EXPLORE ACTIVITY", "onFailure: "+e.getMessage());
+                Log.d("EXPLORE ACTIVITY", "onFailure: " + e.getMessage());
             }
         });
     }
@@ -120,6 +119,5 @@ public class TaskList extends AppCompatActivity implements TaskDialog.TaskDialog
                     Log.d(TAG, "onFailure: "+"Applicant Id update");
                 }
         });
-
     }
 }

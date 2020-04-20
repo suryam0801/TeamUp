@@ -1,23 +1,25 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.Explore.Project;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -57,7 +59,7 @@ public class ApplicantListAdapter extends BaseAdapter{
         final TextView name = v.findViewById(R.id.applicant_name);
         TextView pitch = v.findViewById(R.id.applicant_pitch);
         Button accept = v.findViewById(R.id.applicant_accept);
-        Button reject = v.findViewById(R.id.applicant_reject);
+        Button review = v.findViewById(R.id.applicant_review);
         db = FirebaseFirestore.getInstance();
 
         final Applicant a = ApplicantList.get(position);
@@ -118,10 +120,20 @@ public class ApplicantListAdapter extends BaseAdapter{
             }
         });
 
-        reject.setOnClickListener(new View.OnClickListener() {
+        review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApplicantList.remove(a);
+            }
+        });
+        //Save product id to tag
+        v.setTag(ApplicantList.get(position).getUserId());
+
+        return v;
+    }
+}
+
+
+/*ApplicantList.remove(a);
                 db.collection("Projects").document(project.getProjectId()).update("applicantList",ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -139,12 +151,4 @@ public class ApplicantListAdapter extends BaseAdapter{
                     @Override
                     public void onFailure(@NonNull Exception e) {
                     }
-                });
-            }
-        });
-        //Save product id to tag
-        v.setTag(ApplicantList.get(position).getUserId());
-
-        return v;
-    }
-}
+                });*/
