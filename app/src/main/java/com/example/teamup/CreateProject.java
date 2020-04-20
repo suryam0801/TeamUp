@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -63,6 +64,8 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         skillSetEntry = findViewById(R.id.skill_entry_edittext);
         Button addSkillSet = findViewById(R.id.addSkillSet);
         chipGroup = findViewById(R.id.chip_group_create_skills);
+        ImageButton back_create = findViewById(R.id.bck_create);
+
 
         Spinner spinner = findViewById(R.id.categorySpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -70,6 +73,14 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        back_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CreateProject.this, TabbedActivityMain.class));
+                finish();
+            }
+        });
 
         createProjectSubmit.setOnClickListener(new View.OnClickListener() {
 

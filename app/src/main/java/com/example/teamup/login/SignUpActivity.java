@@ -34,10 +34,6 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText signUpEmail,signUpPassword,signUpFirstName,signUpLastName;
     private Button signUpButton;
     private TextView loginInSignup;
-
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +42,6 @@ public class SignUpActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
         setContentView(R.layout.activity_sign_up);
-        firebaseAuth=FirebaseAuth.getInstance();
-        firebaseFirestore=FirebaseFirestore.getInstance();
 
         signUpButton=findViewById(R.id.signUpBtn);
         signUpEmail=findViewById(R.id.signUpEmail);

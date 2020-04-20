@@ -55,7 +55,7 @@ public class ApplicantListAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        View v = View.inflate(mContext, R.layout.applicant_view_list, null);
+        View v = View.inflate(mContext, R.layout.applicant_view_list_item, null);
         final TextView name = v.findViewById(R.id.applicant_name);
         TextView pitch = v.findViewById(R.id.applicant_pitch);
         Button accept = v.findViewById(R.id.applicant_accept);

@@ -79,13 +79,7 @@ public class GatherUserDetails extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(GatherUserDetails.this, "Verification link has  been sent " +
-                                "to your email, Please verify and Login", Toast.LENGTH_LONG).show();
 
-                        firebaseAuth.signOut();
-
-                        startActivity(new Intent(GatherUserDetails.this, LoginActivity.class));
-                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -129,6 +123,14 @@ public class GatherUserDetails extends AppCompatActivity {
                                                                 public void onComplete(@NonNull Task<Void> task) {
 
                                                                     if(task.isSuccessful()) {
+
+                                                                        Toast.makeText(GatherUserDetails.this, "Verification link has  been sent " +
+                                                                                "to your email, Please verify and Login", Toast.LENGTH_LONG).show();
+
+                                                                        firebaseAuth.signOut();
+
+                                                                        startActivity(new Intent(GatherUserDetails.this, LoginActivity.class));
+                                                                        finish();
 
                                                                     }
                                                                     else {
