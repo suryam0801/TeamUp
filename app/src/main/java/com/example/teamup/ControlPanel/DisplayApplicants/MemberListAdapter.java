@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Member;
 import com.example.teamup.model.Project;
@@ -25,6 +28,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MemberListAdapter extends BaseAdapter{
     private Context mContext;
@@ -59,7 +64,15 @@ public class MemberListAdapter extends BaseAdapter{
         View v = View.inflate(mContext, R.layout.member_view_list_item, null);
         final TextView name = v.findViewById(R.id.member_name);
         TextView pitch = v.findViewById(R.id.member_primaryskill);
+        CircleImageView profPic = v.findViewById(R.id.member_profile_picture);
+
         db = FirebaseFirestore.getInstance();
+
+        Glide.with(mContext)
+                .load(MemberList.get(position).getProfilePicURL())
+                .placeholder(ContextCompat.getDrawable(mContext, R.drawable.ic_account_circle_black_24dp))
+                .into(profPic);
+
 
         final Member a = MemberList.get(position);
 
