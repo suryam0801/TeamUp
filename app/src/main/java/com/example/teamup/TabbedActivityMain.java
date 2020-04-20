@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.teamup.Explore.ExploreTab;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
@@ -37,6 +38,11 @@ public class TabbedActivityMain extends AppCompatActivity {
 
         pagerAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
+        Bundle bundle = new Bundle();
+        bundle.putString("edttext", "From Activity");
+// set Fragmentclass Arguments
+        ExploreTab fragobj = new ExploreTab();
+        fragobj.setArguments(bundle);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -60,10 +66,5 @@ public class TabbedActivityMain extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
-    @Override
-    public void onBackPressed() {
-        finishAffinity();
-        System.exit(0);
-//        super.onBackPressed();
-    }
+
 }

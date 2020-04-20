@@ -110,34 +110,10 @@ public class ExploreTab extends Fragment {
 
         //search ET
         prsearch =view.findViewById(R.id.editText);
-        prsearch.setVisibility(View.INVISIBLE);
+        prsearch.setVisibility(View.VISIBLE);
+//        prsearch.setEnabled(false);
+        prsearch.setFocusable(false);
 
-        //search btn
-        search=view.findViewById(R.id.btnsearch);
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String visi= String.valueOf(prsearch.getVisibility());
-//                Toast.makeText(getContext(),visi,Toast.LENGTH_SHORT).show();
-                if (visi.equals("0"))
-                {
-                    prsearch.setVisibility(View.INVISIBLE);
-                    search.setBackground(getResources().getDrawable(R.drawable.ic_search_black_24dp));
-                    loadprojectlist();
-                }
-                else
-                {
-                    prsearch.setVisibility(View.VISIBLE);
-                    prsearch.setTextColor(Color.parseColor("#5B86E5"));
-                    search.setBackground(getResources().getDrawable(R.drawable.ic_clear_black_24dp));
-                    prsearch.setFocusable(true);
-                    prsearch.setEnabled(true);
-                }
-
-
-            }
-        });
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
