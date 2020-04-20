@@ -25,9 +25,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+//import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
