@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -48,8 +49,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email=loginEmail.getText().toString();
                 String password=loginPassword.getText().toString();
-
+                Log.d("LoginActivity: ", email + ", " + password);
                 if(!TextUtils.isEmpty(email)&& !TextUtils.isEmpty(password))
+
                 {
                     firebaseAuth.signInWithEmailAndPassword(email,password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful())
                                     {
+                                        Log.d("LoginActivity: ", "DONEEEEE");
                                         if(firebaseAuth.getCurrentUser().isEmailVerified())
                                         {
                                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -89,8 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this,SignUpActivity.class));
             }
         });
-
-
 
     }
 }

@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/bck_create"
@@ -25,18 +25,26 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="12dp"
+                android:scaleX=".8"
+                android:scaleY=".8"
                 android:background="@android:color/transparent"
                 android:src="@drawable/chevron_left_white"></ImageButton>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/roboto_black"
+                android:fontFamily="@font/roboto_regular"
                 android:paddingLeft="20dp"
+                android:layout_marginTop="20dp"
                 android:text="Create New Project"
                 android:textColor="#FFFFFF"
-                android:textSize="30dp"></TextView>
+                android:textSize="20dp"></TextView>
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#50AAF8"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +56,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Name"
                 android:layout_marginLeft="23dp"
-                android:textSize="15dp"
+                android:textSize="12dp"
                 android:textColor="#DEDADA"
                 android:fontFamily="@font/roboto_regular"></TextView>
             <EditText
@@ -58,9 +66,10 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textColor="@color/white"
+                android:textSize="16dp"
                 android:fontFamily="@font/roboto_regular"
                 android:textColorHint="@color/white"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="#50AAF8"
                 android:id="@+id/projectName">
             </EditText>
 
@@ -71,7 +80,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Project Category"
                 android:layout_marginLeft="23dp"
-                android:textSize="15dp"
+                android:textSize="12dp"
                 android:textColor="#DEDADA"
                 android:fontFamily="@font/roboto_regular"></TextView>
 
@@ -82,12 +91,21 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="0dp"/>
 
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="#50AAF8"
+                android:layout_marginBottom="28dp"></View>
 
         </LinearLayout>
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,9 +115,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="21dp"
             android:text="Description (100 words)"
-            android:textSize="15dp"
+            android:textSize="12dp"
             android:layout_marginLeft="23dp"
             android:textColor="#C3BDBD"
             android:fontFamily="@font/roboto_regular"></TextView>
@@ -112,6 +130,7 @@
             android:layout_marginRight="20dp"
             android:textColor="@color/black"
             android:textColorHint="#9B9696"
+            android:textSize="16dp"
             android:fontFamily="@font/roboto_regular"
             android:backgroundTint="@color/black"
             android:layout_marginBottom="10dp"
@@ -141,6 +160,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
+                android:textSize="16dp"
                 android:textColorHint="#9B9696"
                 android:backgroundTint="@color/black"
                 android:id="@+id/skill_entry_edittext"></EditText>

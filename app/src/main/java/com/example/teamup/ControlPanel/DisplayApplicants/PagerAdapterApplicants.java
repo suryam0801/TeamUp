@@ -25,7 +25,7 @@ public class PagerAdapterApplicants extends FragmentPagerAdapter {
             case 0:
                 return new ApplicantDisplayFragment();
             case 1:
-                return new WorkbenchTab();
+                return new AllMembersFragment();
             default:
                 return null;
         }
