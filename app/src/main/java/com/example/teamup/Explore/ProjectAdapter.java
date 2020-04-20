@@ -13,16 +13,22 @@ import android.widget.TextView;
 import com.example.teamup.R;
 import com.example.teamup.model.Project;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ProjectAdapter extends BaseAdapter  {
     private Context mContext;
-    private List<Project> Projectlist;
+
+    private ArrayList<Project> Projectlist;
+    private ArrayList<Project> arraylist;
     private String TAG = "PROJECT ADAPTER";
 
-    public ProjectAdapter(Context mContext, List<Project> Projectlist) {
+    public ProjectAdapter(Context mContext,  ArrayList<Project> Projectlist) {
         this.mContext = mContext;
         this.Projectlist = Projectlist;
+        this.arraylist = new ArrayList<Project>();
+        this.arraylist.addAll(Projectlist);
     }
 
     @Override
@@ -105,5 +111,25 @@ public class ProjectAdapter extends BaseAdapter  {
          pview.setTag(currentProject.getProjectId());
 
         return pview;
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        Projectlist.clear();
+        if (charText.length() == 0) {
+            Projectlist.addAll(arraylist);
+        }
+        else
+        {
+            for (Project pr : arraylist)
+            {
+                if (pr.getProjectName().toLowerCase(Locale.getDefault()).contains(charText))
+                {
+                    Projectlist.add(pr);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

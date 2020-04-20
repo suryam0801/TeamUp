@@ -7,6 +7,38 @@
     tools:context=".Explore.ExploreTab"
     android:orientation="vertical"
     android:background="@color/card_back">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editText"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/et_style"
+            android:drawableLeft="@drawable/search_grey"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:hint="Search here..."
+            android:singleLine="true"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey">
+
+
+            <requestFocus />
+
+
+        </EditText>
+
+
+    </FrameLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"

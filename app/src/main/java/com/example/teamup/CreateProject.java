@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     ChipGroup chipGroup;
+    ImageButton bck;
     EditText projName, projDescription, skillSetEntry;
 
     @Override
@@ -54,6 +56,7 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         currentUser=FirebaseAuth.getInstance();
 
         //initializing all UI elements
+        bck = findViewById(R.id.bck_create);
         projName = findViewById(R.id.projectName);
         projDescription = findViewById(R.id.projectDescription);
         Button createProjectSubmit = (Button)findViewById(R.id.createProjectSubmit);

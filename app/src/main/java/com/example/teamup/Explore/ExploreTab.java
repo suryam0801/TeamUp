@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +21,14 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.model.Applicant;
+//import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
+import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,6 +44,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ExploreTab extends Fragment {
@@ -56,14 +61,17 @@ public class ExploreTab extends Fragment {
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     ListView lvproject;
-    private List<Project> ProjectList;
     Project projects;
+    private ArrayList<Project> ProjectList = new ArrayList<Project>() ;
     private ProjectAdapter adapter;
     Button createProject,workbench;
     Dialog dialog, completedDialog;
     ChipGroup chipGroup;
     int butttonCounter = 0;
     boolean applicantExists = false, workerExists = false, sameCreator = false;
+
+    Button search,menu;
+    private EditText prsearch;
 
     public ExploreTab() {
         // Required empty public constructor
@@ -101,6 +109,13 @@ public class ExploreTab extends Fragment {
         dialog = new Dialog(getActivity());
         completedDialog = new Dialog(getActivity());
         chipGroup = view.findViewById(R.id.chip_group_create_skills);
+
+        //search ET
+        prsearch =view.findViewById(R.id.editText);
+        prsearch.setVisibility(View.VISIBLE);
+//        prsearch.setEnabled(false);
+        prsearch.setFocusable(false);
+
 
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +163,6 @@ public class ExploreTab extends Fragment {
         projectName.setText(ProjectList.get(pos).getProjectName());
         creatorName.setText(ProjectList.get(pos).getCreatorName());
         projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
-
-        Log.d(TAG, "onClick: " + ProjectList.get(pos).toString());
 
         if (sameCreator==true) {
             acceptButton.setText("This is your project");
@@ -298,24 +311,35 @@ public class ExploreTab extends Fragment {
                             adapter= new ProjectAdapter(getActivity(),ProjectList);
                             lvproject.setAdapter(adapter);
 
+                            prsearch.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+                                    String text = prsearch.getText().toString().toLowerCase(Locale.getDefault());
+                                    adapter.filter(text);
+                                }
+                            });
+
 
                             lvproject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     applicantExists = false;
 
-                                    Log.d(TAG, ProjectList.get(i).getCreatorId() + "|||||" + Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
-
-                                    if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
-                                        sameCreator = true;
-                                    }
-                                    if(ProjectList.get(i).getApplicantId()!=null) {
-                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                    if(ProjectList.get(i).getApplicantId()!=null){
+                                        if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                            sameCreator = true;
+                                        } else if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
                                             applicantExists = true;
-                                        }
-                                    }
-                                    if(ProjectList.get(i).getWorkersId()!=null) {
-                                        if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                        } else if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             workerExists = true;
                                         }
                                     }

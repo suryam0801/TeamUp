@@ -8,30 +8,6 @@
     android:orientation="vertical"
     tools:context=".TabbedActivityMain">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="25dp"
-            android:layout_gravity="start"
-            android:background="@drawable/ic_menu_black_24dp"
-            android:layout_marginTop="5dp">
-        </Button>
-
-        <Button
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@drawable/ic_search_black_24dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="25dp">
-        </Button>
-    </FrameLayout>
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"
