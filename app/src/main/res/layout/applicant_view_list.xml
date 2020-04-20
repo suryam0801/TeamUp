@@ -5,6 +5,8 @@
     android:background="#ffffff"
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
+    android:gravity="center_horizontal"
+
     android:paddingRight="10dp"
     android:paddingBottom="5dp">
 
@@ -57,12 +59,12 @@
 
             <Button
                 android:id="@+id/applicant_review"
+                android:text="Review"
                 android:layout_width="95dp"
                 android:layout_height="37dp"
                 android:layout_marginRight="12dp"
                 android:background="@drawable/unpressable_button"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Review"
                 android:textAllCaps="false"
                 android:textColor="#828282"></Button>
 
@@ -77,4 +79,5 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

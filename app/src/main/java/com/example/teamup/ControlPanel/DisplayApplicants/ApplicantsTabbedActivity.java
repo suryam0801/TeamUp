@@ -7,17 +7,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.example.teamup.R;
+import com.example.teamup.model.Applicant;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ApplicantsTabbedActivity extends AppCompatActivity {
+public class ApplicantsTabbedActivity extends AppCompatActivity implements BottomsheetDialog.BottomSheetListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TabItem newRequests, membersDisplay;
     public PagerAdapterApplicants pagerAdapter;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,5 +61,12 @@ public class ApplicantsTabbedActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+    }
+
+
+    @Override
+    public String onButtonClicked(String text) {
+        Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
+        return text;
     }
 }

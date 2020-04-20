@@ -2,15 +2,14 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
@@ -19,13 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-public class ApplicantListAdapter extends BaseAdapter{
+public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDialog.BottomSheetListener{
     private Context mContext;
     private List<Applicant> ApplicantList;
     FirebaseFirestore db;
@@ -60,9 +58,12 @@ public class ApplicantListAdapter extends BaseAdapter{
         TextView pitch = v.findViewById(R.id.applicant_pitch);
         Button accept = v.findViewById(R.id.applicant_accept);
         Button review = v.findViewById(R.id.applicant_review);
+
+
         db = FirebaseFirestore.getInstance();
 
         final Applicant a = ApplicantList.get(position);
+
 
         //Set text for TextView
         final String nameDisplay = a.getApplicantName();
@@ -123,12 +124,21 @@ public class ApplicantListAdapter extends BaseAdapter{
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                BottomsheetDialog bottomSheet = new BottomsheetDialog(a.getApplicantName(),a.getShortPitch(),a.getProjectId(),a.getUserId(),a);
+                bottomSheet.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "exampleBottomSheet");
+
             }
         });
         //Save product id to tag
         v.setTag(ApplicantList.get(position).getUserId());
 
         return v;
+    }
+
+    @Override
+    public String onButtonClicked(String text) {
+
+        return text;
     }
 }
 
