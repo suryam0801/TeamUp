@@ -7,12 +7,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.example.teamup.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-public class ApplicantsTabbedActivity extends AppCompatActivity {
+public class ApplicantsTabbedActivity extends AppCompatActivity  implements BottomsheetDialog.BottomSheetListener  {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -57,5 +58,11 @@ public class ApplicantsTabbedActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+    }
+
+    @Override
+    public String onButtonClicked(String text) {
+        Toast.makeText(this,"Application "+text,Toast.LENGTH_SHORT).show();
+        return text;
     }
 }

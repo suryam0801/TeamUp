@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
@@ -25,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-public class ApplicantListAdapter extends BaseAdapter{
+public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDialog.BottomSheetListener{
     private Context mContext;
     private List<Applicant> ApplicantList;
     FirebaseFirestore db;
@@ -123,12 +124,19 @@ public class ApplicantListAdapter extends BaseAdapter{
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                BottomsheetDialog bottomSheet = new BottomsheetDialog(a.getApplicantName(),a.getShortPitch(),a.getProjectId(),a.getUserId(),a);
+                bottomSheet.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "exampleBottomSheet");
             }
         });
         //Save product id to tag
         v.setTag(ApplicantList.get(position).getUserId());
 
         return v;
+    }
+
+    @Override
+    public String onButtonClicked(String text) {
+        return text;
     }
 }
 
