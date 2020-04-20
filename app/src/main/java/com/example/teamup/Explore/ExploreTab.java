@@ -113,7 +113,6 @@ public class ExploreTab extends Fragment {
         //search ET
         prsearch =view.findViewById(R.id.editText);
         prsearch.setVisibility(View.VISIBLE);
-//        prsearch.setEnabled(false);
         prsearch.setFocusable(false);
 
 
