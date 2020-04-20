@@ -17,7 +17,6 @@
             android:id="@+id/btmname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="Name"
             android:layout_gravity="center"
             android:textStyle="bold"
@@ -44,7 +43,6 @@
             android:layout_width="95dp"
             android:layout_height="37dp"
             android:layout_marginLeft="70dp"
-
             android:background="@drawable/unpressable_button"
             android:fontFamily="@font/roboto_medium"
             android:textAllCaps="false"

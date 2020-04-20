@@ -62,11 +62,9 @@ public class ApplicantsTabbedActivity extends AppCompatActivity implements Botto
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
     }
-
-
     @Override
     public String onButtonClicked(String text) {
-        Toast.makeText(this,text,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Application "+text,Toast.LENGTH_SHORT).show();
         return text;
     }
 }

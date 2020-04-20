@@ -120,7 +120,6 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
                         });
             }
         });
-
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
