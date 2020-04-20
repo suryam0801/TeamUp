@@ -13,7 +13,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.example.teamup.login.GatherUserDetails;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
@@ -26,6 +29,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDialog.BottomSheetListener{
     private Context mContext;
@@ -62,11 +67,18 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
         TextView pitch = v.findViewById(R.id.applicant_pitch);
         Button accept = v.findViewById(R.id.applicant_accept);
         Button review = v.findViewById(R.id.applicant_review);
-        ImageView profPic = v.findViewById(R.id.applicant_profile_picture);
-        
+        CircleImageView profPic = v.findViewById(R.id.applicant_profile_picture);
+
         db = FirebaseFirestore.getInstance();
 
+        Glide.with(mContext)
+                .load(ApplicantList.get(position).getProfilePicURL())
+                .placeholder(ContextCompat.getDrawable(mContext, R.drawable.ic_account_circle_black_24dp))
+                .into(profPic);
+
         final Applicant a = ApplicantList.get(position);
+
+
 
         //Set text for TextView
         final String nameDisplay = a.getApplicantName();

@@ -5,18 +5,60 @@ import android.os.Parcelable;
 
 public class Member implements Parcelable {
 
-    private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch;
+    private String projectId, memberName, memberEmail,userId,acceptedStatus,shortPitch, profilePicURL, specialization, location;
 
     public Member() {
     }
 
-    public Member(String projectId, String applicantName, String applicantEmail, String userId,String acceptedStatus, String shortPitch) {
+    @Override
+    public String toString() {
+        return "Member{" +
+                "projectId='" + projectId + '\'' +
+                ", applicantName='" + memberName + '\'' +
+                ", applicantEmail='" + memberEmail + '\'' +
+                ", userId='" + userId + '\'' +
+                ", acceptedStatus='" + acceptedStatus + '\'' +
+                ", shortPitch='" + shortPitch + '\'' +
+                ", profilePicURL='" + profilePicURL + '\'' +
+                ", primarySkill='" + specialization + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
+    public String getProfilePicURL() {
+        return profilePicURL;
+    }
+
+    public void setProfilePicURL(String profilePicURL) {
+        this.profilePicURL = profilePicURL;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Member(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus, String shortPitch, String profilePicURL, String primarySkill, String location) {
         this.projectId = projectId;
-        this.applicantName = applicantName;
-        this.applicantEmail = applicantEmail;
+        this.memberName = applicantName;
+        this.memberEmail = applicantEmail;
         this.userId = userId;
         this.acceptedStatus = acceptedStatus;
         this.shortPitch = shortPitch;
+        this.profilePicURL = profilePicURL;
+        this.specialization = primarySkill;
+        this.location = location;
     }
 
     public String getProjectId() {
@@ -28,19 +70,19 @@ public class Member implements Parcelable {
     }
 
     public String getMemberName() {
-        return applicantName;
+        return memberName;
     }
 
     public void setMemberName(String applicantName) {
-        this.applicantName = applicantName;
+        this.memberName = applicantName;
     }
 
     public String getMemberEmail() {
-        return applicantEmail;
+        return memberEmail;
     }
 
     public void setMemberEmail(String applicantEmail) {
-        this.applicantEmail = applicantEmail;
+        this.memberEmail = applicantEmail;
     }
 
     public String getUserId() {
@@ -68,17 +110,6 @@ public class Member implements Parcelable {
     }
 
     @Override
-    public String toString() {
-        return "Applicant{" +
-                "applicantName='" + applicantName + '\'' +
-                ", applicantEmail='" + applicantEmail + '\'' +
-                ", userId='" + userId + '\'' +
-                ", acceptedStatus=" + acceptedStatus +
-                ", shortPitch='" + shortPitch + '\'' +
-                '}';
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
@@ -86,20 +117,26 @@ public class Member implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(projectId);
-        parcel.writeString(applicantName);
-        parcel.writeString(applicantEmail);
+        parcel.writeString(memberName);
+        parcel.writeString(memberEmail);
         parcel.writeString(userId);
         parcel.writeString(acceptedStatus);
         parcel.writeString(shortPitch);
+        parcel.writeString(profilePicURL);
+        parcel.writeString(specialization);
+        parcel.writeString(location);
     }
 
     private Member(Parcel in) {
         projectId = in.readString();
-        applicantName = in.readString();
-        applicantEmail = in.readString();
+        memberName = in.readString();
+        memberEmail = in.readString();
         userId = in.readString();
         acceptedStatus = in.readString();
         shortPitch = in.readString();
+        profilePicURL = in.readString();
+        specialization = in.readString();
+        location = in.readString();
     }
 
     public static final Parcelable.Creator<Member> CREATOR

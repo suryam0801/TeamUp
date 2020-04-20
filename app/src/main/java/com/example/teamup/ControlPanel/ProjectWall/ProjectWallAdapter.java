@@ -29,8 +29,6 @@ public class ProjectWallAdapter extends RecyclerView.Adapter<ProjectWallAdapter.
     public ProjectWallAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.file_display_template,parent,false);
         return  new Viewholder(view);
-
-
     }
 
     @Override

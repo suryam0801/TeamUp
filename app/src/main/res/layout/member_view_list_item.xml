@@ -13,10 +13,11 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="23dp">
 
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/ic_account_circle_black_24dp"></ImageView>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/member_profile_picture"
+            android:layout_width="55dp"
+            android:layout_height="55dp"/>
+
     </LinearLayout>
 
     <LinearLayout
