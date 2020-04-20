@@ -16,26 +16,22 @@
             android:id="@+id/editText"
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/roboto_regular"
             android:layout_marginTop="15dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/et_style"
-            android:drawableLeft="@drawable/search_grey"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:hint="Search here..."
+            android:textSize="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#F8F8F8"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:drawablePadding="18dp"
+            android:paddingLeft="16dp"
+            android:hint="Search"
             android:singleLine="true"
-            android:textColor="@color/grey"
-            android:textColorHint="@color/grey">
-
-
-            <requestFocus />
-
-
+            android:textColor="#828282"
+            android:textColorHint="#828282">
+            <requestFocus></requestFocus>
         </EditText>
-
 
     </FrameLayout>
 
@@ -53,8 +49,7 @@
             android:divider="@android:color/transparent"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_marginBottom="50dp"
-            android:paddingTop="5dp">
+            android:layout_marginBottom="50dp">
         </ListView>
 
         <Button
