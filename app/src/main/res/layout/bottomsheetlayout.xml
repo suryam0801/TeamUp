@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomlinear"
+
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/btmname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="25sp" />
+        <TextView
+            android:id="@+id/btmdesc"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="25sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnreject"
+            android:text="Reject"
+            android:layout_width="95dp"
+            android:layout_height="37dp"
+            android:layout_marginLeft="70dp"
+            android:background="@drawable/unpressable_button"
+            android:fontFamily="@font/roboto_medium"
+            android:textAllCaps="false"
+            android:textColor="#828282"/>
+
+        <Button
+            android:id="@+id/btnaccept"
+            android:layout_marginLeft="30dp"
+            android:layout_width="95dp"
+            android:layout_height="37dp"
+            android:background="@drawable/applicant_accept_button"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Accept"
+            android:textAllCaps="false"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="35dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason to join"/>
+        <TextView
+            android:id="@+id/reqjoin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Reason to join"/>
+
+    </LinearLayout>
+
+</LinearLayout>
