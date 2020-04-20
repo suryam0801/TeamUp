@@ -33,7 +33,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
     Project project;
     String TAG = "APPLICANT_LIST_ADAPTER";
     String applname,appldesc,project_id,uid;
-   Applicant a= new Applicant();;
+    Applicant a= new Applicant();;
 
     public BottomsheetDialog(String applname, String appldesc,String project_id,String uid,Applicant a) {
         this.applname = applname;
