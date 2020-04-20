@@ -4,13 +4,17 @@ import java.util.ArrayList;
 
 public class User {
 
-    public User(String firstName, String lastName, String email, String specialization, String secondarySkill, String location, String userId) {
+    public User(String firstName, String lastName, String email,
+                String specialization, String secondarySkill, String location,
+                String userId,String profileImageLink) {
         this.lastName = lastName;
         this.email = email;
         this.specialization = specialization;
         this.secondarySkill = secondarySkill;
         this.location = location;
         this.userId = userId;
+        this.profileImageLink=profileImageLink;
+
     }
 
     private String firstName;
@@ -22,6 +26,8 @@ public class User {
     private String specialization;
 
     private String secondarySkill;
+
+    private String profileImageLink;
 
     @Override
     public String toString() {
@@ -37,6 +43,14 @@ public class User {
     }
 
     private String location;
+
+    public String getProfileImageLink() {
+        return profileImageLink;
+    }
+
+    public void setProfileImageLink(String profileImageLink) {
+        this.profileImageLink = profileImageLink;
+    }
 
     public String getSpecialization() {
         return specialization;
