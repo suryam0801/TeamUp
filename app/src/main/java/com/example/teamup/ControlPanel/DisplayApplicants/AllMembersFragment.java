@@ -109,31 +109,34 @@ public class AllMembersFragment extends Fragment {
                     //each object in the array is a hashmap. We need to read the arrays using key and value from hashmap
                     List<Map<String, String>> group = (List<Map<String, String>>) document.get("workersList");
                     //reads each object in the array
-                    for (Map<String, String> entry : group) {
-                        //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
-                        //reads each element in the hashmap
-                        String applicantName = "";
-                        String applicantId = "";
-                        String applicantPitch = "";
-                        String acceptedStatus = "";
-                        String projectID = "";
-                        String applicantEmail = "";
 
-                        for (String key : entry.keySet()) {
-                            if(key.equals("applicantName"))
-                                applicantName = entry.get(key);
-                            else if(key.equals("userId"))
-                                applicantId = entry.get(key);
-                            else if(key.equals("shortPitch"))
-                                applicantPitch = entry.get(key);
-                            else if(key.equals("acceptedStatus"))
-                                acceptedStatus = entry.get(key);
-                            else if(key.equals("projectId"))
-                                projectID = entry.get(key);
-                            else if(key.equals("applicantEmail"))
-                                applicantEmail = entry.get(key);
+                    if(group != null) {
+                        for (Map<String, String> entry : group) {
+                            //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
+                            //reads each element in the hashmap
+                            String applicantName = "";
+                            String applicantId = "";
+                            String applicantPitch = "";
+                            String acceptedStatus = "";
+                            String projectID = "";
+                            String applicantEmail = "";
+
+                            for (String key : entry.keySet()) {
+                                if(key.equals("applicantName"))
+                                    applicantName = entry.get(key);
+                                else if(key.equals("userId"))
+                                    applicantId = entry.get(key);
+                                else if(key.equals("shortPitch"))
+                                    applicantPitch = entry.get(key);
+                                else if(key.equals("acceptedStatus"))
+                                    acceptedStatus = entry.get(key);
+                                else if(key.equals("projectId"))
+                                    projectID = entry.get(key);
+                                else if(key.equals("applicantEmail"))
+                                    applicantEmail = entry.get(key);
+                            }
+                            WorkersList.add(new Member(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                         }
-                        WorkersList.add(new Member(projectID, applicantName, applicantEmail, applicantId, acceptedStatus, applicantPitch));
                     }
                 }
                 adapter = new MemberListAdapter(getActivity(), WorkersList);

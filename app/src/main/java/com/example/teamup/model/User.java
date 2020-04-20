@@ -1,12 +1,30 @@
 package com.example.teamup.model;
+import android.os.Parcel;
+
 import java.util.ArrayList;
 
 
 public class User {
 
+    public User(){
+
+    }
+
+    private User(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        email = in.readString();
+        specialization = in.readString();
+        secondarySkill = in.readString();
+        location = in.readString();
+        userId = in.readString();
+        profileImageLink = in.readString();
+    }
+
     public User(String firstName, String lastName, String email,
                 String specialization, String secondarySkill, String location,
                 String userId,String profileImageLink) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.specialization = specialization;
@@ -73,7 +91,7 @@ public class User {
     }
 
     public void setLocation(String location) {
-        location = location;
+        this.location = location;
     }
 
     private String userId;

@@ -91,7 +91,7 @@ public class ProjectAdapter extends BaseAdapter  {
                  background.setBackground(gd);
                  foreground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.software_development_icon));
                  break;
-             case "Sales &amp; Marketing":
+             case "Sales & Marketing":
                  gd.setColor(Color.parseColor("#11F692"));
                  background.setBackground(gd);
                  foreground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.sales_marketing_icon));

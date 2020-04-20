@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,6 +61,8 @@ public class ApplicantListAdapter extends BaseAdapter{
         TextView pitch = v.findViewById(R.id.applicant_pitch);
         Button accept = v.findViewById(R.id.applicant_accept);
         Button review = v.findViewById(R.id.applicant_review);
+        ImageView profPic = v.findViewById(R.id.applicant_profile_picture);
+        
         db = FirebaseFirestore.getInstance();
 
         final Applicant a = ApplicantList.get(position);

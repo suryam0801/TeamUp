@@ -5,18 +5,60 @@ import android.os.Parcelable;
 
 public class Applicant implements Parcelable {
 
-    private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch;
+    private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch, profilePicURL, specialization, location;
 
     public Applicant() {
     }
 
-    public Applicant(String projectId, String applicantName, String applicantEmail, String userId,String acceptedStatus, String shortPitch) {
+    @Override
+    public String toString() {
+        return "Applicant{" +
+                "projectId='" + projectId + '\'' +
+                ", applicantName='" + applicantName + '\'' +
+                ", applicantEmail='" + applicantEmail + '\'' +
+                ", userId='" + userId + '\'' +
+                ", acceptedStatus='" + acceptedStatus + '\'' +
+                ", shortPitch='" + shortPitch + '\'' +
+                ", profilePicURL='" + profilePicURL + '\'' +
+                ", primarySkill='" + specialization + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
+    public String getProfilePicURL() {
+        return profilePicURL;
+    }
+
+    public void setProfilePicURL(String profilePicURL) {
+        this.profilePicURL = profilePicURL;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Applicant(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus, String shortPitch, String profilePicURL, String primarySkill, String location) {
         this.projectId = projectId;
         this.applicantName = applicantName;
         this.applicantEmail = applicantEmail;
         this.userId = userId;
         this.acceptedStatus = acceptedStatus;
         this.shortPitch = shortPitch;
+        this.profilePicURL = profilePicURL;
+        this.specialization = primarySkill;
+        this.location = location;
     }
 
     public String getProjectId() {
@@ -68,17 +110,6 @@ public class Applicant implements Parcelable {
     }
 
     @Override
-    public String toString() {
-        return "Applicant{" +
-                "applicantName='" + applicantName + '\'' +
-                ", applicantEmail='" + applicantEmail + '\'' +
-                ", userId='" + userId + '\'' +
-                ", acceptedStatus=" + acceptedStatus +
-                ", shortPitch='" + shortPitch + '\'' +
-                '}';
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
@@ -91,6 +122,9 @@ public class Applicant implements Parcelable {
         parcel.writeString(userId);
         parcel.writeString(acceptedStatus);
         parcel.writeString(shortPitch);
+        parcel.writeString(profilePicURL);
+        parcel.writeString(specialization);
+        parcel.writeString(location);
     }
 
     private Applicant(Parcel in) {
@@ -100,6 +134,9 @@ public class Applicant implements Parcelable {
         userId = in.readString();
         acceptedStatus = in.readString();
         shortPitch = in.readString();
+        profilePicURL = in.readString();
+        specialization = in.readString();
+        location = in.readString();
     }
 
     public static final Parcelable.Creator<Applicant> CREATOR

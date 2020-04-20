@@ -18,6 +18,4 @@ public class ChatReceivedViewHolder extends RecyclerView.ViewHolder {
         mTextViewTime=itemView.findViewById(R.id.tv_chat_received_time);
         mTextViewMesgage=itemView.findViewById(R.id.tv_chat_received_message);
     }
-
-
 }

@@ -14,8 +14,9 @@
         android:layout_marginLeft="23dp">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/applicant_profile_picture"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:background="@drawable/ic_account_circle_black_24dp"></ImageView>
     </LinearLayout>
 
