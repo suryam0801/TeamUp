@@ -381,7 +381,7 @@ public class ExploreTab extends Fragment {
 
         Object[] array={applicant};
 
-        db.collection("Projects").document("c0f34109-09b3-48ad-bcde-a08bad8165c2").update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -391,7 +391,7 @@ public class ExploreTab extends Fragment {
                             List<String> applicantIds = new ArrayList<>();
                             if(projects.getApplicantId()==null){
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document("c0f34109-09b3-48ad-bcde-a08bad8165c2").update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
@@ -403,7 +403,7 @@ public class ExploreTab extends Fragment {
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document("c0f34109-09b3-48ad-bcde-a08bad8165c2").update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
