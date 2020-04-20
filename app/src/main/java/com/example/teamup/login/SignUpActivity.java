@@ -1,10 +1,12 @@
 package com.example.teamup.login;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +41,9 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setFormat(PixelFormat.RGB_565);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.WHITE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
         setContentView(R.layout.activity_sign_up);
         firebaseAuth=FirebaseAuth.getInstance();
@@ -63,106 +66,20 @@ public class SignUpActivity extends AppCompatActivity {
                 final String fName=signUpFirstName.getText().toString();
                 final String lName=signUpLastName.getText().toString();
 
-                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName))
-                {
-                    firebaseAuth.createUserWithEmailAndPassword(email,password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                    if(task.isSuccessful())
-                                    {
-                                        firebaseAuth.getCurrentUser().sendEmailVerification()
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if(task.isSuccessful())
-                                                        {
-
-
-                                                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                                    .setDisplayName(fName+" "+lName)
-                                                                    .build();
-
-                                                            firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                                                            if(task.isSuccessful()) {
-                                                                                Toast.makeText(SignUpActivity.this, "Verification link has  been sent " +
-                                                                                        "to your email, Please verify and Login", Toast.LENGTH_LONG).show();
-                                                                                firebaseAuth.signOut();
-
-                                                                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                                                                                finish();
-                                                                            }
-                                                                            else {
-                                                                                Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                                                                firebaseAuth.signOut();
-                                                                                firebaseAuth.getCurrentUser().delete();
-                                                                            }
-                                                                        }
-                                                                    });
-
-                                                       /*     Map<String,String> map= new HashMap<>();
-                                                            map.put("Email",email);
-                                                            map.put("First Name",fName);
-                                                            map.put("Last Name",lName);
-
-                                                            firebaseFirestore.collection("Users").document(firebaseAuth.getCurrentUser().getUid()).set(map)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if(task.isSuccessful())
-                                                                            {
-                                                                                Toast.makeText(SignUpActivity.this,"Verification link has  been sent " +
-                                                                                        "to your email, Please verify and Login",Toast.LENGTH_LONG).show();
-                                                                                firebaseAuth.signOut();
-
-                                                                                startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
-                                                                                finish();
-                                                                            }
-                                                                            else {
-                                                                                Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                                                                firebaseAuth.signOut();
-                                                                                firebaseAuth.getCurrentUser().delete();
-                                                                            }
-                                                                        }
-                                                                    });
-                                                            */
-
-                                                        }
-                                                        else {
-                                                            firebaseAuth.signOut();
-                                                            firebaseAuth.getCurrentUser().delete();
-                                                            Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                                        }
-
-                                                    }
-                                                });
-                                    }
-                                    else {
-                                        Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                    }
-
-                                }
-                            });
-                }
-                else {
-                    Toast.makeText(SignUpActivity.this,"Enter Valid details",Toast.LENGTH_LONG).show();
-                }
-
+                Intent intent = new Intent(SignUpActivity.this, GatherUserDetails.class);
+                intent.putExtra("email", email);
+                intent.putExtra("password", password);
+                intent.putExtra("fName", fName);
+                intent.putExtra("lName", lName);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-
         loginInSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignUpActivity.this,LoginActivity.class));
             }
         });
-
-
     }
 }

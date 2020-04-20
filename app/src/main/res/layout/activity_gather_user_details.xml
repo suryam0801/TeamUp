@@ -48,31 +48,29 @@
                 android:layout_height="wrap_content"
                 android:text="Profile picture"
                 android:fontFamily="@font/roboto_regular"
+                android:layout_marginLeft="3dp"
                 android:textColor="#B3B1B1"
-                android:textSize="11dp"
-                android:layout_gravity="center">
+                android:textSize="11dp">
             </TextView>
 
             <RelativeLayout
                 android:id="@+id/imagePreview"
-                android:layout_width="90dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="0dp" >
+                android:orientation="vertical" >
 
 
                 <ImageView
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/ic_account_circle_black_24dp"
-                    android:layout_centerInParent="true"/>
+                    android:src="@drawable/ic_account_circle_black_24dp"/>
 
                 <Button
                     android:id="@+id/profilePicSetterImage"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="74dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginTop="45dp"
                     android:background="@drawable/edit_project_button_background"
                     android:foreground="@drawable/edit_drawable"
                     android:foregroundGravity="center"/>
@@ -84,6 +82,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Specialized Field (Enter 1)"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginLeft="3dp"
+                android:textColor="#B3B1B1"
+                android:layout_marginTop="20dp"
+                android:textSize="11dp">
+            </TextView>
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/primarySkill"
                 android:layout_width="match_parent"
@@ -91,22 +99,39 @@
                 android:backgroundTint="#ACA9A9"
                 android:textColorHint="#ACA9A9"
                 android:fontFamily="@font/roboto_medium"
-                android:layout_marginTop="20dp"
+                android:textSize="13dp"
                 android:textColor="@color/black"
-                android:hint="Your Specialized Field (Enter 1)"
                 android:inputType="textEmailAddress" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Secondary Skill"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="3dp"
+                android:textColor="#B3B1B1"
+                android:textSize="11dp">
+            </TextView>
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/secondarySkill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#ACA9A9"
                 android:textColorHint="#ACA9A9"
-                android:layout_marginTop="20dp"
+                android:textSize="13dp"
                 android:fontFamily="@font/roboto_medium"
                 android:textColor="@color/black"
-                android:hint="Secondary Skill"
                 android:inputType="textEmailAddress" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="20dp"
+                android:textColor="#B3B1B1"
+                android:textSize="11dp">
+            </TextView>
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/location"
                 android:layout_width="match_parent"
@@ -114,9 +139,8 @@
                 android:backgroundTint="#ACA9A9"
                 android:textColorHint="#ACA9A9"
                 android:fontFamily="@font/roboto_medium"
+                android:textSize="13dp"
                 android:textColor="@color/black"
-                android:layout_marginTop="20dp"
-                android:hint="Location"
                 android:inputType="textEmailAddress" />
 
             <Button
