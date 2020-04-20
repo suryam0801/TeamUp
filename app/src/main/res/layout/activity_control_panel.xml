@@ -8,33 +8,49 @@
     android:orientation="vertical"
     android:background="@color/card_back">
 
-    <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginBottom="12dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_chevron_left_black_24dp">
-    </ImageButton>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_chevron_left_black_24dp">
+        </ImageButton>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_regular"
-        android:textColor="#3B3B3B"
-        android:textSize="20dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginBottom="21dp"
-        android:text="Teamup Mobile Application">
-    </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="#3B3B3B"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginBottom="21dp"
+            android:text="Teamup Mobile Application">
+        </TextView>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="25dp"
+        android:background="#D3CECE">
+    </View>
+
 
     <GridLayout
         android:columnCount="2"
         android:layout_marginBottom="35dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
         android:layout_gravity="fill"
         android:id="@+id/gridLayoutControlPanel"
         android:layout_weight="80"
@@ -88,7 +104,7 @@
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="#A274FF"
                     android:textSize="12dp"
-                    android:visibility="visible"
+                    android:visibility="invisible"
                     android:id="@+id/projectWall_newNotifications_button"
                     android:background="@drawable/control_panel_new_display_buttons"></Button>
 
@@ -127,7 +143,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:textSize="20dp"
                     android:textColor="#FFFFFF"
-                    android:layout_marginTop="65dp"
+                    android:layout_marginTop="75dp"
                     android:layout_marginLeft="15dp"
                     android:text="Task List">
                 </TextView>
@@ -264,9 +280,10 @@
         android:paddingLeft="20dp"
         android:paddingRight="30dp"
         android:drawableStart="@drawable/edit_drawable"
-        android:drawablePadding="10dp"
+        android:drawablePadding="20dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="30dp"
         android:text="edit">
     </Button>
 

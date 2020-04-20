@@ -75,7 +75,7 @@ public class ProjectAdapter extends BaseAdapter  {
                  background.setBackground(gd);
                  foreground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.design_creative_icon));
                  break;
-             case "Engineering &amp; Architecture":
+             case "Engineering & Architecture":
                  gd.setColor(Color.parseColor("#158BF1"));
                  background.setBackground(gd);
                  foreground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.engineering_architecture_icon));
