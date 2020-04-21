@@ -1,8 +1,6 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +16,7 @@ import android.widget.ListView;
 import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Member;
+import com.example.teamup.model.Worker;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +26,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +44,7 @@ public class AllMembersFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     ListView listViewWorkers;
-    private List<Member> WorkersList;
+    private List<Worker> WorkersList;
     private MemberListAdapter adapter;
     Project project;
     FirebaseFirestore db;
@@ -146,7 +142,7 @@ public class AllMembersFragment extends Fragment {
 
                             User user = SessionStorage.getUser(getActivity());
 
-                            WorkersList.add(new Member(projectID, applicantName, applicantEmail, applicantId,
+                            WorkersList.add(new Worker(projectID, applicantName, applicantEmail, applicantId,
                                     acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
                                     user.getLocation()));
                         }
@@ -159,8 +155,11 @@ public class AllMembersFragment extends Fragment {
 
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        /*SessionStorage.saveMember(getActivity(), WorkersList.get(i));
-                        startActivity(new Intent(getActivity(), EditOrViewProfile.class));*/
+                        SessionStorage.saveMember(getActivity(), WorkersList.get(i));
+                        Intent intent = new Intent(getActivity(), EditOrViewProfile.class);
+                        intent.putExtra("userID", WorkersList.get(i).getUserId());
+                        intent.putExtra("flag", "member");
+                        startActivity(intent);
                     }
                 });
 

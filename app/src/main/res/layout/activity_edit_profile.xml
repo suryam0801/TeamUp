@@ -81,18 +81,6 @@
                         android:gravity="center">
                     </TextView>
 
-                    <EditText
-                        android:id="@+id/viewProfileChangeName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter New UserName"
-                        android:layout_marginTop="56dp"
-                        android:textColorHint="#6CACFF"
-                        android:textSize="12dp"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
-                        android:backgroundTint="#6CACFF"></EditText>
-
                     <TextView
                         android:id="@+id/viewProfile_email"
                         android:layout_width="match_parent"
@@ -102,36 +90,8 @@
                         android:fontFamily="@font/roboto_medium"
                         android:textSize="12dp"
                         android:textColor="#828282"
+                        android:layout_marginBottom="22dp"
                         android:gravity="center"></TextView>
-
-                    <EditText
-                        android:id="@+id/viewProfileChangeEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Enter New Email Id"
-                        android:textColorHint="#6CACFF"
-                        android:textSize="12dp"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
-                        android:backgroundTint="#6CACFF"></EditText>
-
-                    <Button
-                        android:id="@+id/profile_edit_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@drawable/explore_card_arrow"
-                        android:fontFamily="@font/roboto_regular"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="30dp"
-                        android:drawableStart="@drawable/create_24px"
-                        android:textColor="#6CACFF"
-                        android:layout_marginTop="20dp"
-                        android:textSize="12dp" android:layout_marginBottom="22dp"
-                        android:drawablePadding="10dp"
-                        android:textAllCaps="false"
-                        android:layout_gravity="center"
-                        android:text="Edit">
-                    </Button>
 
                 </LinearLayout>
 
@@ -309,6 +269,7 @@
                             android:hint="Enter New Specialty"
                             android:textColorHint="#6CACFF"
                             android:visibility="gone"
+                            android:textColor="@color/black"
                             android:textSize="12dp"
                             android:backgroundTint="#6CACFF"></EditText>
 
@@ -369,6 +330,7 @@
                             android:hint="Enter New Specialty"
                             android:textColorHint="#6CACFF"
                             android:visibility="gone"
+                            android:textColor="@color/black"
                             android:textSize="12dp"
                             android:backgroundTint="#6CACFF"></EditText>
 
@@ -429,6 +391,7 @@
                             android:layout_height="wrap_content"
                             android:hint="Enter New Specialty"
                             android:textColorHint="#6CACFF"
+                            android:textColor="@color/black"
                             android:visibility="gone"
                             android:textSize="12dp"
                             android:backgroundTint="#6CACFF"></EditText>

@@ -3,11 +3,11 @@ package com.example.teamup.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Member implements Parcelable {
+public class Worker implements Parcelable {
 
     private String projectId, memberName, memberEmail,userId,acceptedStatus,shortPitch, profilePicURL, specialization, location;
 
-    public Member() {
+    public Worker() {
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Member implements Parcelable {
         this.location = location;
     }
 
-    public Member(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus, String shortPitch, String profilePicURL, String primarySkill, String location) {
+    public Worker(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus, String shortPitch, String profilePicURL, String primarySkill, String location) {
         this.projectId = projectId;
         this.memberName = applicantName;
         this.memberEmail = applicantEmail;
@@ -127,7 +127,7 @@ public class Member implements Parcelable {
         parcel.writeString(location);
     }
 
-    private Member(Parcel in) {
+    private Worker(Parcel in) {
         projectId = in.readString();
         memberName = in.readString();
         memberEmail = in.readString();
@@ -139,14 +139,14 @@ public class Member implements Parcelable {
         location = in.readString();
     }
 
-    public static final Parcelable.Creator<Member> CREATOR
-            = new Parcelable.Creator<Member>() {
-        public Member createFromParcel(Parcel in) {
-            return new Member(in);
+    public static final Parcelable.Creator<Worker> CREATOR
+            = new Parcelable.Creator<Worker>() {
+        public Worker createFromParcel(Parcel in) {
+            return new Worker(in);
         }
 
-        public Member[] newArray(int size) {
-            return new Member[size];
+        public Worker[] newArray(int size) {
+            return new Worker[size];
         }
     };
 }
