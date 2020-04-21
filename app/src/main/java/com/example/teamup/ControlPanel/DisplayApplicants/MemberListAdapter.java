@@ -61,13 +61,13 @@ public class MemberListAdapter extends BaseAdapter{
                 .into(profPic);
 
 
-        final Worker a = workerList.get(position);
+        final Worker worker = workerList.get(position);
 
         //Set text for TextView
-        final String nameDisplay = a.getMemberName();
-        final String pitchDisplay = String.valueOf(a.getShortPitch());
+        final String nameDisplay = worker.getMemberName();
+        final String specialization = String.valueOf(worker.getSpecialization());
         name.setText(nameDisplay);
-        pitch.setText(pitchDisplay);
+        pitch.setText(specialization);
 
         //Save product id to tag
         v.setTag(workerList.get(position).getUserId());

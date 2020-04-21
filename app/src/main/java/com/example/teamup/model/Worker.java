@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Worker implements Parcelable {
 
-    private String projectId, memberName, memberEmail,userId,acceptedStatus,shortPitch, profilePicURL, specialization, location;
+    private String projectId, memberName,userId, profilePicURL, specialization, location;
 
     public Worker() {
     }
@@ -15,10 +15,7 @@ public class Worker implements Parcelable {
         return "Member{" +
                 "projectId='" + projectId + '\'' +
                 ", applicantName='" + memberName + '\'' +
-                ", applicantEmail='" + memberEmail + '\'' +
                 ", userId='" + userId + '\'' +
-                ", acceptedStatus='" + acceptedStatus + '\'' +
-                ", shortPitch='" + shortPitch + '\'' +
                 ", profilePicURL='" + profilePicURL + '\'' +
                 ", primarySkill='" + specialization + '\'' +
                 ", location='" + location + '\'' +
@@ -49,13 +46,10 @@ public class Worker implements Parcelable {
         this.location = location;
     }
 
-    public Worker(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus, String shortPitch, String profilePicURL, String primarySkill, String location) {
+    public Worker(String projectId, String applicantName, String userId, String profilePicURL, String primarySkill, String location) {
         this.projectId = projectId;
         this.memberName = applicantName;
-        this.memberEmail = applicantEmail;
         this.userId = userId;
-        this.acceptedStatus = acceptedStatus;
-        this.shortPitch = shortPitch;
         this.profilePicURL = profilePicURL;
         this.specialization = primarySkill;
         this.location = location;
@@ -77,14 +71,6 @@ public class Worker implements Parcelable {
         this.memberName = applicantName;
     }
 
-    public String getMemberEmail() {
-        return memberEmail;
-    }
-
-    public void setMemberEmail(String applicantEmail) {
-        this.memberEmail = applicantEmail;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -93,21 +79,6 @@ public class Worker implements Parcelable {
         this.userId = userId;
     }
 
-    public String getAcceptedStatus() {
-        return acceptedStatus;
-    }
-
-    public void setAcceptedStatus(String acceptedStatus) {
-        this.acceptedStatus = acceptedStatus;
-    }
-
-    public String getShortPitch() {
-        return shortPitch;
-    }
-
-    public void setShortPitch(String shortPitch) {
-        this.shortPitch = shortPitch;
-    }
 
     @Override
     public int describeContents() {
@@ -118,10 +89,7 @@ public class Worker implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(projectId);
         parcel.writeString(memberName);
-        parcel.writeString(memberEmail);
         parcel.writeString(userId);
-        parcel.writeString(acceptedStatus);
-        parcel.writeString(shortPitch);
         parcel.writeString(profilePicURL);
         parcel.writeString(specialization);
         parcel.writeString(location);
@@ -130,10 +98,7 @@ public class Worker implements Parcelable {
     private Worker(Parcel in) {
         projectId = in.readString();
         memberName = in.readString();
-        memberEmail = in.readString();
         userId = in.readString();
-        acceptedStatus = in.readString();
-        shortPitch = in.readString();
         profilePicURL = in.readString();
         specialization = in.readString();
         location = in.readString();
