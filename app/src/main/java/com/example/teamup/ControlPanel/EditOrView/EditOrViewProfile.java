@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,7 +42,8 @@ public class EditOrViewProfile extends AppCompatActivity {
 
     CircleImageView profileImageView;
     TextView userName, userEmail, createdProjects, workingProjects, completedProjects, specialization, Hobbies, Location;
-    Button editProfPic, editNameEmail, editSpecialization, editSecondarySkill, editLocation;
+    Button editProfPic, editNameEmail, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
+    EditText nameEdit, emailEdit, specializationEdit, HobbiesEdit, locationEdit;
     FirebaseFirestore db;
 
     String userID, flag;
@@ -66,6 +69,70 @@ public class EditOrViewProfile extends AppCompatActivity {
         editSecondarySkill = findViewById(R.id.editSecondarySkill);
         editLocation = findViewById(R.id.editLocation);
         profileImageView = findViewById(R.id.profile_view_profile_image);
+        finalizeChanges = findViewById(R.id.profile_finalize_changes);
+        logout = findViewById(R.id.profile_logout);
+        nameEdit = findViewById(R.id.viewProfileChangeName);
+        emailEdit = findViewById(R.id.viewProfileChangeEmail);
+        specializationEdit = findViewById(R.id.viewProfileChangeSpecialization);
+        HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
+        locationEdit = findViewById(R.id.viewProfileChangeLocation);
+
+        editProfPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //pic loading
+            }
+        });
+        editNameEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userName.setVisibility(View.GONE);
+                nameEdit.setVisibility(View.VISIBLE);
+                userEmail.setVisibility(View.GONE);
+                emailEdit.setVisibility(View.VISIBLE);
+            }
+        });
+        editSpecialization.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                specialization.setVisibility(View.GONE);
+                specializationEdit.setVisibility(View.VISIBLE);
+            }
+        });
+        editSecondarySkill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Hobbies.setVisibility(View.GONE);
+                HobbiesEdit.setVisibility(View.VISIBLE);
+            }
+        });
+        editLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Location.setVisibility(View.GONE);
+                locationEdit.setVisibility(View.VISIBLE);
+            }
+        });
+        finalizeChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = String.valueOf(nameEdit.getText());
+                String email = String.valueOf(emailEdit.getText());
+                String pSkill = String.valueOf(specializationEdit.getText());
+                String sSkill = String.valueOf(HobbiesEdit.getText());
+                String loc = String.valueOf(locationEdit.getText());
+            }
+        });
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
 
         db=FirebaseFirestore.getInstance();
 
@@ -82,11 +149,19 @@ public class EditOrViewProfile extends AppCompatActivity {
         }
     }
 
-    public void ownerLoad() {
+    public void memberLoad() {
+        editProfPic.setVisibility(View.GONE);
         editNameEmail.setVisibility(View.GONE);
         editSpecialization.setVisibility(View.GONE);
         editSecondarySkill.setVisibility(View.GONE);
         editLocation.setVisibility(View.GONE);
+        finalizeChanges.setVisibility(View.GONE);
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) logout.getLayoutParams();
+        lp.setMargins(0,0,0,40);
+        logout.setLayoutParams(lp);
+        logout.setText("Done Viewing");
+
         DocumentReference docRef = db.collection("Users").document(userID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -112,7 +187,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         });
     }
 
-    public void memberLoad() {
+    public void ownerLoad() {
         DocumentReference docRef = db.collection("Users").document(userID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
