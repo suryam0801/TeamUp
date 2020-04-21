@@ -8,6 +8,34 @@
     android:orientation="vertical"
     tools:context=".TabbedActivityMain">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TeamUp"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="16dp"
+            android:paddingTop="22dp"
+            android:paddingBottom="15dp"
+            android:paddingLeft="13dp"
+            android:textColor="#3B3B3B">
+        </TextView>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/mainActivity_profilePicture"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/ic_account_circle_black_24dp" />
+
+    </LinearLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"

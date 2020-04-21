@@ -44,7 +44,6 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         this.project_id=project_id;
         this.uid=uid;
         this.a=a;
-
     }
 
     @Override
@@ -65,6 +64,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditOrViewProfile.class);
                 intent.putExtra("userID", a.getUserId());
+                intent.putExtra("flag", "member");
                 startActivity(intent);
             }
         });

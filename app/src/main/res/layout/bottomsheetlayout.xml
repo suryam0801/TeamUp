@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_gravity="center_horizontal"
     android:layout_height="match_parent"
+    android:background="@drawable/bottomsheet_background"
     android:padding="16dp">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_marginTop="56dp"
@@ -87,7 +90,7 @@
             android:background="@drawable/unpressable_button"
             android:layout_marginTop="10.5dp"
             android:text="Reason to join"/>
-        
+
         <Button
             android:id="@+id/view_applicant_profile_button"
             android:layout_width="152dp"
