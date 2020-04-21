@@ -146,9 +146,7 @@ public class ApplicantDisplayFragment extends Fragment {
                                 applicantEmail = entry.get(key);
                         }
 
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences("Current User", Activity.MODE_PRIVATE);
-                        String string = sharedPref.getString("user","1234");
-                        User user = new Gson().fromJson(string, User.class);
+                        User user = SessionStorage.getUser(getActivity());
 
                         ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId,
                                 acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),

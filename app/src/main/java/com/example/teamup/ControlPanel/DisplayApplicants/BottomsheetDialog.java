@@ -1,6 +1,7 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class BottomsheetDialog extends BottomSheetDialogFragment {
+
     private BottomSheetListener mListener;
     TextView name,desc,requestjoin;
     private Context mContext;
@@ -52,9 +55,19 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         requestjoin=v.findViewById(R.id.reqjoin);
         Button reject = v.findViewById(R.id.btnreject);
         Button accept = v.findViewById(R.id.btnaccept);
+        Button viewProfile = v.findViewById(R.id.view_applicant_profile_button);
         requestjoin.setText(a.getShortPitch());
         name.setText(applname);
         desc.setText(a.getApplicantEmail());
+
+        viewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditOrViewProfile.class);
+                intent.putExtra("userID", a.getUserId());
+                startActivity(intent);
+            }
+        });
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

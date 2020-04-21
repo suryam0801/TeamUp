@@ -41,6 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
+                    android:paddingRight="25dp"
                     android:gravity="center"
                     android:text="Profile"
                     android:textColor="@color/black"
@@ -65,7 +66,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="57dp"
                     android:orientation="vertical"
                     android:background="@drawable/light_blue_nav_button">
 
@@ -119,11 +120,9 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_view_profile_image"
-                        android:layout_width="61dp"
-                        android:layout_height="63dp"
-                        android:background="@drawable/ic_account_circle_black_24dp"
-                        app:civ_border_color="#FF000000"
-                        app:civ_border_width="2dp" />
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:background="@drawable/ic_account_circle_black_24dp" />
 
                     <Button
                         android:id="@+id/profile_view_profilePicSetterImage"
@@ -398,22 +397,43 @@
 
             </LinearLayout>
 
-            <Button
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
                 android:layout_marginRight="11dp"
                 android:layout_marginTop="16dp"
-                android:textAllCaps="false"
-                android:text="Logout"
-                android:textColor="#6CACFF"
-                android:gravity="start|center"
-                android:paddingLeft="17dp"
-                android:paddingRight="21dp"
-                android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-                android:background="@drawable/light_blue_nav_button">
-            </Button>
+                android:orientation="horizontal">
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textAllCaps="false"
+                    android:text="Finalize Changes"
+                    android:textColor="#35C80B"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/confirm_application_buttom_background">
+                </Button>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:textAllCaps="false"
+                    android:text="Logout"
+                    android:layout_weight="50"
+                    android:textColor="#6CACFF"
+                    android:gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/light_blue_nav_button">
+                </Button>
+
+
+
+            </LinearLayout>
 
         </LinearLayout>
 

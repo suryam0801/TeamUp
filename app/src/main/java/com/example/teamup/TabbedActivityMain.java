@@ -101,13 +101,7 @@ public class TabbedActivityMain extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 User user = documentSnapshot.toObject(User.class);
-                Log.d("TABBED ACTIVITY MAIN:", "saveUser: " + user.toString());
-                SharedPreferences sharedPref = getSharedPreferences("Current User", Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                String string = new Gson().toJson(user);
-                Log.d("TABBED ACTIVITY MAIN:", "saveUser: " + string);
-                editor.putString("user", string);
-                editor.apply();
+                SessionStorage.saveUser(TabbedActivityMain.this, user);
             }
         });
     }

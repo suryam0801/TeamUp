@@ -206,9 +206,7 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
                     }
                 });
 
-        SharedPreferences sharedPref = getSharedPreferences("Current User", Activity.MODE_PRIVATE);
-        String string = sharedPref.getString("user","1234");
-        User user = new Gson().fromJson(string, User.class);
+        User user = SessionStorage.getUser(CreateProject.this);
 
         int createdProjects = user.getCreatedProjects();
         createdProjects = createdProjects + 1;

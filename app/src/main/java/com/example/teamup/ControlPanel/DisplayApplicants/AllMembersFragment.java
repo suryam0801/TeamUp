@@ -1,6 +1,7 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,8 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
@@ -139,9 +142,9 @@ public class AllMembersFragment extends Fragment {
                                 else if(key.equals("applicantEmail"))
                                     applicantEmail = entry.get(key);
                             }
-                            SharedPreferences sharedPref = getActivity().getSharedPreferences("Current User", Activity.MODE_PRIVATE);
-                            String string = sharedPref.getString("user","1234");
-                            User user = new Gson().fromJson(string, User.class);
+
+
+                            User user = SessionStorage.getUser(getActivity());
 
                             WorkersList.add(new Member(projectID, applicantName, applicantEmail, applicantId,
                                     acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
@@ -151,6 +154,16 @@ public class AllMembersFragment extends Fragment {
                 }
                 adapter = new MemberListAdapter(getActivity(), WorkersList);
                 listViewWorkers.setAdapter(adapter);
+
+                listViewWorkers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        /*SessionStorage.saveMember(getActivity(), WorkersList.get(i));
+                        startActivity(new Intent(getActivity(), EditOrViewProfile.class));*/
+                    }
+                });
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

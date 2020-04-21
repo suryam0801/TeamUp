@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.se.omapi.Session;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import androidx.annotation.NonNull;
 import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
@@ -123,7 +125,7 @@ public class ExploreTab extends Fragment {
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), EditOrViewProfile.class));
+                startActivity(new Intent(getActivity(), CreateProject.class));
             }
         });
 
@@ -365,9 +367,7 @@ public class ExploreTab extends Fragment {
 
     public void saveApplicant(String shortPitch, final String projectId){
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("Current User", Activity.MODE_PRIVATE);
-        String string = sharedPref.getString("user","1234");
-        User user = new Gson().fromJson(string, User.class);
+        User user = SessionStorage.getUser(getActivity());
 
         final Applicant applicant=new Applicant();
         applicant.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
