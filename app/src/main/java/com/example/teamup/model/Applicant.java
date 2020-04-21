@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class Applicant implements Parcelable {
 
     private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch, profilePicURL, specialization, location;
+    private int workingProject;
 
     public Applicant() {
     }
@@ -23,6 +24,29 @@ public class Applicant implements Parcelable {
                 ", primarySkill='" + specialization + '\'' +
                 ", location='" + location + '\'' +
                 '}';
+    }
+
+    public Applicant(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus,
+                     String shortPitch, String profilePicURL, String primarySkill, String location, int workingProject) {
+
+        this.projectId = projectId;
+        this.applicantName = applicantName;
+        this.applicantEmail = applicantEmail;
+        this.userId = userId;
+        this.acceptedStatus = acceptedStatus;
+        this.shortPitch = shortPitch;
+        this.profilePicURL = profilePicURL;
+        this.specialization = primarySkill;
+        this.location = location;
+        this.workingProject = workingProject;
+    }
+
+    public int getWorkingProject() {
+        return workingProject;
+    }
+
+    public void setWorkingProject(int workingProject) {
+        this.workingProject = workingProject;
     }
 
     public String getProfilePicURL() {
@@ -49,17 +73,7 @@ public class Applicant implements Parcelable {
         this.location = location;
     }
 
-    public Applicant(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus, String shortPitch, String profilePicURL, String primarySkill, String location) {
-        this.projectId = projectId;
-        this.applicantName = applicantName;
-        this.applicantEmail = applicantEmail;
-        this.userId = userId;
-        this.acceptedStatus = acceptedStatus;
-        this.shortPitch = shortPitch;
-        this.profilePicURL = profilePicURL;
-        this.specialization = primarySkill;
-        this.location = location;
-    }
+
 
     public String getProjectId() {
         return projectId;
@@ -125,6 +139,7 @@ public class Applicant implements Parcelable {
         parcel.writeString(profilePicURL);
         parcel.writeString(specialization);
         parcel.writeString(location);
+        parcel.writeInt(workingProject);
     }
 
     private Applicant(Parcel in) {
@@ -137,6 +152,7 @@ public class Applicant implements Parcelable {
         profilePicURL = in.readString();
         specialization = in.readString();
         location = in.readString();
+        workingProject = in.readInt();
     }
 
     public static final Parcelable.Creator<Applicant> CREATOR

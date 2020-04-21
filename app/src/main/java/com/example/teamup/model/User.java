@@ -10,6 +10,43 @@ public class User {
 
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\n' +
+                ", lastName='" + lastName + '\n' +
+                ", email='" + email + '\n' +
+                ", specialization='" + specialization + '\n' +
+                ", secondarySkill='" + secondarySkill + '\n' +
+                ", profileImageLink='" + profileImageLink + '\n' +
+                ", location='" + location + '\n' +
+                ", userId='" + userId + '\n' +
+                ", createdProjects='" + createdProjects + '\n' +
+                ", workingProjects='" + workingProjects + '\n' +
+                ", completedProjects='" + completedProjects + '\n' +
+                '}';
+    }
+
+    public void setCreatedProjects(int createdProjects) {
+        this.createdProjects = createdProjects;
+    }
+
+    public int getWorkingProjects() {
+        return workingProjects;
+    }
+
+    public void setWorkingProjects(int workingProjects) {
+        this.workingProjects = workingProjects;
+    }
+
+    public int getCompletedProjects() {
+        return completedProjects;
+    }
+
+    public void setCompletedProjects(int completedProjects) {
+        this.completedProjects = completedProjects;
+    }
+
     private User(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
@@ -19,11 +56,15 @@ public class User {
         location = in.readString();
         userId = in.readString();
         profileImageLink = in.readString();
+        createdProjects = in.readInt();
+        workingProjects = in.readInt();
+        completedProjects = in.readInt();
     }
 
     public User(String firstName, String lastName, String email,
                 String specialization, String secondarySkill, String location,
-                String userId,String profileImageLink) {
+                String userId,String profileImageLink, int createdProjects, int workingProjects,
+                int completedProjects) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -32,6 +73,9 @@ public class User {
         this.location = location;
         this.userId = userId;
         this.profileImageLink=profileImageLink;
+        this.createdProjects = createdProjects;
+        this.workingProjects = workingProjects;
+        this.completedProjects = completedProjects;
 
     }
 
@@ -47,20 +91,19 @@ public class User {
 
     private String profileImageLink;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", specialization='" + specialization + '\'' +
-                ", secondarySkill='" + secondarySkill + '\'' +
-                ", Location='" + location + '\'' +
-                ", userId='" + userId + '\'' +
-                '}';
-    }
-
     private String location;
+
+    private String userId;
+
+    private int createdProjects;
+
+    private int workingProjects;
+
+    private int completedProjects;
+
+    public int getCreatedProjects() {
+        return createdProjects;
+    }
 
     public String getProfileImageLink() {
         return profileImageLink;
@@ -94,7 +137,7 @@ public class User {
         this.location = location;
     }
 
-    private String userId;
+
 
     public String getFirstName() {
         return firstName;

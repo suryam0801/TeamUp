@@ -77,7 +77,10 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                 .into(profPic);
 
         final Applicant a = ApplicantList.get(position);
-
+        int workingProjects = a.getWorkingProject();
+        workingProjects = workingProjects + 1;
+        Log.d(TAG, "WORKING PROJECTS: " + workingProjects);
+        a.setWorkingProject(workingProjects);
 
 
         //Set text for TextView
@@ -133,6 +136,17 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                                 }
                             }
                         });
+
+                db.collection("Users").document(a.getUserId()).update("workingProjects",a.getWorkingProject()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "JOB SUCCESSFUL!!!!");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
             }
         });
 

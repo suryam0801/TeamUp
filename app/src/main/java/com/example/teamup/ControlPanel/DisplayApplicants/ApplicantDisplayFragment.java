@@ -152,7 +152,7 @@ public class ApplicantDisplayFragment extends Fragment {
 
                         ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId,
                                 acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
-                                user.getLocation()));
+                                user.getLocation(), user.getWorkingProjects()));
                     }
                 }
                 adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
