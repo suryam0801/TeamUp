@@ -2,6 +2,7 @@ package com.example.teamup;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.teamup.model.Project;
+import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -28,6 +30,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +205,22 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
                         Log.d(TAG, "onSuccess: Project Not Added");
                     }
                 });
+
+        User user = SessionStorage.getUser(CreateProject.this);
+
+        int createdProjects = user.getCreatedProjects();
+        createdProjects = createdProjects + 1;
+
+        db.collection("Users").document(currentUser.getInstance().getUid()).update("createdProjects",createdProjects).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "JOB SUCCESSFUL!!!!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
 
     }
 

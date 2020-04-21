@@ -217,7 +217,7 @@ public class GatherUserDetails extends AppCompatActivity {
 
     private void addUserToCollection() {
 
-        User user = new User(fName,lName,email,primSkill,secSkill,loc,userId,downloadUri.toString());
+        User user = new User(fName,lName,email,primSkill,secSkill,loc,userId,downloadUri.toString(), 0, 0, 0);
 
         db.collection("Users")
                 .document(userId)
