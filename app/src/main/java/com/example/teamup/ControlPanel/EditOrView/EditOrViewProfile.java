@@ -43,7 +43,7 @@ public class EditOrViewProfile extends AppCompatActivity {
     Button editProfPic, editNameEmail, editSpecialization, editSecondarySkill, editLocation;
     FirebaseFirestore db;
 
-    String userID;
+    String userID, flag;
     User user;
 
     @Override
@@ -70,7 +70,23 @@ public class EditOrViewProfile extends AppCompatActivity {
         db=FirebaseFirestore.getInstance();
 
         userID = getIntent().getStringExtra("userID");
+        flag = getIntent().getStringExtra("flag");
 
+        switch (flag) {
+            case "member":
+                memberLoad();
+                break;
+            case "owner":
+                ownerLoad();
+                break;
+        }
+    }
+
+    public void ownerLoad() {
+        editNameEmail.setVisibility(View.GONE);
+        editSpecialization.setVisibility(View.GONE);
+        editSecondarySkill.setVisibility(View.GONE);
+        editLocation.setVisibility(View.GONE);
         DocumentReference docRef = db.collection("Users").document(userID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -94,6 +110,34 @@ public class EditOrViewProfile extends AppCompatActivity {
                 Location.setText(user.getLocation());
             }
         });
-
     }
+
+    public void memberLoad() {
+        DocumentReference docRef = db.collection("Users").document(userID);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+
+                Log.d("EDITORVIEW", "userID: " + user.toString());
+
+                Glide.with(EditOrViewProfile.this)
+                        .load(user.getProfileImageLink())
+                        .placeholder(ContextCompat.getDrawable(EditOrViewProfile.this, R.drawable.ic_account_circle_black_24dp))
+                        .into(profileImageView);
+
+                userName.setText(user.getFirstName() + " " + user.getLastName());
+                userEmail.setText(user.getEmail());
+                createdProjects.setText(user.getCreatedProjects() + "");
+                workingProjects.setText(user.getWorkingProjects() + "");
+                completedProjects.setText(user.getCompletedProjects() + "");
+                specialization.setText(user.getSpecialization());
+                Hobbies.setText(user.getSecondarySkill());
+                Location.setText(user.getLocation());
+            }
+        });
+    }
+
+
+
 }

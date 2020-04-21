@@ -2,9 +2,11 @@ package com.example.teamup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 
+import com.bumptech.glide.Glide;
+import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.Explore.ExploreTab;
 import com.example.teamup.Explore.ProjectAdapter;
 import com.example.teamup.model.Project;
@@ -35,14 +39,18 @@ import com.google.gson.Gson;
 import java.util.Locale;
 import java.util.Objects;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class TabbedActivityMain extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TabItem exploreTab, workbenchTab;
     public PageAdapterMainPage pagerAdapter;
+    private CircleImageView profPic;
     FirebaseFirestore db;
     FirebaseAuth currentUser;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +66,26 @@ public class TabbedActivityMain extends AppCompatActivity {
         exploreTab = findViewById(R.id.main_explore_tab);
         workbenchTab = findViewById(R.id.main_workbench_tab);
         viewPager = findViewById(R.id.main_viewpager);
+        profPic = findViewById(R.id.mainActivity_profilePicture);
 
         db=FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
+        loadUser();
+
+        profPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TabbedActivityMain.this, EditOrViewProfile.class);
+                intent.putExtra("userID", user.getUserId());
+                intent.putExtra("flag", "owner");
+                startActivity(intent);
+            }
+        });
 
         pagerAdapter = new PageAdapterMainPage(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
 
-        loadUser();
+
 
         Bundle bundle = new Bundle();
         bundle.putString("edttext", "From Activity");
@@ -100,8 +120,12 @@ public class TabbedActivityMain extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User user = documentSnapshot.toObject(User.class);
+                user = documentSnapshot.toObject(User.class);
                 SessionStorage.saveUser(TabbedActivityMain.this, user);
+                Glide.with(TabbedActivityMain.this)
+                        .load(user.getProfileImageLink())
+                        .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.ic_account_circle_black_24dp))
+                        .into(profPic);
             }
         });
     }
