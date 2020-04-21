@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.Edit;
+package com.example.teamup.ControlPanel.EditOrView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.teamup.R;
 
-public class EditProject extends AppCompatActivity {
+public class EditOrViewProject extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

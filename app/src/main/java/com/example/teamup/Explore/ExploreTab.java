@@ -27,6 +27,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 //import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.example.teamup.model.Applicant;
@@ -122,7 +123,7 @@ public class ExploreTab extends Fragment {
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CreateProject.class));
+                startActivity(new Intent(getActivity(), EditOrViewProfile.class));
             }
         });
 

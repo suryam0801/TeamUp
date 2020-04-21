@@ -1,9 +1,424 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ControlPanel.Edit.EditProfile">
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ControlPanel.EditOrView.EditOrViewProfile">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="19dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/bck_create"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_chevron_left_black_24dp">
+                </ImageButton>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="Profile"
+                    android:textColor="@color/black"
+                    android:textSize="20dp">
+                </TextView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="18.5dp"
+                android:background="#EEEEEE">
+            </View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/light_blue_nav_button">
+
+                    <TextView
+                        android:id="@+id/viewProfile_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="56dp"
+                        android:text="User Name"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:gravity="center"></TextView>
+
+                    <TextView
+                        android:id="@+id/viewProfile_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="UserEmail@email.com"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textSize="12dp"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="#828282"
+                        android:gravity="center"></TextView>
+
+                    <Button
+                        android:id="@+id/profile_edit_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@drawable/explore_card_arrow"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="30dp"
+                        android:drawableStart="@drawable/create_24px"
+                        android:textColor="#6CACFF"
+                        android:textSize="12dp" android:layout_marginBottom="22dp"
+                        android:drawablePadding="10dp"
+                        android:textAllCaps="false"
+                        android:layout_gravity="center"
+                        android:text="Edit">
+                    </Button>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_view_profile_image"
+                        android:layout_width="61dp"
+                        android:layout_height="63dp"
+                        android:background="@drawable/ic_account_circle_black_24dp"
+                        app:civ_border_color="#FF000000"
+                        app:civ_border_width="2dp" />
+
+                    <Button
+                        android:id="@+id/profile_view_profilePicSetterImage"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="45dp"
+                        android:background="@drawable/edit_project_button_background"
+                        android:foreground="@drawable/edit_drawable"
+                        android:foregroundGravity="center"/>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="26dp"
+                android:paddingRight="26dp"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:background="@drawable/light_blue_nav_button"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Created Projects"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textSize="12dp"
+                        android:layout_gravity="center"></TextView>
+
+                    <TextView
+                        android:id="@+id/viewProfile_createdProjectsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_marginTop="16dp"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="In Progress"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textSize="12dp"
+                        android:layout_gravity="center"></TextView>
+
+                    <TextView
+                        android:id="@+id/viewProfileWorkingProjectCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_marginTop="16dp"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"></TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_weight=".33"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Completed"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textSize="12dp"
+                        android:layout_gravity="center"></TextView>
+
+                    <TextView
+                        android:id="@+id/viewProfile_CompletedProjectsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:fontFamily="@font/roboto_bold"
+                        android:layout_marginTop="16dp"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center"></TextView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="11dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
+                android:layout_marginLeft="11dp"
+                android:orientation="vertical"
+                android:background="@drawable/light_blue_nav_button">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:text="Specialized Field"
+                            android:textColor="#828282"
+                            android:fontFamily="@font/roboto_regular">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/viewProfile_specializedField"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Android Developer"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_regular">
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end
+">
+
+                        <Button
+                            android:id="@+id/editSpecialization"
+                            android:layout_width="12dp"
+                            android:layout_height="12sp"
+                            android:background="@drawable/create_24px">
+                        </Button>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:text="Hobbies | Other Skills"
+                            android:textColor="#828282"
+                            android:fontFamily="@font/roboto_regular">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/viewProfile_secondarySkill"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Running, Basketball, Entreprenuership"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_regular">
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end
+">
+
+                        <Button
+                            android:id="@+id/editSecondarySkill"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/create_24px">
+                        </Button>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:text="Location"
+                            android:textColor="#828282"
+                            android:fontFamily="@font/roboto_regular">
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/viewProfile_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Coimbatore"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_regular">
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end
+">
+
+                        <Button
+                            android:id="@+id/editLocation"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:background="@drawable/create_24px">
+                        </Button>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                android:layout_marginTop="16dp"
+                android:textAllCaps="false"
+                android:text="Logout"
+                android:textColor="#6CACFF"
+                android:gravity="start|center"
+                android:paddingLeft="17dp"
+                android:paddingRight="21dp"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:background="@drawable/light_blue_nav_button">
+            </Button>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>
