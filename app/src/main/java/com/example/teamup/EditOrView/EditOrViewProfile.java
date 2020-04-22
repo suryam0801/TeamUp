@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,11 +31,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditOrViewProfile extends AppCompatActivity {
 
-    CircleImageView profileImageView;
-    TextView userName, userEmail, createdProjects, workingProjects, completedProjects, specialization, Hobbies, Location;
-    Button editProfPic, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
-    EditText specializationEdit, HobbiesEdit, locationEdit;
-    FirebaseFirestore db;
+    private CircleImageView profileImageView;
+    private TextView userName, userEmail, createdProjects, workingProjects, completedProjects, specialization, Hobbies, Location;
+    private Button editProfPic, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
+    private EditText specializationEdit, HobbiesEdit, locationEdit;
+    private Dialog removeConfirm;
+    private FirebaseFirestore db;
 
 
     String userID, flag, TAG = "EDIT OR VIEW PROFILE";
@@ -64,6 +66,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         specializationEdit = findViewById(R.id.viewProfileChangeSpecialization);
         HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
         locationEdit = findViewById(R.id.viewProfileChangeLocation);
+        removeConfirm = new Dialog(EditOrViewProfile.this);
 
         editProfPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +139,53 @@ public class EditOrViewProfile extends AppCompatActivity {
         }
     }
 
+    public void removeUserConfirmationDialog(){
+        removeConfirm.setContentView(R.layout.remove_user_dialog_layout);
+        final Button remove = removeConfirm.findViewById(R.id.remove_user_accept_button);
+        Button cancel = removeConfirm.findViewById(R.id.remove_user_cancel_button);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeConfirm.dismiss();
+            }
+        });
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeUser();
+                removeConfirm.dismiss();
+            }
+        });
+
+        removeConfirm.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        removeConfirm.show();
+    }
+
+    public void removeUser(){
+        Project project = SessionStorage.getProject(EditOrViewProfile.this);
+        Worker worker = SessionStorage.getWorker(EditOrViewProfile.this);
+        db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+        db.collection("Projects").document(project.getProjectId()).update("workersList",FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+
     public void memberLoad() {
         editProfPic.setVisibility(View.GONE);
         editSpecialization.setVisibility(View.GONE);
@@ -155,26 +205,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Project project = SessionStorage.getProject(EditOrViewProfile.this);
-                Worker worker = SessionStorage.getWorker(EditOrViewProfile.this);
-                db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
-                db.collection("Projects").document(project.getProjectId()).update("workersList",FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
+                removeUserConfirmationDialog();
             }
         });
 
