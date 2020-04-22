@@ -7,7 +7,9 @@ public class Task implements Parcelable {
     private String taskName;
     private String taskDescription;
     private String taskID;
-    private int priority;
+    private String priority;
+    private String taskStatus;
+    private String creatorId;
 
     @Override
     public String toString() {
@@ -15,26 +17,45 @@ public class Task implements Parcelable {
                 "taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskID='" + taskID + '\'' +
-                ", priority=" + priority +
+                ", priority='" + priority + '\'' +
+                ", creatorId='" + creatorId + '\'' +
                 '}';
     }
 
-    public Task(String taskName, String taskDescription, String taskId, int priority){
+    public Task(String taskName, String taskDescription, String taskId, String priority, String creatorId, String taskStatus){
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskID = taskId;
         this.priority = priority;
+        this.creatorId = creatorId;
+        this.taskStatus = taskStatus;
     }
 
     public Task(){
 
     }
 
-    public int getPriority() {
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
@@ -72,12 +93,18 @@ public class Task implements Parcelable {
         parcel.writeString(taskName);
         parcel.writeString(taskDescription);
         parcel.writeString(taskID);
+        parcel.writeString(priority);
+        parcel.writeString(creatorId);
+        parcel.writeString(taskStatus);
     }
 
     private Task(Parcel in) {
         taskName = in.readString();
         taskDescription = in.readString();
         taskID = in.readString();
+        priority = in.readString();
+        creatorId = in.readString();
+        taskStatus = in.readString();
     }
 
     public static final Parcelable.Creator<Task> CREATOR

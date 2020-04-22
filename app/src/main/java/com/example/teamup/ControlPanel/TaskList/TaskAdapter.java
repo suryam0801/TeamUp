@@ -1,6 +1,7 @@
 package com.example.teamup.ControlPanel.TaskList;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,7 +20,7 @@ public class TaskAdapter extends BaseAdapter{
     private FirebaseFirestore db;
     private Project project;
     private String TAG = "APPLICANT_LIST_ADAPTER";
-    private TextView name, description;
+    private TextView name, description, priority;
 
 
     public TaskAdapter(Context mContext, List<Task> TaskList){
@@ -47,17 +48,27 @@ public class TaskAdapter extends BaseAdapter{
         View v = View.inflate(mContext, R.layout.task_object, null);
         db = FirebaseFirestore.getInstance();
 
-        name = v.findViewById(R.id.task_name);
-        description = v.findViewById(R.id.task_description);
+        name = v.findViewById(R.id.task_name_taskObject);
+        description = v.findViewById(R.id.task_description_taskObject);
+        priority = v.findViewById(R.id.priorityTaskObject);
 
         name.setText(TaskList.get(position).getTaskName());
-        name.setText(TaskList.get(position).getTaskName());
+        description.setText(TaskList.get(position).getTaskName());
 
-        /*accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });*/
+        switch (TaskList.get(position).getPriority()){
+            case "High":
+                priority.setText(TaskList.get(position).getPriority());
+                priority.setTextColor(Color.parseColor("#FF3838"));
+                break;
+            case "Medium":
+                priority.setText(TaskList.get(position).getPriority());
+                priority.setTextColor(Color.parseColor("#36D1DC"));
+                break;
+            case "Low":
+                priority.setText(TaskList.get(position).getPriority());
+                priority.setTextColor(Color.parseColor("#6CACFF"));
+                break;
+        }
 
         //Save product id to tag
         v.setTag(TaskList.get(position).getTaskID());

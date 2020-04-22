@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".EditOrView.EditOrViewProfile"></activity>
+        <activity android:name=".ControlPanel.TaskList.CreateTask"></activity>
+        <activity android:name=".EditOrView.EditOrViewProfile" />
         <activity android:name=".EditOrView.EditOrViewProject" />
         <activity android:name=".login.GatherUserDetails" />
         <activity android:name=".ControlPanel.DisplayApplicants.ApplicantsTabbedActivity" />
