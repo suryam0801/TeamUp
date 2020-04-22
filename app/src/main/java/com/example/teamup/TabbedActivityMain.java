@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -103,6 +104,7 @@ public class TabbedActivityMain extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user = documentSnapshot.toObject(User.class);
+                Log.d("TABBED ACTIVITY MAIN", user.toString());
                 SessionStorage.saveUser(TabbedActivityMain.this, user);
                 Glide.with(TabbedActivityMain.this)
                         .load(user.getProfileImageLink())
