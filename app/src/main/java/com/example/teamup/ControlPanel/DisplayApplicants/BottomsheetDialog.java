@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.model.Applicant;
@@ -25,6 +28,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BottomsheetDialog extends BottomSheetDialogFragment {
 
@@ -47,6 +52,12 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style. AppBottomSheetDialogTheme);
+    }
+
+    @Override
     public View onCreateView( LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottomsheetlayout, container, false);
         name=v.findViewById(R.id.btmname);
@@ -55,9 +66,17 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         Button reject = v.findViewById(R.id.btnreject);
         Button accept = v.findViewById(R.id.btnaccept);
         Button viewProfile = v.findViewById(R.id.view_applicant_profile_button);
+        CircleImageView profilePic = v.findViewById(R.id.bottom_sheet_prof_pic_applicantDisplay);
+
         requestjoin.setText(a.getShortPitch());
         name.setText(applname);
         desc.setText(a.getApplicantEmail());
+
+        Glide.with(getContext())
+                .load(a.getProfilePicURL())
+                .placeholder(ContextCompat.getDrawable(getContext(), R.drawable.ic_account_circle_black_24dp))
+                .into(profilePic);
+
 
         viewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
