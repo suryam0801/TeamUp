@@ -3,6 +3,7 @@ package com.example.teamup.ControlPanel.TaskList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,7 +55,8 @@ public class CreateTask extends AppCompatActivity {
         discardTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(CreateTask.this, TaskList.class));
+                finish();
             }
         });
 
@@ -73,13 +75,27 @@ public class CreateTask extends AppCompatActivity {
                 db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayUnion(task)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        int newTasks = project.getNewTasks() + 1;
+                        project.setNewTasks(newTasks);
+                        SessionStorage.saveProject(CreateTask.this, project);
+                        db.collection("Projects").document(project.getProjectId()).update("newTasks", newTasks).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                startActivity(new Intent(CreateTask.this, TaskList.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                     }
                 });
+
             }
         });
 

@@ -57,6 +57,7 @@ public class TaskList extends AppCompatActivity {
         lvApplicant = findViewById(R.id.listview_applicant);
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
+        clearNewTaskCount();
         newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +65,22 @@ public class TaskList extends AppCompatActivity {
             }
         });
         loadTasks(project.getProjectId());
+    }
+
+    public void clearNewTaskCount(){
+        project.setNewTasks(0);
+        SessionStorage.saveProject(TaskList.this, project);
+        db.collection("Projects").document(project.getProjectId()).update("newTasks", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "onSuccess: "+"New Tasks Set To 0");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: "+"Failed to clear new task count");
+            }
+        });
     }
 
     public void loadTasks(String projectQueryID) {
@@ -120,7 +137,7 @@ public class TaskList extends AppCompatActivity {
                         }
                     }
                 }
-                
+
                 if (tasksHigh != null)
                     for (Task t : tasksHigh)
                         TaskList.add(t);

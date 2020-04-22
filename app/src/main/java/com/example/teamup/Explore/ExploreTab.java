@@ -413,6 +413,23 @@ public class ExploreTab extends Fragment {
                                 });
                             }
 
+                            int newApplicants = projects.getNewApplicants() + 1;
+                            projects.setNewApplicants(newApplicants);
+                            SessionStorage.saveProject(getActivity(), projects);
+                            db.collection("Projects").document(projectId).update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                    dialog.dismiss();
+                                    showCompletedDialog();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                }
+                            });
+
                         }else {
                             Log.d(TAG, "onComplete: "+"Failure");
                         }
