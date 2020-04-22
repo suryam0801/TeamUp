@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Applicant implements Parcelable {
 
-    private String projectId,applicantName,applicantEmail,userId,acceptedStatus,shortPitch, profilePicURL, specialization, location;
+    private String projectId,applicantName,applicantEmail,userId,shortPitch, profilePicURL, specialization, location;
     private int workingProject;
 
     public Applicant() {
@@ -18,7 +18,6 @@ public class Applicant implements Parcelable {
                 ", applicantName='" + applicantName + '\'' +
                 ", applicantEmail='" + applicantEmail + '\'' +
                 ", userId='" + userId + '\'' +
-                ", acceptedStatus='" + acceptedStatus + '\'' +
                 ", shortPitch='" + shortPitch + '\'' +
                 ", profilePicURL='" + profilePicURL + '\'' +
                 ", primarySkill='" + specialization + '\'' +
@@ -33,7 +32,6 @@ public class Applicant implements Parcelable {
         this.applicantName = applicantName;
         this.applicantEmail = applicantEmail;
         this.userId = userId;
-        this.acceptedStatus = acceptedStatus;
         this.shortPitch = shortPitch;
         this.profilePicURL = profilePicURL;
         this.specialization = primarySkill;
@@ -107,14 +105,6 @@ public class Applicant implements Parcelable {
         this.userId = userId;
     }
 
-    public String getAcceptedStatus() {
-        return acceptedStatus;
-    }
-
-    public void setAcceptedStatus(String acceptedStatus) {
-        this.acceptedStatus = acceptedStatus;
-    }
-
     public String getShortPitch() {
         return shortPitch;
     }
@@ -134,7 +124,6 @@ public class Applicant implements Parcelable {
         parcel.writeString(applicantName);
         parcel.writeString(applicantEmail);
         parcel.writeString(userId);
-        parcel.writeString(acceptedStatus);
         parcel.writeString(shortPitch);
         parcel.writeString(profilePicURL);
         parcel.writeString(specialization);
@@ -147,7 +136,6 @@ public class Applicant implements Parcelable {
         applicantName = in.readString();
         applicantEmail = in.readString();
         userId = in.readString();
-        acceptedStatus = in.readString();
         shortPitch = in.readString();
         profilePicURL = in.readString();
         specialization = in.readString();

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
+import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Worker;
@@ -96,7 +96,7 @@ public class AllMembersFragment extends Fragment {
         assert project != null;
         db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
-        populateApplicantList(project);
+        populateWorkerList(project);
 
         return view;
     }
@@ -117,32 +117,23 @@ public class AllMembersFragment extends Fragment {
                         for (Map<String, String> entry : group) {
                             //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
                             //reads each element in the hashmap
-                            String applicantName = "";
-                            String applicantId = "";
-                            String applicantPitch = "";
-                            String acceptedStatus = "";
+                            String workerName = "";
+                            String workerId = "";
                             String projectID = "";
-                            String applicantEmail = "";
 
                             for (String key : entry.keySet()) {
-                                if(key.equals("applicantName"))
-                                    applicantName = entry.get(key);
+                                if(key.equals("workerName"))
+                                    workerName = entry.get(key);
                                 else if(key.equals("userId"))
-                                    applicantId = entry.get(key);
-                                else if(key.equals("shortPitch"))
-                                    applicantPitch = entry.get(key);
-                                else if(key.equals("acceptedStatus"))
-                                    acceptedStatus = entry.get(key);
+                                    workerId = entry.get(key);
                                 else if(key.equals("projectId"))
                                     projectID = entry.get(key);
-                                else if(key.equals("applicantEmail"))
-                                    applicantEmail = entry.get(key);
                             }
 
 
                             User user = SessionStorage.getUser(getActivity());
 
-                            WorkersList.add(new Worker(projectID, applicantName, applicantId, user.getProfileImageLink(), user.getSpecialization(),
+                            WorkersList.add(new Worker(projectID, workerName, workerId, user.getProfileImageLink(), user.getSpecialization(),
                                     user.getLocation()));
                         }
                     }
@@ -154,7 +145,7 @@ public class AllMembersFragment extends Fragment {
 
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        SessionStorage.saveMember(getActivity(), WorkersList.get(i));
+                        SessionStorage.saveWorker(getActivity(), WorkersList.get(i));
                         Intent intent = new Intent(getActivity(), EditOrViewProfile.class);
                         intent.putExtra("userID", WorkersList.get(i).getUserId());
                         intent.putExtra("flag", "member");
@@ -171,7 +162,7 @@ public class AllMembersFragment extends Fragment {
         });
     }
 
-    public void populateApplicantList(Project project){
+    public void populateWorkerList(Project project){
         currentUser=FirebaseAuth.getInstance();
 
         loadMembers(project.getProjectId());

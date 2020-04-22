@@ -21,6 +21,7 @@ import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -217,7 +218,7 @@ public class WorkbenchTab extends Fragment{
 
     public void getWorkingProjects(){
         //Gets the projects the user is working for
-        Query myProjects = db.collection("Projects").whereArrayContains("applicantId", Objects.requireNonNull(firebaseUser.getUid()));
+        Query myProjects = db.collection("Projects").whereArrayContains("workersId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -225,18 +226,14 @@ public class WorkbenchTab extends Fragment{
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
                     if (project!=null&&project.getApplicantList()!=null) {
-                        List<Applicant> applicantList = project.getApplicantList();
-                        for(Applicant applicant:applicantList)
+                        List<Worker> workerList = project.getWorkersList();
+                        for(Worker worker:workerList)
                         {
-                            if (applicant.getUserId().equals(firebaseUser.getUid())&& applicant.getAcceptedStatus().equals("Accepted")) {
-                                Log.d(TAG, "onSuccess: "+project.toString());
-                                Log.d(TAG, "onSuccess: "+applicant.toString());
+                            if (worker.getUserId().equals(firebaseUser.getUid()) && !project.getCreatorId().equals(firebaseUser.getUid())) {
                                 if (project.getProjectStatus().equals("Completed"))
-                                {
                                     completedProjectsList.add(project);
-                                }else{
+                                else
                                     workingProjectList.add(project);
-                                }
                             }
                         }
                     }

@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.EditOrView;
+package com.example.teamup.EditOrView;
 
 import androidx.appcompat.app.AppCompatActivity;
 

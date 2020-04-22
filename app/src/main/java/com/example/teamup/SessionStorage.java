@@ -34,7 +34,7 @@ public class SessionStorage {
         return new Gson().fromJson(string, Project.class);
     }
 
-    public static void saveMember(Activity activity, Worker worker)
+    public static void saveWorker(Activity activity, Worker worker)
     {
         SharedPreferences sharedPref = activity.getSharedPreferences(PREF_NAME,Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -43,7 +43,7 @@ public class SessionStorage {
         editor.apply();
     }
 
-    public static Worker getMember(Activity activity)
+    public static Worker getWorker(Activity activity)
     {
         SharedPreferences sharedPref = activity.getSharedPreferences(PREF_NAME,Activity.MODE_PRIVATE);
         String string = sharedPref.getString("memberTransfer","1234");

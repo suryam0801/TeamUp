@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Worker implements Parcelable {
 
-    private String projectId, memberName,userId, profilePicURL, specialization, location;
+    private String projectId, workerName,userId, profilePicURL, specialization, location;
 
     public Worker() {
     }
@@ -14,7 +14,7 @@ public class Worker implements Parcelable {
     public String toString() {
         return "Member{" +
                 "projectId='" + projectId + '\'' +
-                ", applicantName='" + memberName + '\'' +
+                ", applicantName='" + workerName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", profilePicURL='" + profilePicURL + '\'' +
                 ", primarySkill='" + specialization + '\'' +
@@ -48,7 +48,7 @@ public class Worker implements Parcelable {
 
     public Worker(String projectId, String applicantName, String userId, String profilePicURL, String primarySkill, String location) {
         this.projectId = projectId;
-        this.memberName = applicantName;
+        this.workerName = applicantName;
         this.userId = userId;
         this.profilePicURL = profilePicURL;
         this.specialization = primarySkill;
@@ -63,12 +63,12 @@ public class Worker implements Parcelable {
         this.projectId = projectId;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public String getWorkerName() {
+        return workerName;
     }
 
-    public void setMemberName(String applicantName) {
-        this.memberName = applicantName;
+    public void setWorkerName(String applicantName) {
+        this.workerName = applicantName;
     }
 
     public String getUserId() {
@@ -88,7 +88,7 @@ public class Worker implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(projectId);
-        parcel.writeString(memberName);
+        parcel.writeString(workerName);
         parcel.writeString(userId);
         parcel.writeString(profilePicURL);
         parcel.writeString(specialization);
@@ -97,7 +97,7 @@ public class Worker implements Parcelable {
 
     private Worker(Parcel in) {
         projectId = in.readString();
-        memberName = in.readString();
+        workerName = in.readString();
         userId = in.readString();
         profilePicURL = in.readString();
         specialization = in.readString();

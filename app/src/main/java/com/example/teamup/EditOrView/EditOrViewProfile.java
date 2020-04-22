@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.EditOrView;
+package com.example.teamup.EditOrView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.example.teamup.model.Worker;
@@ -26,8 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.lang.reflect.Member;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -158,8 +155,9 @@ public class EditOrViewProfile extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Project p = SessionStorage.getProject(EditOrViewProfile.this);
-                db.collection("Projects").document(p.getProjectId()).update("workersId",FieldValue.arrayRemove(user.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                Project project = SessionStorage.getProject(EditOrViewProfile.this);
+                Worker worker = SessionStorage.getWorker(EditOrViewProfile.this);
+                db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                     }
@@ -168,7 +166,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                     }
                 });
-                db.collection("Projects").document(p.getProjectId()).update("workersList",FieldValue.arrayRemove(user.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Projects").document(project.getProjectId()).update("workersList",FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                     }

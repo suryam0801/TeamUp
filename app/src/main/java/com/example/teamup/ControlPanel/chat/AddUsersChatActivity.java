@@ -20,10 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.Worker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -135,13 +135,13 @@ public class AddUsersChatActivity extends AppCompatActivity {
     private void populateData()
     {
             List<UserModel> user=new ArrayList<>();
-            List<Applicant> applicantList=project.getWorkersList();
-            for (Applicant applicant:applicantList)
+            List<Worker> workersList=project.getWorkersList();
+            for (Worker worker:workersList)
             {
                 UserModel userModel=new UserModel();
-                userModel.setUserId(applicant.getUserId());
+                userModel.setUserId(worker.getUserId());
                 userModel.setChecked(userModel.isCurrentUser());
-                userModel.setUserName(applicant.getApplicantName());
+                userModel.setUserName(worker.getWorkerName());
                 if (userModel.isCurrentUser()) {
                     Log.d(TAG, "populateData: "+userModel.toString());
                     user.add(0,userModel);

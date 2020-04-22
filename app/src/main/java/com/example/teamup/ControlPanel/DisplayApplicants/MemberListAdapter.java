@@ -64,7 +64,7 @@ public class MemberListAdapter extends BaseAdapter{
         final Worker worker = workerList.get(position);
 
         //Set text for TextView
-        final String nameDisplay = worker.getMemberName();
+        final String nameDisplay = worker.getWorkerName();
         final String specialization = String.valueOf(worker.getSpecialization());
         name.setText(nameDisplay);
         pitch.setText(specialization);
