@@ -1,43 +1,25 @@
 package com.example.teamup;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
-import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
+import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.Explore.ExploreTab;
-import com.example.teamup.Explore.ProjectAdapter;
-import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
-
-import java.util.Locale;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

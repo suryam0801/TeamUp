@@ -17,8 +17,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
+import com.example.teamup.model.Worker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -252,11 +252,11 @@ public class ChatRoomBaseActivity extends AppCompatActivity implements OnItemCli
 
     private void showUsersDialog() {
         ArrayList<UsersModel> usersModelArrayList=new ArrayList<>();
-        List<Applicant> list=project.getWorkersList();
-        for (Applicant applicant:list)
+        List<Worker> list=project.getWorkersList();
+        for (Worker worker:list)
         {
-            if (!applicant.getUserId().equals(currentUserId)){
-                usersModelArrayList.add(new UsersModel(applicant.getApplicantName(),applicant.getUserId()));
+            if (!worker.getUserId().equals(currentUserId)){
+                usersModelArrayList.add(new UsersModel(worker.getWorkerName(),worker.getUserId()));
             }
         }
         if (!project.getCreatorId().equals(currentUserId))

@@ -20,6 +20,7 @@ import com.example.teamup.login.GatherUserDetails;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
+import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,18 +77,16 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                 .placeholder(ContextCompat.getDrawable(mContext, R.drawable.ic_account_circle_black_24dp))
                 .into(profPic);
 
-        final Applicant a = ApplicantList.get(position);
-        int workingProjects = a.getWorkingProject();
+        final Applicant selectedApplicant = ApplicantList.get(position);
+        int workingProjects = selectedApplicant.getWorkingProject();
         workingProjects = workingProjects + 1;
         Log.d(TAG, "WORKING PROJECTS: " + workingProjects);
-        a.setWorkingProject(workingProjects);
+        selectedApplicant.setWorkingProject(workingProjects);
 
 
         //Set text for TextView
-        final String nameDisplay = a.getApplicantName();
-        final String pitchDisplay = String.valueOf(a.getShortPitch());
-        final String applicantID = String.valueOf(a.getUserId());
-        final String acceptedStatus = String.valueOf(a.getAcceptedStatus());
+        final String nameDisplay = selectedApplicant.getApplicantName();
+        final String pitchDisplay = String.valueOf(selectedApplicant.getShortPitch());
         name.setText(nameDisplay);
         pitch.setText(pitchDisplay);
 
@@ -95,9 +94,9 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "POSITION: " + project.toString());
-                a.setAcceptedStatus("accepted");
-                ApplicantList.remove(a);
-                db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(a))
+                final Worker newWorker = new Worker(project.getProjectId(), selectedApplicant.getApplicantName(), selectedApplicant.getUserId(), selectedApplicant.getProfilePicURL(), selectedApplicant.getSpecialization(), selectedApplicant.getLocation());
+                ApplicantList.remove(selectedApplicant);
+                db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(newWorker))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -106,7 +105,7 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                                     db.collection("Projects").document(project.getProjectId()).update("applicantList",ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            db.collection("Projects").document(project.getProjectId()).update("applicantId",FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(project.getProjectId()).update("applicantId",FieldValue.arrayRemove(selectedApplicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -116,7 +115,7 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                                                 public void onFailure(@NonNull Exception e) {
                                                 }
                                             });
-                                            db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayUnion(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayUnion(newWorker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -137,7 +136,7 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                             }
                         });
 
-                db.collection("Users").document(a.getUserId()).update("workingProjects",a.getWorkingProject()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Users").document(selectedApplicant.getUserId()).update("workingProjects",selectedApplicant.getWorkingProject()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -153,7 +152,7 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomsheetDialog bottomSheet = new BottomsheetDialog(a.getApplicantName(),a.getShortPitch(),a.getProjectId(),a.getUserId(),a);
+                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(),selectedApplicant.getShortPitch(),selectedApplicant.getProjectId(),selectedApplicant.getUserId(),selectedApplicant);
                 bottomSheet.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "exampleBottomSheet");
             }
         });

@@ -7,15 +7,35 @@ public class Task implements Parcelable {
     private String taskName;
     private String taskDescription;
     private String taskID;
+    private int priority;
 
-    public Task(String taskName, String taskDescription, String taskId){
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskName='" + taskName + '\'' +
+                ", taskDescription='" + taskDescription + '\'' +
+                ", taskID='" + taskID + '\'' +
+                ", priority=" + priority +
+                '}';
+    }
+
+    public Task(String taskName, String taskDescription, String taskId, int priority){
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskID = taskId;
+        this.priority = priority;
     }
 
     public Task(){
 
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public String getTaskID() {
@@ -40,15 +60,6 @@ public class Task implements Parcelable {
 
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "taskName='" + taskName + '\n' +
-                ", taskDescription='" + taskDescription + '\n' +
-                ", taskID='" + taskID + '\n' +
-                '}';
     }
 
     @Override

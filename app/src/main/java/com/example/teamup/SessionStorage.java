@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.teamup.model.Member;
+import com.example.teamup.model.Applicant;
+import com.example.teamup.model.Worker;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.google.gson.Gson;
@@ -33,20 +34,20 @@ public class SessionStorage {
         return new Gson().fromJson(string, Project.class);
     }
 
-    public static void saveMember(Activity activity, Member member)
+    public static void saveWorker(Activity activity, Worker worker)
     {
         SharedPreferences sharedPref = activity.getSharedPreferences(PREF_NAME,Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        String string = new Gson().toJson(member);
+        String string = new Gson().toJson(worker);
         editor.putString("memberTransfer", string);
         editor.apply();
     }
 
-    public static Member getMember(Activity activity)
+    public static Worker getWorker(Activity activity)
     {
         SharedPreferences sharedPref = activity.getSharedPreferences(PREF_NAME,Activity.MODE_PRIVATE);
         String string = sharedPref.getString("memberTransfer","1234");
-        return new Gson().fromJson(string, Member.class);
+        return new Gson().fromJson(string, Worker.class);
     }
 
     public static void saveUser(Activity activity, User user)
@@ -65,4 +66,19 @@ public class SessionStorage {
         return new Gson().fromJson(string, User.class);
     }
 
+    public static void saveApplicant(Activity activity, Applicant applicant)
+    {
+        SharedPreferences sharedPref = activity.getSharedPreferences(PREF_NAME,Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String string = new Gson().toJson(applicant);
+        editor.putString("tempApplicant", string);
+        editor.apply();
+    }
+
+    public static Applicant getApplicant(Activity activity)
+    {
+        SharedPreferences sharedPref = activity.getSharedPreferences(PREF_NAME,Activity.MODE_PRIVATE);
+        String string = sharedPref.getString("tempApplicant","1234");
+        return new Gson().fromJson(string, Applicant.class);
+    }
 }

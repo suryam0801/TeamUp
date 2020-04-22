@@ -1,14 +1,11 @@
 package com.example.teamup.Explore;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.se.omapi.Session;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -28,7 +25,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 //import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
 import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -46,7 +42,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +130,7 @@ public class ExploreTab extends Fragment {
         return view;
     }
 
-    public void showDialogue(final int pos){
+    public void showApplyDialogue(final int pos){
         dialog.setContentView(R.layout.explore_project_display_popup);
 
         final TextView projectName = dialog.findViewById(R.id.popup_project_name);
@@ -281,7 +276,6 @@ public class ExploreTab extends Fragment {
         dialog.show();
     }
 
-
     public void showCompletedDialog(){
         completedDialog.setContentView(R.layout.application_confirmation_popup);
         Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
@@ -349,7 +343,7 @@ public class ExploreTab extends Fragment {
                                         }
                                     }
 
-                                    showDialogue(i);
+                                    showApplyDialogue(i);
                                 }
                             });
 
@@ -373,7 +367,6 @@ public class ExploreTab extends Fragment {
         applicant.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         applicant.setApplicantName(currentUser.getCurrentUser().getDisplayName());
         applicant.setProjectId(projectId);
-        applicant.setAcceptedStatus("Applied");
         applicant.setShortPitch(shortPitch);
         applicant.setApplicantEmail(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
         applicant.setProfilePicURL(user.getProfileImageLink());
@@ -382,7 +375,7 @@ public class ExploreTab extends Fragment {
 
         Object[] array={applicant};
 
-        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document("0a9ebfdd-6e91-425d-a374-0cfb2413cc74").update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -392,7 +385,7 @@ public class ExploreTab extends Fragment {
                             List<String> applicantIds = new ArrayList<>();
                             if(projects.getApplicantId()==null){
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("0a9ebfdd-6e91-425d-a374-0cfb2413cc74").update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
@@ -404,7 +397,7 @@ public class ExploreTab extends Fragment {
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("0a9ebfdd-6e91-425d-a374-0cfb2413cc74").update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");

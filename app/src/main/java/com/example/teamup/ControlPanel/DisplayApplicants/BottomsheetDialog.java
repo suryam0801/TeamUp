@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.teamup.ControlPanel.EditOrView.EditOrViewProfile;
+import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;

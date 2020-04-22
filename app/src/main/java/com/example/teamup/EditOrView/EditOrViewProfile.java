@@ -1,40 +1,30 @@
-package com.example.teamup.ControlPanel.EditOrView;
+package com.example.teamup.EditOrView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.teamup.Explore.ProjectAdapter;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.TabbedActivityMain;
-import com.example.teamup.model.Member;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.Locale;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,11 +32,12 @@ public class EditOrViewProfile extends AppCompatActivity {
 
     CircleImageView profileImageView;
     TextView userName, userEmail, createdProjects, workingProjects, completedProjects, specialization, Hobbies, Location;
-    Button editProfPic, editNameEmail, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
-    EditText nameEdit, emailEdit, specializationEdit, HobbiesEdit, locationEdit;
+    Button editProfPic, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
+    EditText specializationEdit, HobbiesEdit, locationEdit;
     FirebaseFirestore db;
 
-    String userID, flag;
+
+    String userID, flag, TAG = "EDIT OR VIEW PROFILE";
     User user;
 
     @Override
@@ -64,15 +55,12 @@ public class EditOrViewProfile extends AppCompatActivity {
         Hobbies = findViewById(R.id.viewProfile_secondarySkill);
         Location = findViewById(R.id.viewProfile_location);
         editProfPic = findViewById(R.id.profile_view_profilePicSetterImage);
-        editNameEmail = findViewById(R.id.profile_edit_button);
         editSpecialization = findViewById(R.id.editSpecialization);
         editSecondarySkill = findViewById(R.id.editSecondarySkill);
         editLocation = findViewById(R.id.editLocation);
         profileImageView = findViewById(R.id.profile_view_profile_image);
         finalizeChanges = findViewById(R.id.profile_finalize_changes);
         logout = findViewById(R.id.profile_logout);
-        nameEdit = findViewById(R.id.viewProfileChangeName);
-        emailEdit = findViewById(R.id.viewProfileChangeEmail);
         specializationEdit = findViewById(R.id.viewProfileChangeSpecialization);
         HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
         locationEdit = findViewById(R.id.viewProfileChangeLocation);
@@ -81,15 +69,6 @@ public class EditOrViewProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //pic loading
-            }
-        });
-        editNameEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userName.setVisibility(View.GONE);
-                nameEdit.setVisibility(View.VISIBLE);
-                userEmail.setVisibility(View.GONE);
-                emailEdit.setVisibility(View.VISIBLE);
             }
         });
         editSpecialization.setOnClickListener(new View.OnClickListener() {
@@ -116,11 +95,19 @@ public class EditOrViewProfile extends AppCompatActivity {
         finalizeChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = String.valueOf(nameEdit.getText());
-                String email = String.valueOf(emailEdit.getText());
                 String pSkill = String.valueOf(specializationEdit.getText());
                 String sSkill = String.valueOf(HobbiesEdit.getText());
                 String loc = String.valueOf(locationEdit.getText());
+
+                if(!pSkill.equals(""))
+                    user.setSpecialization(pSkill);
+                if(!sSkill.equals(""))
+                    user.setSecondarySkill(sSkill);
+                if(!loc.equals(""))
+                    user.setLocation(loc);
+
+
+                db.collection("Users").document(userID).set(user);
             }
         });
 
@@ -151,7 +138,6 @@ public class EditOrViewProfile extends AppCompatActivity {
 
     public void memberLoad() {
         editProfPic.setVisibility(View.GONE);
-        editNameEmail.setVisibility(View.GONE);
         editSpecialization.setVisibility(View.GONE);
         editSecondarySkill.setVisibility(View.GONE);
         editLocation.setVisibility(View.GONE);
@@ -160,7 +146,37 @@ public class EditOrViewProfile extends AppCompatActivity {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) logout.getLayoutParams();
         lp.setMargins(0,0,0,40);
         logout.setLayoutParams(lp);
-        logout.setText("Done Viewing");
+
+        logout.setText("Remove From Project");
+        logout.setBackgroundColor(Color.parseColor("#FFF5F5"));
+        logout.setTextColor(Color.parseColor("#FF6C6C"));
+
+        //code for removing worker from project
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Project project = SessionStorage.getProject(EditOrViewProfile.this);
+                Worker worker = SessionStorage.getWorker(EditOrViewProfile.this);
+                db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+                db.collection("Projects").document(project.getProjectId()).update("workersList",FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+            }
+        });
 
         DocumentReference docRef = db.collection("Users").document(userID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
