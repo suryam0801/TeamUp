@@ -1,7 +1,9 @@
 package com.example.teamup.ControlPanel;
 
 import android.animation.ArgbEvaluator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,8 +40,11 @@ public class ControlPanel extends AppCompatActivity {
 
     private CardView projectWall, taskList, chatRoom, applicants;
     private Button projectWallbtn, chatroombtn, tasklistbtn, applicantsbtn;
-    private String TAG = "CONTROL PANEL: ";
+    private String TAG = "CONTROL PANEL: ", MY_PREFS_NAME = "TeamUp", DEFAULT_RETRIEVE_VALUE = "no such project";
     GridLayout gridLayout;
+    Project project;
+    int newApplicants = 0, newTasks = 0;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,7 @@ public class ControlPanel extends AppCompatActivity {
 
         gridLayout = findViewById(R.id.gridLayoutControlPanel);
         setSingleEvent(gridLayout);
-        
+
         projectWall = findViewById(R.id.control_panel_project_wall_navigation);
         taskList = findViewById(R.id.control_panel_task_list_navigation);
         chatRoom = findViewById(R.id.control_panel_chat_room_navigation);
@@ -65,52 +70,62 @@ public class ControlPanel extends AppCompatActivity {
         tasklistbtn = findViewById(R.id.taskList_newNotifications_button);
         applicantsbtn = findViewById(R.id.applicants_newNotifications_button);
 
-        Project project = SessionStorage.getProject(ControlPanel.this);
-        Log.d(TAG, project.toString());
+        project = SessionStorage.getProject(ControlPanel.this);
 
-        // data stored in format: tasklist / applicants / chatroom / projectwall
-        String newValues = getIntent().getStringExtra("newValues");
-        int length = newValues.length();
-        newValues = newValues.substring(1, length-1);
-        Log.d(TAG, newValues);
-        Scanner scan = new Scanner(newValues);
-        scan.useDelimiter(",");
-        int task = Integer.parseInt(scan.next().trim());
-        int application = Integer.parseInt(scan.next().trim());
+        newTasks = project.getNewTasks();
+        newApplicants = project.getNewApplicants();
 
-        if(task > 0){
+        if (newTasks > 0) {
             tasklistbtn.setVisibility(View.VISIBLE);
-            tasklistbtn.setText(task + " new");
+            tasklistbtn.setText(newTasks + " new");
         }
-        if(application > 0){
+        if (newApplicants > 0) {
             applicantsbtn.setVisibility(View.VISIBLE);
-            applicantsbtn.setText(application + " new");
+            applicantsbtn.setText(newApplicants + " new");
+        }
+    }
+
+    @Override
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+
+        project = SessionStorage.getProject(ControlPanel.this);
+        newTasks = project.getNewTasks();
+        newApplicants = project.getNewApplicants();
+
+        if (newTasks == 0) {
+            tasklistbtn.setVisibility(View.INVISIBLE);
+        }
+        if (newApplicants == 0) {
+            applicantsbtn.setVisibility(View.INVISIBLE);
         }
     }
 
     private void setSingleEvent(GridLayout gridLayout) {
 
-        for(int i = 0; i < gridLayout.getChildCount(); i++){
-            CardView cardView = (CardView)gridLayout.getChildAt(i);
+        preferences = getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
+
+        for (int i = 0; i < gridLayout.getChildCount(); i++) {
+            CardView cardView = (CardView) gridLayout.getChildAt(i);
             final int finalI = i;
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     switch (finalI) {
                         case 0:
-                            Intent projectWallIntent=new Intent(getApplicationContext(), ProjectWall.class);
+                            Intent projectWallIntent = new Intent(getApplicationContext(), ProjectWall.class);
                             startActivity(projectWallIntent);
                             break;
                         case 1:
-                            Intent taskListIntent=new Intent(getApplicationContext(), TaskList.class);
+                            Intent taskListIntent = new Intent(getApplicationContext(), TaskList.class);
                             startActivity(taskListIntent);
                             break;
                         case 2:
-                            Intent chatRoomIntent=new Intent(getApplicationContext(), ChatRoomBaseActivity.class);
+                            Intent chatRoomIntent = new Intent(getApplicationContext(), ChatRoomBaseActivity.class);
                             startActivity(chatRoomIntent);
                             break;
                         case 3:
-                            Intent applicantsIntent=new Intent(getApplicationContext(), ApplicantsTabbedActivity.class);
+                            Intent applicantsIntent = new Intent(getApplicationContext(), ApplicantsTabbedActivity.class);
                             startActivity(applicantsIntent);
                             break;
                     }

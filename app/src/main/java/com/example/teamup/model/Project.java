@@ -22,6 +22,9 @@ public class Project implements Parcelable{
 
     private String category;
 
+    private int newTasks;
+
+    private int newApplicants;
 
     private List<String> requiredSkills=new ArrayList<>();
     private List<Applicant> applicantList=new ArrayList<>();
@@ -29,6 +32,23 @@ public class Project implements Parcelable{
     private List<String> workersId = new ArrayList<>();
     private List<Worker> workersList =new ArrayList<>();
     private List<Task> taskList = new ArrayList<>();
+
+    public int getNewTasks() {
+        return newTasks;
+    }
+
+    public void setNewTasks(int newTasks) {
+        this.newTasks = newTasks;
+    }
+
+    public int getNewApplicants() {
+        return newApplicants;
+    }
+
+    public void setNewApplicants(int newApplicants) {
+        this.newApplicants = newApplicants;
+    }
+
     private String projectStatus;
 
 
@@ -40,6 +60,8 @@ public class Project implements Parcelable{
         projectId = in.readString();
         projectName = in.readString();
         projectDescription = in.readString();
+        newTasks = in.readInt();
+        newApplicants = in.readInt();
         requiredSkills = in.createStringArrayList();
         projectStatus = in.readString();
         category = in.readString();
@@ -181,7 +203,7 @@ public class Project implements Parcelable{
     public Project() {
     }
 
-    public Project(String creatorId, String category, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Worker> workersList, List<Task> TaskList, List<String> workersId) {
+    public Project(String creatorId, String category, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Worker> workersList, List<Task> TaskList, List<String> workersId, int newApplicants, int newTasks) {
         this.creatorId = creatorId;
         this.creatorEmail = creatorEmail;
         this.creatorName = creatorName;
@@ -196,12 +218,36 @@ public class Project implements Parcelable{
         this.taskList = TaskList;
         this.workersId = workersId;
         this.category = category;
+        this.newApplicants = newApplicants;
+        this.newTasks = newTasks;
     }
 
 
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "creatorId='" + creatorId + '\'' +
+                ", creatorEmail='" + creatorEmail + '\'' +
+                ", creatorName='" + creatorName + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", projectName='" + projectName + '\'' +
+                ", projectDescription='" + projectDescription + '\'' +
+                ", category='" + category + '\'' +
+                ", newTasks=" + newTasks +
+                ", newApplicants=" + newApplicants +
+                ", requiredSkills=" + requiredSkills +
+                ", applicantList=" + applicantList +
+                ", applicantId=" + applicantId +
+                ", workersId=" + workersId +
+                ", workersList=" + workersList +
+                ", taskList=" + taskList +
+                ", projectStatus='" + projectStatus + '\'' +
+                '}';
     }
 
     @Override
@@ -212,6 +258,8 @@ public class Project implements Parcelable{
         dest.writeString(projectId);
         dest.writeString(projectName);
         dest.writeString(category);
+        dest.writeInt(newApplicants);
+        dest.writeInt(newTasks);
         dest.writeString(projectDescription);
         dest.writeStringList(requiredSkills);
         dest.writeString(projectStatus);
@@ -222,23 +270,4 @@ public class Project implements Parcelable{
         dest.writeTypedList(workersList);
     }
 
-    @Override
-    public String toString() {
-        return "Project{" +
-                "creatorId='" + creatorId + '\n' +
-                ", creatorEmail='" + creatorEmail + '\n' +
-                ", creatorName='" + creatorName + '\n' +
-                ", projectId='" + projectId + '\n' +
-                ", projectName='" + projectName + '\n' +
-                ", projectDescription='" + projectDescription + '\n' +
-                ", category='" + category + '\n' +
-                ", requiredSkills=" + requiredSkills +  '\n' +
-                ", applicantList=" + applicantList + '\n' +
-                ", applicantId=" + applicantId + '\n' +
-                ", workersId=" + workersId + '\n' +
-                ", workersName=" + workersList + '\n' +
-                ", taskList=" + taskList + '\n' +
-                ", projectStatus='" + projectStatus + '\'' +
-                '}';
-    }
 }

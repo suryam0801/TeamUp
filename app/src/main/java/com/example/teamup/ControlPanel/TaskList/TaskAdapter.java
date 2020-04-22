@@ -2,6 +2,7 @@ package com.example.teamup.ControlPanel.TaskList;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,7 +20,7 @@ public class TaskAdapter extends BaseAdapter{
     private List<Task> TaskList;
     private FirebaseFirestore db;
     private Project project;
-    private String TAG = "APPLICANT_LIST_ADAPTER";
+    private String TAG = "TASK_LIST_ADAPTER";
     private TextView name, description, priority;
 
 

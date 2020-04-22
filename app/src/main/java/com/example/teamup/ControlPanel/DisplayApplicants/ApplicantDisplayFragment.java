@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
@@ -95,22 +96,38 @@ public class ApplicantDisplayFragment extends Fragment {
         final View view = inflater.inflate(R.layout.activity_my_projects_view, container, false);
 
         lvApplicant = view.findViewById(R.id.listview_applicant);
-        project= SessionStorage.getProject(getActivity());
+        project = SessionStorage.getProject(getActivity());
         assert project != null;
         db = FirebaseFirestore.getInstance();
-        currentUser=FirebaseAuth.getInstance();
+        currentUser = FirebaseAuth.getInstance();
+        clearNewApplicantCount();
         populateApplicantList(project);
-
         return view;
     }
 
-    public void populateApplicantList(Project project){
-        currentUser=FirebaseAuth.getInstance();
+    public void clearNewApplicantCount(){
+        project.setNewApplicants(0);
+        SessionStorage.saveProject(getActivity(), project);
+        db.collection("Projects").document(project.getProjectId()).update("newApplicants", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "onSuccess: "+"New Applicants Set To 0");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: "+"Failed to clear new applicant count");
+            }
+        });
+    }
+
+    public void populateApplicantList(Project project) {
+        currentUser = FirebaseAuth.getInstance();
 
         loadApplicants(project.getProjectId());
     }
 
-    public void loadApplicants(String projectQueryID){
+    public void loadApplicants(String projectQueryID) {
         ApplicantList = new ArrayList<>();
 
         Query myProjects = db.collection("Projects").whereEqualTo("projectId", Objects.requireNonNull(projectQueryID));
@@ -121,36 +138,41 @@ public class ApplicantDisplayFragment extends Fragment {
                     //each object in the array is a hashmap. We need to read the arrays using key and value from hashmap
                     List<Map<String, String>> group = (List<Map<String, String>>) document.get("applicantList");
                     //reads each object in the array
-                    for (Map<String, String> entry : group) {
-                        //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
-                        //reads each element in the hashmap
-                        String applicantName = "";
-                        String applicantId = "";
-                        String applicantPitch = "";
-                        String acceptedStatus = "";
-                        String projectID = "";
-                        String applicantEmail = "";
 
-                        for (String key : entry.keySet()) {
-                            if(key.equals("applicantName"))
-                                applicantName = entry.get(key);
-                            else if(key.equals("userId"))
-                                applicantId = entry.get(key);
-                            else if(key.equals("shortPitch"))
-                                applicantPitch = entry.get(key);
-                            else if(key.equals("acceptedStatus"))
-                                acceptedStatus = entry.get(key);
-                            else if(key.equals("projectId"))
-                                projectID = entry.get(key);
-                            else if(key.equals("applicantEmail"))
-                                applicantEmail = entry.get(key);
+                    if (group != null) {
+
+                        for (Map<String, String> entry : group) {
+                            //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
+                            //reads each element in the hashmap
+                            String applicantName = "";
+                            String applicantId = "";
+                            String applicantPitch = "";
+                            String acceptedStatus = "";
+                            String projectID = "";
+                            String applicantEmail = "";
+
+                            for (String key : entry.keySet()) {
+                                if (key.equals("applicantName"))
+                                    applicantName = entry.get(key);
+                                else if (key.equals("userId"))
+                                    applicantId = entry.get(key);
+                                else if (key.equals("shortPitch"))
+                                    applicantPitch = entry.get(key);
+                                else if (key.equals("acceptedStatus"))
+                                    acceptedStatus = entry.get(key);
+                                else if (key.equals("projectId"))
+                                    projectID = entry.get(key);
+                                else if (key.equals("applicantEmail"))
+                                    applicantEmail = entry.get(key);
+                            }
+
+                            User user = SessionStorage.getUser(getActivity());
+
+                            ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId,
+                                    acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
+                                    user.getLocation(), user.getWorkingProjects()));
                         }
 
-                        User user = SessionStorage.getUser(getActivity());
-
-                        ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId,
-                                acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
-                                user.getLocation(), user.getWorkingProjects()));
                     }
                 }
                 adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
@@ -160,7 +182,7 @@ public class ApplicantDisplayFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("EXPLORE ACTIVITY", "onFailure: "+e.getMessage());
+                Log.d("EXPLORE ACTIVITY", "onFailure: " + e.getMessage());
             }
         });
     }

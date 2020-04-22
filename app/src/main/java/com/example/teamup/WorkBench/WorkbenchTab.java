@@ -17,7 +17,6 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 
 import com.example.teamup.ControlPanel.ControlPanel;
-import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -127,10 +126,8 @@ public class WorkbenchTab extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SessionStorage.saveProject(getActivity(), myProjectList.get(i));
-                List<Integer> parcelable = newItemCounter();
-                Log.d(TAG, "onItemClick: " + parcelable);
+                setNewItemValues();
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                intent.putExtra("newValues", parcelable.toString());
                 startActivity(intent);
             }
         });
@@ -140,10 +137,8 @@ public class WorkbenchTab extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 SessionStorage.saveProject(getActivity(), myProjectList.get(i));
-                List<Integer> parcelable = newItemCounter();
-                Log.d(TAG, "onItemClick: " + parcelable);
+                setNewItemValues();
                 Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                intent.putExtra("newValues", parcelable.toString());
                 startActivity(intent);
             }
         });
@@ -159,11 +154,10 @@ public class WorkbenchTab extends Fragment{
 
     }
 
-    public List<Integer> newItemCounter(){
+    public void setNewItemValues(){
 
         Project p = SessionStorage.getProject(getActivity());
 
-        List<Integer> returnList = new ArrayList<>();
 
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -172,26 +166,16 @@ public class WorkbenchTab extends Fragment{
             // data stored in format: tasklist / applicants / chatroom / projectwall
             editor.putString(p.getProjectName(),  0 + "/" + 0 + "/" + 0 + "/" + 0);
             editor.commit();
-            returnList.add(0);
-            returnList.add(0);
-            returnList.add(0);
-            returnList.add(0);
-            return returnList;
         } else {
             String values = prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE);
             Scanner scan = new Scanner(values);
             scan.useDelimiter("/");
-            int t = p.getTaskList().size() - Integer.parseInt(scan.next());
-            int a = p.getApplicantId().size() - Integer.parseInt(scan.next());
-            returnList.add(t);
-            returnList.add(a);
-            returnList.add(0);
-            returnList.add(0);
 
-            editor.putString(p.getProjectName(),  t + "/" + a + "/" + 0 + "/" + 0);
+            int t = Math.abs(p.getTaskList().size() - Integer.parseInt(scan.next()));
+            int a = Math.abs(p.getApplicantId().size() - Integer.parseInt(scan.next()));
+
+            editor.putString(p.getProjectName().trim(),  t + "/" + a + "/" + 0 + "/" + 0);
             editor.commit();
-
-            return returnList;
         }
     }
 
@@ -225,11 +209,11 @@ public class WorkbenchTab extends Fragment{
                 Log.d(TAG, "onSuccess: "+queryDocumentSnapshots.size());
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    if (project!=null&&project.getApplicantList()!=null) {
+                    if (project!=null && project.getWorkersId()!=null && !project.getCreatorId().equals(firebaseUser.getUid())) {
                         List<Worker> workerList = project.getWorkersList();
                         for(Worker worker:workerList)
                         {
-                            if (worker.getUserId().equals(firebaseUser.getUid()) && !project.getCreatorId().equals(firebaseUser.getUid())) {
+                            if (worker.getUserId().equals(firebaseUser.getUid())) {
                                 if (project.getProjectStatus().equals("Completed"))
                                     completedProjectsList.add(project);
                                 else

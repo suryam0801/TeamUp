@@ -168,6 +168,8 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         project.setProjectStatus("Created");
         project.setRequiredSkills(chipsTextList);
         project.setWorkersList(null);
+        project.setNewApplicants(0);
+        project.setNewTasks(0);
         project.setWorkersId(null);
         project.setProjectId(UUID.randomUUID().toString());
         project.setTaskList(null);

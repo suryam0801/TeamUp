@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -37,7 +38,9 @@ public class TaskList extends AppCompatActivity {
     private static final String TAG = "TASKLIST";
     private Button newTaskButton;
     private Project project;
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasksHigh = new ArrayList<>();
+    private List<Task> tasksMedium = new ArrayList<>();
+    private List<Task> tasksLow = new ArrayList<>();
     private List<Task> TaskList = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TaskAdapter adapter;
@@ -47,19 +50,37 @@ public class TaskList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        storage = new SessionStorage();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide(); //hide the title bar
         setContentView(R.layout.activity_task_list);
+        storage = new SessionStorage();
         lvApplicant = findViewById(R.id.listview_applicant);
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
+        clearNewTaskCount();
         newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createNewTask();
             }
         });
-        Log.d(TAG, "TASKLIST ON RETRIEVAL: " + project.toString());
         loadTasks(project.getProjectId());
+    }
+
+    public void clearNewTaskCount(){
+        project.setNewTasks(0);
+        SessionStorage.saveProject(TaskList.this, project);
+        db.collection("Projects").document(project.getProjectId()).update("newTasks", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "onSuccess: "+"New Tasks Set To 0");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure: "+"Failed to clear new task count");
+            }
+        });
     }
 
     public void loadTasks(String projectQueryID) {
@@ -92,7 +113,7 @@ public class TaskList extends AppCompatActivity {
                                     taskDescription = entry.get(key);
                                 if (key.equals("taskID"))
                                     taskId = entry.get(key);
-                                if (key.equals("taskPriority"))
+                                if (key.equals("priority"))
                                     priority = entry.get(key);
                                 if (key.equals("creatorId"))
                                     creatorId = entry.get(key);
@@ -100,12 +121,37 @@ public class TaskList extends AppCompatActivity {
                                     taskStatus = entry.get(key);
                             }
 
-                            TaskList.add(new Task(taskName, taskDescription, taskId, priority, creatorId, taskStatus));
+                            Task task = new Task(taskName, taskDescription, taskId, priority, creatorId, taskStatus);
+
+                            switch (priority) {
+                                case "High":
+                                    tasksHigh.add(task);
+                                    break;
+                                case "Medium":
+                                    tasksMedium.add(task);
+                                    break;
+                                case "Low":
+                                    tasksLow.add(task);
+                                    break;
+                            }
                         }
                     }
                 }
+
+                if (tasksHigh != null)
+                    for (Task t : tasksHigh)
+                        TaskList.add(t);
+
+                if (tasksMedium != null)
+                    for (Task t : tasksMedium)
+                        TaskList.add(t);
+
+                if (tasksLow != null)
+                    for (Task t : tasksLow)
+                        TaskList.add(t);
+
                 adapter = new TaskAdapter(getApplicationContext(), TaskList);
-                project.setTaskList(tasks);
+                project.setTaskList(TaskList);
                 lvApplicant.setAdapter(adapter);
             }
         }).addOnFailureListener(new OnFailureListener() {
