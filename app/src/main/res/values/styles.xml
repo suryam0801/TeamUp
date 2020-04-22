@@ -10,6 +10,16 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
     <style name="ChipTextStyle_Selected">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#5B86E5</item>

@@ -4,110 +4,139 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_gravity="center_horizontal"
-    android:layout_height="match_parent"
-    android:background="@drawable/bottomsheet_background"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="56dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/bottomlinear"
+        android:layout_height="wrap_content">
 
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/btmname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="#000000"
-            android:text="Name"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="16dp" />
-        <TextView
-            android:id="@+id/btmdesc"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:textColor="#D1D1D1"
-
-            android:fontFamily="@font/roboto_regular"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textSize="12dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnreject"
-            android:text="Reject"
-            android:layout_width="95dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="70dp"
-            android:background="@drawable/unpressable_button"
-            android:fontFamily="@font/roboto_medium"
-            android:textAllCaps="false"
-            android:textColor="#828282"/>
-
-        <Button
-            android:id="@+id/btnaccept"
-            android:layout_marginLeft="12dp"
-            android:layout_width="95dp"
-            android:layout_height="37dp"
-            android:background="@drawable/applicant_accept_button"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Accept"
-            android:textAllCaps="false"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="21.5dp">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reason to join"/>
-        <TextView
-            android:id="@+id/reqjoin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="13.5dp"
-            android:paddingBottom="18.5dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:background="@drawable/unpressable_button"
-            android:layout_marginTop="10.5dp"
-            android:text="Reason to join"/>
+            android:layout_marginTop="38dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:background="@drawable/bottomsheet_background"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/view_applicant_profile_button"
-            android:layout_width="152dp"
-            android:layout_height="40dp"
-            android:background="@drawable/light_blue_nav_button"
-            android:text="View Profile"
-            android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
-            android:textColor="#6CACFF"
-            android:textSize="12dp"
-            android:paddingRight="20dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:paddingLeft="20dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            ></Button>
+            <LinearLayout
+                android:id="@+id/bottomlinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="56dp"
+                android:orientation="vertical">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/btmname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Name"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/btmdesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+
+                    android:fontFamily="@font/roboto_regular"
+                    android:text="Description"
+                    android:textColor="#D1D1D1"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnreject"
+                    android:text="Reject"
+                    android:layout_width="95dp"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="70dp"
+                    android:background="@drawable/unpressable_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:textAllCaps="false"
+                    android:textColor="#828282"/>
+
+                <Button
+                    android:id="@+id/btnaccept"
+                    android:layout_marginLeft="12dp"
+                    android:layout_width="95dp"
+                    android:layout_height="37dp"
+                    android:background="@drawable/applicant_accept_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="Accept"
+                    android:textAllCaps="false"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="21.5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Reason to join"/>
+                <TextView
+                    android:id="@+id/reqjoin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="13.5dp"
+                    android:paddingBottom="18.5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:background="@drawable/unpressable_button"
+                    android:layout_marginTop="10.5dp"
+                    android:text="Reason to join"/>
+
+                <Button
+                    android:id="@+id/view_applicant_profile_button"
+                    android:layout_width="152dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/light_blue_nav_button"
+                    android:text="View Profile"
+                    android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    android:textColor="#6CACFF"
+                    android:textSize="12dp"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:paddingLeft="20dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    ></Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/bottom_sheet_prof_pic_applicantDisplay"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_account_circle_black_24dp">
+
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>
