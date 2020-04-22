@@ -276,6 +276,7 @@ public class ExploreTab extends Fragment {
         dialog.show();
     }
 
+
     public void showCompletedDialog(){
         completedDialog.setContentView(R.layout.application_confirmation_popup);
         Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
@@ -375,7 +376,7 @@ public class ExploreTab extends Fragment {
 
         Object[] array={applicant};
 
-        db.collection("Projects").document("0a9ebfdd-6e91-425d-a374-0cfb2413cc74").update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -385,7 +386,7 @@ public class ExploreTab extends Fragment {
                             List<String> applicantIds = new ArrayList<>();
                             if(projects.getApplicantId()==null){
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document("0a9ebfdd-6e91-425d-a374-0cfb2413cc74").update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
@@ -397,7 +398,7 @@ public class ExploreTab extends Fragment {
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document("0a9ebfdd-6e91-425d-a374-0cfb2413cc74").update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document(projectId).update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: "+"Applicant Id update");
