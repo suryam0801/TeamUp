@@ -55,6 +55,20 @@ public class TabbedActivityMain extends AppCompatActivity {
         currentUser = FirebaseAuth.getInstance();
         loadUser();
 
+        DocumentReference docRef = db.collection("Users").document(currentUser.getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+                Log.d("TABBED ACTIVITY MAIN", user.toString());
+                SessionStorage.saveUser(TabbedActivityMain.this, user);
+                Glide.with(TabbedActivityMain.this)
+                        .load(user.getProfileImageLink())
+                        .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.ic_account_circle_black_24dp))
+                        .into(profPic);
+            }
+        });
+
         profPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,8 +81,6 @@ public class TabbedActivityMain extends AppCompatActivity {
 
         pagerAdapter = new PageAdapterMainPage(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
-
-
 
         Bundle bundle = new Bundle();
         bundle.putString("edttext", "From Activity");
@@ -99,19 +111,7 @@ public class TabbedActivityMain extends AppCompatActivity {
     }
 
     public void loadUser(){
-        DocumentReference docRef = db.collection("Users").document(currentUser.getUid());
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
-                Log.d("TABBED ACTIVITY MAIN", user.toString());
-                SessionStorage.saveUser(TabbedActivityMain.this, user);
-                Glide.with(TabbedActivityMain.this)
-                        .load(user.getProfileImageLink())
-                        .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.ic_account_circle_black_24dp))
-                        .into(profPic);
-            }
-        });
+
     }
 
 }

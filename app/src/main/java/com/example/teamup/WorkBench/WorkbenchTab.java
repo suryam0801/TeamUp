@@ -225,11 +225,11 @@ public class WorkbenchTab extends Fragment{
                 Log.d(TAG, "onSuccess: "+queryDocumentSnapshots.size());
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    if (project!=null&&project.getApplicantList()!=null) {
+                    if (project!=null && project.getWorkersId()!=null && !project.getCreatorId().equals(firebaseUser.getUid())) {
                         List<Worker> workerList = project.getWorkersList();
                         for(Worker worker:workerList)
                         {
-                            if (worker.getUserId().equals(firebaseUser.getUid()) && !project.getCreatorId().equals(firebaseUser.getUid())) {
+                            if (worker.getUserId().equals(firebaseUser.getUid())) {
                                 if (project.getProjectStatus().equals("Completed"))
                                     completedProjectsList.add(project);
                                 else

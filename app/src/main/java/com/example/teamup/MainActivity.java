@@ -29,27 +29,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button=findViewById(R.id.button);
         currentUser=FirebaseAuth.getInstance();
 
         if(currentUser.getCurrentUser()!=null)
         {
             startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
-            //Toast.makeText(MainActivity.this,currentUser.getCurrentUser().getDisplayName(),Toast.LENGTH_LONG).show();
             finish();
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentUser.signOut();
-                startActivity(new Intent(MainActivity.this,TabbedActivityMain.class));
-                finish();
-            }
-        });
     }
 
     @Override
