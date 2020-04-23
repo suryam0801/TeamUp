@@ -8,17 +8,17 @@
     android:orientation="vertical"
     tools:context=".ControlPanel.TaskList.TaskList">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="25dp"
+            android:layout_alignParentStart="true"
             android:layout_marginBottom="12dp"
+            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_chevron_left_black_24dp">
         </ImageButton>
@@ -30,19 +30,53 @@
             android:fontFamily="@font/roboto_regular"
             android:textColor="#3B3B3B"
             android:textSize="20dp"
+            android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="37dp"
             android:layout_marginBottom="21dp"
-            android:text="Teamup Mobile Application">
+            android:text="Task List">
         </TextView>
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="18dp"
         android:background="#D3CECE">
     </View>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ongoing Tasks"
+            android:layout_marginBottom="10dp"
+            android:textColor="#000000"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/roboto_bold"
+            android:paddingLeft="23dp">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/task_view_markascompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mark as completed"
+            android:visibility="invisible"
+            android:paddingRight="11dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="#6CACFF"
+            android:fontFamily="@font/roboto_regular"
+            android:paddingLeft="23dp">
+
+        </TextView>
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -54,8 +88,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:divider="@color/white"
             android:dividerHeight="10dp">
 
@@ -74,6 +108,12 @@
             android:textSize="20dp"></Button>
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:textColor="@color/black"></TextView>
 
 
 </LinearLayout>

@@ -2,12 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp"
-    android:background="@drawable/task_card_background"
-    android:orientation="vertical">
+    android:background="#F7FAFF"
+    android:orientation="horizontal">
+    <View
+        android:id="@+id/priority_bar"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+    </View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,20 +20,35 @@
         android:paddingRight="22dp"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/task_name_taskObject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_weight="2"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="#3B3B3B"
+            android:textSize="14dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
+
             <TextView
-                android:id="@+id/task_name_taskObject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
+                android:maxLines="1"
+                android:id="@+id/task_description_taskObject"
                 android:layout_weight="2"
                 android:fontFamily="@font/roboto_regular"
-                android:textColor="#3B3B3B"
-                android:textSize="14dp" />
+                android:text="Task Description"
+                android:layout_marginBottom="10dp"
+                android:textSize="12dp"
+                android:textColor="#B6B6B6"/>
 
             <TextView
                 android:id="@+id/priorityTaskObject"
@@ -44,16 +63,5 @@
             </TextView>
 
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:id="@+id/task_description_taskObject"
-            android:fontFamily="@font/roboto_regular"
-            android:text="Task Description"
-            android:layout_marginBottom="10dp"
-            android:textSize="12dp"
-            android:textColor="#B6B6B6"/>
     </LinearLayout>
 </LinearLayout>

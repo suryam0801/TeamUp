@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +46,9 @@ public class TaskList extends AppCompatActivity {
     private List<Task> tasksLow = new ArrayList<>();
     private List<Task> TaskList = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private TextView markCompleted;
     private TaskAdapter adapter;
+    private List<Task> tasksSelected = new ArrayList<>();
     ListView lvApplicant;
     private SessionStorage storage;
 
@@ -57,6 +62,7 @@ public class TaskList extends AppCompatActivity {
         lvApplicant = findViewById(R.id.listview_applicant);
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
+        markCompleted = findViewById(R.id.task_view_markascompleted);
         clearNewTaskCount();
         newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +70,43 @@ public class TaskList extends AppCompatActivity {
                 createNewTask();
             }
         });
+        markCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                markTasksAsCompleted();
+            }
+        });
         loadTasks(project.getProjectId());
+    }
+
+    public void markTasksAsCompleted () {
+        for(Task t : tasksSelected) {
+            db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayRemove(t)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    /*startActivity(new Intent(TaskList.this, TaskList.class));
+                    finish();*/
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+            t.setTaskStatus("completed");
+        }
+            for(Task t : tasksSelected){
+            db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayUnion(t)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    /*startActivity(new Intent(TaskList.this, TaskList.class));
+                    finish();*/
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+        }
     }
 
     public void clearNewTaskCount(){
@@ -153,6 +195,28 @@ public class TaskList extends AppCompatActivity {
                 adapter = new TaskAdapter(getApplicationContext(), TaskList);
                 project.setTaskList(TaskList);
                 lvApplicant.setAdapter(adapter);
+
+                lvApplicant.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                                   int pos, long id) {
+
+                        if(!tasksSelected.contains(TaskList.get(pos)))
+                            tasksSelected.add(TaskList.get(pos));
+                        else if (tasksSelected.contains(TaskList.get(pos)))
+                            tasksSelected.remove(TaskList.get(pos));
+
+                        if(!tasksSelected.isEmpty())
+                            markCompleted.setVisibility(View.VISIBLE);
+                        else if(tasksSelected.isEmpty())
+                            markCompleted.setVisibility(View.INVISIBLE);
+
+                        Log.d(TAG, tasksSelected.toString());
+
+                        return true;
+                    }
+                });
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -165,6 +229,7 @@ public class TaskList extends AppCompatActivity {
     public void createNewTask() {
         Intent intent = new Intent(TaskList.this, CreateTask.class);
         startActivity(intent);
+        finish();
     }
 
 }
