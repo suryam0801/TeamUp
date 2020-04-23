@@ -22,8 +22,6 @@ public class TaskAdapter extends BaseAdapter{
     private Project project;
     private String TAG = "TASK_LIST_ADAPTER";
     private TextView name, description, priority;
-    private View priorityBar;
-
 
     public TaskAdapter(Context mContext, List<Task> TaskList){
         this.mContext = mContext;
@@ -53,7 +51,6 @@ public class TaskAdapter extends BaseAdapter{
         name = v.findViewById(R.id.task_name_taskObject);
         description = v.findViewById(R.id.task_description_taskObject);
         priority = v.findViewById(R.id.priorityTaskObject);
-        priorityBar = v.findViewById(R.id.priority_bar);
 
         name.setText(TaskList.get(position).getTaskName());
         description.setText(TaskList.get(position).getTaskName());
@@ -61,18 +58,18 @@ public class TaskAdapter extends BaseAdapter{
         switch (TaskList.get(position).getPriority()){
             case "High":
                 priority.setText(TaskList.get(position).getPriority());
+                v.setBackground(mContext.getResources().getDrawable(R.drawable.high_priority_task_background));
                 priority.setTextColor(Color.parseColor("#FF3838"));
-                priorityBar.setBackgroundColor(Color.parseColor("#FF3838"));
                 break;
             case "Medium":
                 priority.setText(TaskList.get(position).getPriority());
+                v.setBackground(mContext.getResources().getDrawable(R.drawable.medium_priority_taskbackground));
                 priority.setTextColor(Color.parseColor("#36D1DC"));
-                priorityBar.setBackgroundColor(Color.parseColor("#FF3838"));
                 break;
             case "Low":
                 priority.setText(TaskList.get(position).getPriority());
+                v.setBackground(mContext.getResources().getDrawable(R.drawable.low_priority_taskbackground));
                 priority.setTextColor(Color.parseColor("#6CACFF"));
-                priorityBar.setBackgroundColor(Color.parseColor("#6CACFF"));
                 break;
         }
 
