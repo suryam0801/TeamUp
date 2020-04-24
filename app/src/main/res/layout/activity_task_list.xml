@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:textSize="18dp"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/roboto_bold"
             android:paddingLeft="23dp"
@@ -106,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:text="Completed Tasks"
                     android:fontFamily="@font/roboto_bold"
+                    android:textSize="18dp"
                     android:paddingLeft="23dp"
                     android:textColor="@color/black">
                 </TextView>
