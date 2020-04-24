@@ -21,8 +21,7 @@ public class TaskAdapter extends BaseAdapter{
     private FirebaseFirestore db;
     private Project project;
     private String TAG = "TASK_LIST_ADAPTER";
-    private TextView name, description, priority;
-
+    private TextView name, description;
 
     public TaskAdapter(Context mContext, List<Task> TaskList){
         this.mContext = mContext;
@@ -51,23 +50,19 @@ public class TaskAdapter extends BaseAdapter{
 
         name = v.findViewById(R.id.task_name_taskObject);
         description = v.findViewById(R.id.task_description_taskObject);
-        priority = v.findViewById(R.id.priorityTaskObject);
 
         name.setText(TaskList.get(position).getTaskName());
         description.setText(TaskList.get(position).getTaskName());
 
         switch (TaskList.get(position).getPriority()){
             case "High":
-                priority.setText(TaskList.get(position).getPriority());
-                priority.setTextColor(Color.parseColor("#FF3838"));
+                v.setBackground(mContext.getResources().getDrawable(R.drawable.high_priority_task_background));
                 break;
             case "Medium":
-                priority.setText(TaskList.get(position).getPriority());
-                priority.setTextColor(Color.parseColor("#36D1DC"));
+                v.setBackground(mContext.getResources().getDrawable(R.drawable.medium_priority_taskbackground));
                 break;
             case "Low":
-                priority.setText(TaskList.get(position).getPriority());
-                priority.setTextColor(Color.parseColor("#6CACFF"));
+                v.setBackground(mContext.getResources().getDrawable(R.drawable.low_priority_taskbackground));
                 break;
         }
 

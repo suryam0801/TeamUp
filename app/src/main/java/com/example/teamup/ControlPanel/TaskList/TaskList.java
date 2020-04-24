@@ -1,25 +1,24 @@
 package com.example.teamup.ControlPanel.TaskList;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.teamup.CreateProject;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Task;
-import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 public class TaskList extends AppCompatActivity {
     private static final String TAG = "TASKLIST";
@@ -41,10 +39,13 @@ public class TaskList extends AppCompatActivity {
     private List<Task> tasksHigh = new ArrayList<>();
     private List<Task> tasksMedium = new ArrayList<>();
     private List<Task> tasksLow = new ArrayList<>();
-    private List<Task> TaskList = new ArrayList<>();
+    private List<Task> TaskListOngoing = new ArrayList<>();
+    private List<Task> TaskListCompleted = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private TaskAdapter adapter;
-    ListView lvApplicant;
+    private TextView markCompleted;
+    private TaskAdapter adapterOngoing, adapterCompleted;
+    private List<Task> tasksSelected = new ArrayList<>();
+    ListView lvOngoing, lvCompleted;
     private SessionStorage storage;
 
     @Override
@@ -53,10 +54,12 @@ public class TaskList extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide(); //hide the title bar
         setContentView(R.layout.activity_task_list);
+
         storage = new SessionStorage();
-        lvApplicant = findViewById(R.id.listview_applicant);
+        lvOngoing = findViewById(R.id.tasklist_display);
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
+        markCompleted = findViewById(R.id.task_view_markascompleted);
         clearNewTaskCount();
         newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +67,43 @@ public class TaskList extends AppCompatActivity {
                 createNewTask();
             }
         });
+        markCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                markTasksAsCompleted();
+            }
+        });
         loadTasks(project.getProjectId());
+    }
+
+    public void markTasksAsCompleted () {
+        for(Task t : tasksSelected) {
+            db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayRemove(t)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    /*startActivity(new Intent(TaskList.this, TaskList.class));
+                    finish();*/
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+            t.setTaskStatus("completed");
+        }
+            for(Task t : tasksSelected){
+            db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayUnion(t)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    /*startActivity(new Intent(TaskList.this, TaskList.class));
+                    finish();*/
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                }
+            });
+        }
     }
 
     public void clearNewTaskCount(){
@@ -84,8 +123,9 @@ public class TaskList extends AppCompatActivity {
     }
 
     public void loadTasks(String projectQueryID) {
-        lvApplicant = findViewById(R.id.listview_applicant);
-        TaskList = new ArrayList<>();
+        lvOngoing = findViewById(R.id.tasklist_display);
+        lvCompleted = findViewById(R.id.task_list_completed);
+        TaskListOngoing = new ArrayList<>();
 
         Query myProjects = db.collection("Projects").whereEqualTo("projectId", Objects.requireNonNull(projectQueryID));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -138,21 +178,64 @@ public class TaskList extends AppCompatActivity {
                     }
                 }
 
-                if (tasksHigh != null)
-                    for (Task t : tasksHigh)
-                        TaskList.add(t);
+                if (tasksHigh != null) {
+                    for (Task t : tasksHigh) {
+                        if(t.getTaskStatus().equals("ongoing"))
+                            TaskListOngoing.add(t);
+                        else
+                            TaskListCompleted.add(t);
+                    }
+                }
 
-                if (tasksMedium != null)
-                    for (Task t : tasksMedium)
-                        TaskList.add(t);
+                if (tasksMedium != null) {
+                    for (Task t : tasksMedium) {
+                        if(t.getTaskStatus().equals("ongoing"))
+                            TaskListOngoing.add(t);
+                        else
+                            TaskListCompleted.add(t);
+                    }
+                }
 
-                if (tasksLow != null)
-                    for (Task t : tasksLow)
-                        TaskList.add(t);
+                if (tasksLow != null) {
+                    for (Task t : tasksLow) {
+                        if(t.getTaskStatus().equals("ongoing"))
+                            TaskListOngoing.add(t);
+                        else
+                            TaskListCompleted.add(t);
+                    }
+                }
 
-                adapter = new TaskAdapter(getApplicationContext(), TaskList);
-                project.setTaskList(TaskList);
-                lvApplicant.setAdapter(adapter);
+                adapterOngoing = new TaskAdapter(getApplicationContext(), TaskListOngoing);
+                adapterCompleted = new TaskAdapter(getApplicationContext(), TaskListCompleted);
+                project.setTaskList(TaskListOngoing);
+
+                lvOngoing.setAdapter(adapterOngoing);
+                lvCompleted.setAdapter(adapterCompleted);
+
+                ListUtils.setDynamicHeight(lvOngoing);
+                ListUtils.setDynamicHeight(lvCompleted);
+
+                lvOngoing.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                                   int pos, long id) {
+
+                        if(!tasksSelected.contains(TaskListOngoing.get(pos)))
+                            tasksSelected.add(TaskListOngoing.get(pos));
+                        else if (tasksSelected.contains(TaskListOngoing.get(pos)))
+                            tasksSelected.remove(TaskListOngoing.get(pos));
+
+                        if(!tasksSelected.isEmpty())
+                            markCompleted.setVisibility(View.VISIBLE);
+                        else if(tasksSelected.isEmpty())
+                            markCompleted.setVisibility(View.INVISIBLE);
+
+                        Log.d(TAG, tasksSelected.toString());
+
+                        return true;
+                    }
+                });
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -162,9 +245,31 @@ public class TaskList extends AppCompatActivity {
         });
     }
 
+    public static class ListUtils {
+        public static void setDynamicHeight(ListView mListView) {
+            ListAdapter mListAdapter = mListView.getAdapter();
+            if (mListAdapter == null) {
+                // when adapter is null
+                return;
+            }
+            int height = 0;
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(mListView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            for (int i = 0; i < mListAdapter.getCount(); i++) {
+                View listItem = mListAdapter.getView(i, null, mListView);
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                height += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = mListView.getLayoutParams();
+            params.height = height + (mListView.getDividerHeight() * (mListAdapter.getCount() - 1));
+            mListView.setLayoutParams(params);
+            mListView.requestLayout();
+        }
+    }
+
     public void createNewTask() {
         Intent intent = new Intent(TaskList.this, CreateTask.class);
         startActivity(intent);
+        finish();
     }
 
 }
