@@ -1,6 +1,8 @@
 package com.example.teamup.Explore;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -8,9 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.content.Intent;
@@ -72,7 +77,7 @@ public class ExploreTab extends Fragment {
     boolean applicantExists = false, workerExists = false, sameCreator = false;
 
     Button search,menu;
-    private EditText prsearch;
+   EditText prsearch;
 
     public ExploreTab() {
         // Required empty public constructor
@@ -113,8 +118,20 @@ public class ExploreTab extends Fragment {
 
         //search ET
         prsearch =view.findViewById(R.id.editText);
-        prsearch.setVisibility(View.VISIBLE);
-        prsearch.setFocusable(false);
+        prsearch.clearFocus();
+
+        prsearch.setShowSoftInputOnFocus(true);
+// To set the the cursor visible when the search bar is clicked
+        prsearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prsearch.setCursorVisible(true);
+                Log.d(TAG, "searchbar: "+"clicked");
+            }
+        });
+
+
+
 
 
         createProject.setOnClickListener(new View.OnClickListener() {
@@ -378,7 +395,7 @@ public class ExploreTab extends Fragment {
         Object[] array={applicant};
 
 
-        db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document("86d0e543-39f7-4b24-93ee-cac279bd4701").update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -439,4 +456,17 @@ public class ExploreTab extends Fragment {
                 });
     }
 
+
+   public void hideKeyboard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert manager != null && view != null;
+        manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+   public void showKeyboard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert manager != null && view != null;
+        manager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    }
 }

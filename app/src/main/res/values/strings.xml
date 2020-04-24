@@ -6,6 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="msg_token_fmt">TeamUp</string>
+    <string name="default_notification_channel_id">TeamUp_CH 01</string>
 
     <string-array name="categories">
         <item>Physical Fitness</item>

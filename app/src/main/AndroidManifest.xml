@@ -19,7 +19,7 @@
         <activity android:name=".EditOrView.EditOrViewProject" />
         <activity android:name=".login.GatherUserDetails" />
         <activity android:name=".ControlPanel.DisplayApplicants.ApplicantsTabbedActivity" />
-        <activity android:name=".TabbedActivityMain" />
+        <activity android:name=".TabbedActivityMain" android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Notification.NotificationActivity" />
         <activity android:name=".ControlPanel.TaskList.TaskList" />
         <activity android:name=".ControlPanel.ProjectWall.ProjectWall" />
@@ -33,7 +33,7 @@
         <activity
             android:name=".CreateProject"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,6 +48,9 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
     </application>
 
 </manifest>

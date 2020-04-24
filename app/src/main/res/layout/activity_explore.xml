@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText"
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
@@ -26,12 +26,18 @@
             android:drawableLeft="@drawable/ic_search_black_24dp"
             android:drawablePadding="18dp"
             android:paddingLeft="16dp"
+android:focusableInTouchMode="true"
+
+            android:hapticFeedbackEnabled="true"
             android:hint="Search"
             android:singleLine="true"
             android:textColor="#828282"
-            android:textColorHint="#828282">
-            <requestFocus></requestFocus>
-        </EditText>
+            android:textColorHint="#828282"/>
+
+
+
+
+
 
     </FrameLayout>
 
