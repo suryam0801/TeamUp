@@ -29,9 +29,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,13 +51,16 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
     String TAG = "APPLICANT_LIST_ADAPTER";
     String applname,appldesc,project_id,uid;
     Applicant a= new Applicant();;
+    String projectName;
 
-    public BottomsheetDialog(String applname, String appldesc, String project_id, String uid, Applicant a) {
+    public BottomsheetDialog(String applname, String appldesc, String project_id, String uid, Applicant a, String projectName) {
         this.applname = applname;
         this.appldesc = appldesc;
         this.project_id=project_id;
         this.uid=uid;
         this.a=a;
+        this.projectName=projectName;
+
     }
 
     @Override
@@ -175,7 +181,11 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         applicationStatus.put("state",state);
         applicationStatus.put("Project Id",a.getProjectId());
         String from=firebaseAuth.getCurrentUser().getUid();
+        String timeStamp =getCurrentTimeStamp();
         applicationStatus.put("from",from);
+        applicationStatus.put("Project Name",projectName);
+        applicationStatus.put("time",timeStamp);
+
 
         if (state.equals("rejected"))
         {
@@ -213,5 +223,18 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         }
 
 
+    }
+    public static String getCurrentTimeStamp(){
+        try {
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String currentDateTime = dateFormat.format(new Date()); // Find todays date
+
+            return currentDateTime;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 }
