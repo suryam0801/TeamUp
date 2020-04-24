@@ -116,8 +116,7 @@
                     android:layout_marginBottom="32dp"
                     android:paddingLeft="20dp"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    ></Button>
+                    android:gravity="center" />
 
             </LinearLayout>
 

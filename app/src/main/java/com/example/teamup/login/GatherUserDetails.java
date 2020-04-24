@@ -37,9 +37,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -217,23 +219,28 @@ public class GatherUserDetails extends AppCompatActivity {
 
     private void addUserToCollection() {
 
-        User user = new User(fName,lName,email,primSkill,secSkill,loc,userId,downloadUri.toString(), 0, 0, 0);
+                String token_id= FirebaseInstanceId.getInstance().getToken();
+                User user = new User(fName,lName,email,primSkill,secSkill,loc,userId,downloadUri.toString(), 0, 0, 0,token_id);
+                db.collection("Users")
+                        .document(userId)
+                        .set(user)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
 
-        db.collection("Users")
-                .document(userId)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+                            }
+                        });
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
-                    }
-                });
+
+
+
+
     }
 
     public void registerFunction(){

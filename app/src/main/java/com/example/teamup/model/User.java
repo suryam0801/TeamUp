@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class User {
 
+
+
     public User(){
 
     }
@@ -24,6 +26,7 @@ public class User {
                 ", createdProjects='" + createdProjects + '\n' +
                 ", workingProjects='" + workingProjects + '\n' +
                 ", completedProjects='" + completedProjects + '\n' +
+                ", token_id='" + token_id + '\n' +
                 '}';
     }
 
@@ -59,12 +62,14 @@ public class User {
         createdProjects = in.readInt();
         workingProjects = in.readInt();
         completedProjects = in.readInt();
+        //Token id of a current user
+        token_id = in.readString();
     }
 
     public User(String firstName, String lastName, String email,
                 String specialization, String secondarySkill, String location,
                 String userId,String profileImageLink, int createdProjects, int workingProjects,
-                int completedProjects) {
+                int completedProjects,String token_id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -76,6 +81,7 @@ public class User {
         this.createdProjects = createdProjects;
         this.workingProjects = workingProjects;
         this.completedProjects = completedProjects;
+        this.token_id = token_id;
 
     }
 
@@ -100,6 +106,15 @@ public class User {
     private int workingProjects;
 
     private int completedProjects;
+    private String token_id;
+
+    public String getToken_id() {
+        return token_id;
+    }
+
+    public void setToken_id(String token_id) {
+        this.token_id = token_id;
+    }
 
     public int getCreatedProjects() {
         return createdProjects;

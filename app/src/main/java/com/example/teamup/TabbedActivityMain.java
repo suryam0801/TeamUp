@@ -4,11 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.teamup.EditOrView.EditOrViewProfile;
@@ -26,6 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TabbedActivityMain extends AppCompatActivity {
 
+    private static final String TAG ="Tabbed Activity" ;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TabItem exploreTab, workbenchTab;
@@ -34,6 +42,8 @@ public class TabbedActivityMain extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     User user;
+    ExploreTab fragobj;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +95,7 @@ public class TabbedActivityMain extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("edttext", "From Activity");
 // set Fragmentclass Arguments
-        ExploreTab fragobj = new ExploreTab();
+        fragobj = new ExploreTab();
         fragobj.setArguments(bundle);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -113,5 +123,24 @@ public class TabbedActivityMain extends AppCompatActivity {
     public void loadUser(){
 
     }
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    ((EditText) v).clearFocus();
+                    ((EditText)v).setCursorVisible(false);
+                    Log.d(TAG, "Tabbed: "+"cleared focus");
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                    ((EditText) v).setCursorVisible(false);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
 }

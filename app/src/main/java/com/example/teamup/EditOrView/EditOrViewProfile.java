@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,15 +18,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.login.LoginActivity;
+import com.example.teamup.login.SignUpActivity;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,6 +44,7 @@ public class EditOrViewProfile extends AppCompatActivity {
     private EditText specializationEdit, HobbiesEdit, locationEdit;
     private Dialog removeConfirm;
     private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
 
 
     String userID, flag, TAG = "EDIT OR VIEW PROFILE";
@@ -67,6 +75,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
         locationEdit = findViewById(R.id.viewProfileChangeLocation);
         removeConfirm = new Dialog(EditOrViewProfile.this);
+        firebaseAuth=FirebaseAuth.getInstance();
 
         editProfPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +127,15 @@ public class EditOrViewProfile extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Map<String,Object> tokenMap=new HashMap<>();
+                tokenMap.put("token_id",FieldValue.delete());
+                db.collection("Users").document(userID).update(tokenMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        firebaseAuth.signOut();
+                        startActivity(new Intent(EditOrViewProfile.this, LoginActivity.class));
+                    }
+                });
             }
         });
 

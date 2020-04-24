@@ -18,16 +18,23 @@ import android.widget.Toast;
 import com.example.teamup.MainActivity;
 import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText loginEmail,loginPassword;
     private Button loginButton;
     private TextView signupInLogin;
-
+    FirebaseFirestore db= FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -62,6 +69,19 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d("LoginActivity: ", "DONEEEEE");
                                         if(firebaseAuth.getCurrentUser().isEmailVerified())
                                         {
+
+                                            String token_id= FirebaseInstanceId.getInstance().getToken();
+                                            String current_id=firebaseAuth.getCurrentUser().getUid();
+                                            Map<String,Object> tokenMap=new HashMap<>();
+                                            tokenMap.put("token_id",token_id);
+                                            db.collection("Users").document(current_id).update(tokenMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+
+                                                }
+                                            });
+
+
                                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                             finish();
                                         }
@@ -69,6 +89,9 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this,"Verify your email and login",Toast.LENGTH_LONG).show();
                                             firebaseAuth.signOut();
                                         }
+
+
+
                                     }
                                     else {
                                         Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();

@@ -24,20 +24,26 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BottomsheetDialog extends BottomSheetDialogFragment {
+
 
     private BottomSheetListener mListener;
     TextView name,desc,requestjoin;
     private Context mContext;
     private List<Applicant> ApplicantList;
     FirebaseFirestore db= FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth;
     Project project;
     String TAG = "APPLICANT_LIST_ADAPTER";
     String applname,appldesc,project_id,uid;
@@ -55,6 +61,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style. AppBottomSheetDialogTheme);
+        firebaseAuth=FirebaseAuth.getInstance();
     }
 
     @Override
@@ -91,6 +98,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onButtonClicked("Rejected");
+                sendnotification("rejected");
                 dismiss();
             }
         });
@@ -133,12 +141,16 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
                                             });
                                         }
                                     });
+
+                                    sendnotification("accepted");
                                 }else {
                                 }
                             }
                         });
 
             }
+
+
         });
         return v;
     }
@@ -156,5 +168,50 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             throw new ClassCastException(context.toString()
                     + " must implement BottomSheetListener");
         }
+    }
+    public void sendnotification(String state) {
+//        This is the function to store the
+        Map<String,Object> applicationStatus=new HashMap<>();
+        applicationStatus.put("state",state);
+        applicationStatus.put("Project Id",a.getProjectId());
+        String from=firebaseAuth.getCurrentUser().getUid();
+        applicationStatus.put("from",from);
+
+        if (state.equals("rejected"))
+        {
+            db.collection("Users/"+a.getUserId()+"/Notifications").add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Log.d(TAG, "Notification: "+"Sended");
+
+
+                }
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Notification: "+"Sended");
+                }
+            });
+        }
+        else if (state.equals("accepted"))
+        {
+            db.collection("Users/"+a.getUserId()+"/Notifications/"+a.getProjectId()).add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Log.d(TAG, "Notification: "+"Sended");
+
+
+                }
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Notification: "+"Sended");
+                }
+            });
+        }
+
+
     }
 }
