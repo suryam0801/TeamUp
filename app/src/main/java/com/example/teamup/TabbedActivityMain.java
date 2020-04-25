@@ -15,11 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.Explore.ExploreTab;
+import com.example.teamup.Notification.NotificationActivity;
+import com.example.teamup.Notification.SendNotification;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabItem;
@@ -39,6 +42,7 @@ public class TabbedActivityMain extends AppCompatActivity {
     private TabItem exploreTab, workbenchTab;
     public PageAdapterMainPage pagerAdapter;
     private CircleImageView profPic;
+    private ImageButton notificationBell;
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     User user;
@@ -60,6 +64,7 @@ public class TabbedActivityMain extends AppCompatActivity {
         workbenchTab = findViewById(R.id.main_workbench_tab);
         viewPager = findViewById(R.id.main_viewpager);
         profPic = findViewById(R.id.mainActivity_profilePicture);
+        notificationBell = findViewById(R.id.main_activity_notifications_bell);
 
         db=FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
@@ -86,6 +91,13 @@ public class TabbedActivityMain extends AppCompatActivity {
                 intent.putExtra("userID", user.getUserId());
                 intent.putExtra("flag", "owner");
                 startActivity(intent);
+            }
+        });
+
+        notificationBell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TabbedActivityMain.this, NotificationActivity.class));
             }
         });
 
@@ -121,6 +133,11 @@ public class TabbedActivityMain extends AppCompatActivity {
     }
 
     public void loadUser(){
+
+        SendNotification.sendnotification("application accepted", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
+        SendNotification.sendnotification("application rejected", "86d0e543-39f7-4b24-93ee-cac279bd4701", "My Running Group", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
+        SendNotification.sendnotification("", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
+
 
     }
     @Override
