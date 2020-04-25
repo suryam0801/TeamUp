@@ -21,51 +21,36 @@ public class SendNotification {
     public static void sendnotification(String state, String projectId, String projectName, String toUserId) {
 //        This is the function to store the
 
-        FirebaseFirestore db= FirebaseFirestore.getInstance();
-        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-        Map<String,Object> applicationStatus=new HashMap<>();
-        applicationStatus.put("state",state);
+        //REFER NOTIFICATIONADAPTER FOR THE STATUS CODES!
+
+        Map<String, Object> applicationStatus = new HashMap<>();
+        applicationStatus.put("state", state);
         applicationStatus.put("projectId", projectId);
-        String from=firebaseAuth.getCurrentUser().getUid();
-        String timeStamp =getCurrentTimeStamp();
-        applicationStatus.put("from",from);
-        applicationStatus.put("projectName",projectName);
-        applicationStatus.put("timestamp",timeStamp);
+        String from = firebaseAuth.getCurrentUser().getUid();
+        String timeStamp = getCurrentTimeStamp();
+        applicationStatus.put("from", from);
+        applicationStatus.put("projectName", projectName);
+        applicationStatus.put("timestamp", timeStamp);
 
+        db.collection("Users/" + toUserId + "/Notifications").add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
 
-        if (state.equals("rejected"))
-        {
-            db.collection("Users/"+toUserId+"/Notifications").add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
+            }
 
-                }
-
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                }
-            });
-        }
-        else if (state.equals("accepted"))
-        {
-            db.collection("Users/"+toUserId+"/Notifications/"+projectId).add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-
-                }
-
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                }
-            });
-        }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
 
 
     }
-    public static String getCurrentTimeStamp(){
+
+    public static String getCurrentTimeStamp() {
         try {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

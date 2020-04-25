@@ -66,11 +66,6 @@ public class TabbedActivityMain extends AppCompatActivity {
         profPic = findViewById(R.id.mainActivity_profilePicture);
         notificationBell = findViewById(R.id.main_activity_notifications_bell);
 
-
-        SendNotification.sendnotification("application accepted", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
-        SendNotification.sendnotification("application accepted", "86d0e543-39f7-4b24-93ee-cac279bd4701", "My Running Group", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
-        SendNotification.sendnotification("application accepted", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
-
         db=FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
         loadUser();
@@ -138,6 +133,11 @@ public class TabbedActivityMain extends AppCompatActivity {
     }
 
     public void loadUser(){
+
+        SendNotification.sendnotification("application accepted", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
+        SendNotification.sendnotification("application rejected", "86d0e543-39f7-4b24-93ee-cac279bd4701", "My Running Group", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
+        SendNotification.sendnotification("", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
+
 
     }
     @Override
