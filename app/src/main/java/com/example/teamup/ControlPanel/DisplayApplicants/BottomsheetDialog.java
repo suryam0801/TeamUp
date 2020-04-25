@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.teamup.EditOrView.EditOrViewProfile;
+import com.example.teamup.Notification.SendNotification;
 import com.example.teamup.R;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
@@ -104,7 +105,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onButtonClicked("Rejected");
-                sendnotification("rejected");
+                SendNotification.sendnotification("rejected", a.getProjectId(), project.getProjectName(), a.getUserId());
                 dismiss();
             }
         });
@@ -148,7 +149,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
                                         }
                                     });
 
-                                    sendnotification("accepted");
+                                    SendNotification.sendnotification("accepted", a.getProjectId(), project.getProjectName(), a.getUserId());
                                 }else {
                                 }
                             }
@@ -173,68 +174,6 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement BottomSheetListener");
-        }
-    }
-    public void sendnotification(String state) {
-//        This is the function to store the
-        Map<String,Object> applicationStatus=new HashMap<>();
-        applicationStatus.put("state",state);
-        applicationStatus.put("Project Id",a.getProjectId());
-        String from=firebaseAuth.getCurrentUser().getUid();
-        String timeStamp =getCurrentTimeStamp();
-        applicationStatus.put("from",from);
-        applicationStatus.put("Project Name",projectName);
-        applicationStatus.put("time",timeStamp);
-
-
-        if (state.equals("rejected"))
-        {
-            db.collection("Users/"+a.getUserId()+"/Notifications").add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Log.d(TAG, "Notification: "+"Sended");
-
-
-                }
-
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Notification: "+"Sended");
-                }
-            });
-        }
-        else if (state.equals("accepted"))
-        {
-            db.collection("Users/"+a.getUserId()+"/Notifications/"+a.getProjectId()).add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Log.d(TAG, "Notification: "+"Sended");
-
-
-                }
-
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Notification: "+"Sended");
-                }
-            });
-        }
-
-
-    }
-    public static String getCurrentTimeStamp(){
-        try {
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String currentDateTime = dateFormat.format(new Date()); // Find todays date
-
-            return currentDateTime;
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
         }
     }
 }
