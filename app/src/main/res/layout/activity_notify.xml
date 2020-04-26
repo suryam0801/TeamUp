@@ -61,53 +61,58 @@
 
     </TextView>
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <ListView
-                android:id="@+id/thisweek_notifications_display"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:divider="@color/white"
-                android:dividerHeight="10dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            </ListView>
+                <ListView
+                    android:id="@+id/thisweek_notifications_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:divider="@color/white">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:paddingLeft="23dp"
-                android:text="Previous"
-                android:textColor="#828282"
-                android:textSize="14dp"></TextView>
+                </ListView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="23dp"
+                    android:id="@+id/placeholder1"
+                    android:layout_below="@id/thisweek_notifications_display"
+                    android:text="Previous"
+                    android:textColor="#828282"
+                    android:textSize="14dp"></TextView>
 
 
-            <ListView
-                android:id="@+id/all_time_notifications_display"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:divider="@color/white"
-                android:dividerHeight="10dp">
+                <ListView
+                    android:id="@+id/all_time_notifications_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@id/placeholder1"
+                    android:divider="@color/white">
 
-            </ListView>
+                </ListView>
 
-        </LinearLayout>
+            </RelativeLayout>
 
-    </ScrollView>
+        </ScrollView>
+
+    </RelativeLayout>
 
 </LinearLayout>
