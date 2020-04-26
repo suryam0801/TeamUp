@@ -96,6 +96,7 @@ public class ExploreTab extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideKeyboard(getActivity());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -457,16 +458,11 @@ public class ExploreTab extends Fragment {
     }
 
 
-   public void hideKeyboard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert manager != null && view != null;
-        manager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-   public void showKeyboard(Activity activity) {
-        View view = activity.getCurrentFocus();
-        InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert manager != null && view != null;
-        manager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+    public static void hideKeyboard(Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

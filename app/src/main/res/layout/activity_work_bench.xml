@@ -9,56 +9,69 @@
     android:paddingRight="21dp"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
+        android:layout_height="match_parent">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="27dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Created Projects"
-            android:textColor="@color/black"
-            android:textSize="16dp"/>
+            android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/my_projects_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_marginTop="21dp"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="In Progress"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="27dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Created Projects"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
 
-        <ListView
-            android:id="@+id/working_projects_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_marginTop="21dp"
-            android:layout_height="wrap_content" />
+                <ListView
+                    android:id="@+id/my_projects_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="21dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="In Progress"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+                <ListView
+                    android:id="@+id/working_projects_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="21dp"
+                    android:layout_height="wrap_content" />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Completed"
-            android:textColor="@color/black"
-            android:textSize="16dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Completed"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"/>
 
-        <ListView
-            android:id="@+id/past_projects_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_marginTop="21dp"
-            android:layout_height="wrap_content" />
+                <ListView
+                    android:id="@+id/past_projects_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="21dp"
+                    android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+
+
+
 </LinearLayout>

@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -82,6 +83,7 @@ public class NotificationActivity extends AppCompatActivity {
         db.collection("Users")
                 .document("FHDYmz9FENWtS0GcH5cHgtjYWOc2")
                 .collection("Notifications")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -96,8 +98,8 @@ public class NotificationActivity extends AppCompatActivity {
                                 int currentDay = Integer.parseInt(scan.next());
                                 int currentMonth = Integer.parseInt(scan.next());
 
-                                String notificationTimeStamp = notification.getTimestamp();
-                                scan = new Scanner(notificationTimeStamp);
+                                String date = notification.getDate();
+                                scan = new Scanner(date);
                                 scan.useDelimiter("-");
                                 int notificationDay = Integer.parseInt(scan.next());
                                 int notificationMonth = Integer.parseInt(scan.next());
