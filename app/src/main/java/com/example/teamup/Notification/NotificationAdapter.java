@@ -66,8 +66,8 @@ public class NotificationAdapter extends BaseAdapter{
         gd.setCornerRadius(15.0f); // border corner radius
 
 
-        SpannableStringBuilder acceptText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " team has been accepted. You can start a conversation with the group now.");
-        SpannableStringBuilder rejectText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " team has been rejected. Explore all the other projects that would love to have you and your skills"); //start index: 20
+        SpannableStringBuilder acceptText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " has been accepted. You can start a conversation with the group now.");
+        SpannableStringBuilder rejectText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " has been rejected. Explore all the other projects that would love to have you and your skills"); //start index: 20
         SpannableStringBuilder newMember = new SpannableStringBuilder("New member has been added to " + notif.getProjectName() + " mobile application group."); //start index: 28
         SpannableStringBuilder taskUpdate = new SpannableStringBuilder("A task has been updated in " + notif.getProjectName()); //start index: 28
         SpannableStringBuilder resourceAdded = new SpannableStringBuilder("A resource has been added to " + notif.getProjectName() + ", check it out and give your opinion."); //start index: 29
@@ -97,7 +97,7 @@ public class NotificationAdapter extends BaseAdapter{
                 backgroundColor.setBackground(gd);
                 notificationTitle.setText("New Member Onboard");
                 foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_person_add_black_24dp));
-                newMember.setSpan(fcsSkyBlue, 28, 28 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                newMember.setSpan(fcsSkyBlue, 29, 29 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 notificationDescription.setText(newMember);
                 break;
             case "added to chatgroup":
