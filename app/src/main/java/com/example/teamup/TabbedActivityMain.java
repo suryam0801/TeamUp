@@ -68,7 +68,6 @@ public class TabbedActivityMain extends AppCompatActivity {
 
         db=FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
-        loadUser();
 
         DocumentReference docRef = db.collection("Users").document(currentUser.getUid());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -130,15 +129,6 @@ public class TabbedActivityMain extends AppCompatActivity {
         });
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-    }
-
-    public void loadUser(){
-
-        SendNotification.sendnotification("application accepted", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
-        SendNotification.sendnotification("application rejected", "86d0e543-39f7-4b24-93ee-cac279bd4701", "My Running Group", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
-        SendNotification.sendnotification("", "86d0e543-39f7-4b24-93ee-cac279bd4701", "Testing", "VCZlNIGu44SzUMMD0ODvA5Yx5Py2");
-
-
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

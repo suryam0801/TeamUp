@@ -1,12 +1,18 @@
 package com.example.teamup.Notification;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.teamup.model.Notification;
 import com.example.teamup.R;
@@ -20,7 +26,8 @@ public class NotificationAdapter extends BaseAdapter{
     private FirebaseFirestore db;
     private String TAG = "NOTIFICATION_LIST_ADAPTER";
     private TextView notificationTitle, notificationDescription;
-    private ImageView icon;
+    private LinearLayout backgroundColor;
+    private AppCompatImageView foregroundIcon;
 
     public NotificationAdapter(Context mContext, List<Notification> NotificationList){
         this.mContext = mContext;
@@ -47,48 +54,85 @@ public class NotificationAdapter extends BaseAdapter{
         View v = View.inflate(mContext, R.layout.notification_object, null);
         db = FirebaseFirestore.getInstance();
 
+        Notification notif = NotificationList.get(position);
+
         notificationTitle = v.findViewById(R.id.notification_object_title);
         notificationDescription = v.findViewById(R.id.notification_object_description);
-        icon = v.findViewById(R.id.notification_object_icon);
+        backgroundColor = v.findViewById(R.id.notification_background_icon);
+        foregroundIcon = v.findViewById(R.id.notification_foreground_icon);
 
         GradientDrawable gd = new GradientDrawable();
         gd.setShape(GradientDrawable.OVAL);
         gd.setCornerRadius(15.0f); // border corner radius
+
+
+        SpannableStringBuilder acceptText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " team has been accepted. You can start a conversation with the group now.");
+        SpannableStringBuilder rejectText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " team has been rejected. Explore all the other projects that would love to have you and your skills"); //start index: 20
+        SpannableStringBuilder newMember = new SpannableStringBuilder("New member has been added to " + notif.getProjectName() + " mobile application group."); //start index: 28
+        SpannableStringBuilder taskUpdate = new SpannableStringBuilder("A task has been updated in " + notif.getProjectName()); //start index: 28
+        SpannableStringBuilder resourceAdded = new SpannableStringBuilder("A resource has been added to " + notif.getProjectName() + ", check it out and give your opinion."); //start index: 29
+        SpannableStringBuilder addedToChatGroup = new SpannableStringBuilder("You have been added to a chat group in " + notif.getProjectName()); //start index: 39
+        SpannableStringBuilder memberRemoved = new SpannableStringBuilder("A member has been removed from " + notif.getProjectName()); //start index: 31
+
+        ForegroundColorSpan fcsSkyBlue = new ForegroundColorSpan(Color.parseColor("#6CACFF"));
 
         String state = NotificationList.get(position).getState();
 
         switch (state) {
             case "application accepted":
                 notificationTitle.setText("Application Accepted");
-                notificationDescription.setText("");
+                acceptText.setSpan(fcsSkyBlue, 21, 21 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                notificationDescription.setText(acceptText);
                 break;
             case "application rejected":
+                gd.setColor(Color.parseColor("#FF6161"));
+                backgroundColor.setBackground(gd);
                 notificationTitle.setText("Application Rejected");
-                notificationDescription.setText("");
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_cancel_black_24dp));
+                rejectText.setSpan(fcsSkyBlue, 21, 21 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                notificationDescription.setText(rejectText);
                 break;
             case "new member added":
+                gd.setColor(Color.parseColor("#D856FF"));
+                backgroundColor.setBackground(gd);
                 notificationTitle.setText("New Member Onboard");
-                notificationDescription.setText("");
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_person_add_black_24dp));
+                newMember.setSpan(fcsSkyBlue, 28, 28 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                notificationDescription.setText(newMember);
                 break;
             case "added to chatgroup":
+                gd.setColor(Color.parseColor("#36D1DC"));
+                backgroundColor.setBackground(gd);
                 notificationTitle.setText("Added to New Chatgroup");
-                notificationDescription.setText("");
+                addedToChatGroup.setSpan(fcsSkyBlue, 39, 39 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_chat_black_24dp));
+                notificationDescription.setText(addedToChatGroup);
                 break;
             case "task added":
+                gd.setColor(Color.parseColor("#11F692"));
+                backgroundColor.setBackground(gd);
                 notificationTitle.setText("New Task");
-                notificationDescription.setText("");
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_playlist_add_black_24dp));
+                taskUpdate.setSpan(fcsSkyBlue, 27, 27 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                notificationDescription.setText(taskUpdate);
                 break;
             case "member removed":
+                gd.setColor(Color.parseColor("#FF6161"));
+                backgroundColor.setBackground(gd);
                 notificationTitle.setText("Member Removed");
-                notificationDescription.setText("");
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp));
+                memberRemoved.setSpan(fcsSkyBlue, 31, 31 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                notificationDescription.setText(memberRemoved);
                 break;
             case "resource added":
+                gd.setColor(Color.parseColor("#158BF1"));
+                backgroundColor.setBackground(gd);
                 notificationTitle.setText("New Resource");
-                notificationDescription.setText("");
+                resourceAdded.setSpan(fcsSkyBlue, 29, 29 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_attach_file_black_24dp));
+                notificationDescription.setText(resourceAdded);
                 break;
         }
-
-        notificationTitle.setText(NotificationList.get(position).getProjectName());
 
         return v;
     }

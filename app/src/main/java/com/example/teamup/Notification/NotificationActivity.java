@@ -56,6 +56,7 @@ public class NotificationActivity extends AppCompatActivity {
     private NotificationAdapter adapterThisWeek, adapterPrevious;
     private FirebaseFirestore db;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +72,15 @@ public class NotificationActivity extends AppCompatActivity {
         thisWeekNotifs = new ArrayList<>();
         previousNotifs = new ArrayList<>();
 
+        String test = "hello my name is surya manivannan name and i love to run";
+        Log.d(TAG, "INDEX: " + test.indexOf("name"));
+
         loadNotifications();
     }
 
     public void loadNotifications() {
         db.collection("Users")
-                .document("VCZlNIGu44SzUMMD0ODvA5Yx5Py2")
+                .document("FHDYmz9FENWtS0GcH5cHgtjYWOc2")
                 .collection("Notifications")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -84,7 +88,6 @@ public class NotificationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         Log.d(TAG, "FOUND COLLECTION");
                         if (task.isSuccessful()) {
-                            Log.d(TAG, task.getResult().toString());
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Notification notification = document.toObject(Notification.class);
                                 String currentTimeStamp = getCurrentTimeStamp();
@@ -112,8 +115,8 @@ public class NotificationActivity extends AppCompatActivity {
                             previousListView.setAdapter(adapterPrevious);
                             thisWeekListView.setAdapter(adapterThisWeek);
 
-                            NotificationActivity.ListUtils.setDynamicHeight(previousListView);
-                            NotificationActivity.ListUtils.setDynamicHeight(thisWeekListView);
+                            ListUtils.setDynamicHeight(previousListView);
+                            ListUtils.setDynamicHeight(thisWeekListView);
 
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
