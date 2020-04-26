@@ -66,6 +66,14 @@ public class TabbedActivityMain extends AppCompatActivity {
         profPic = findViewById(R.id.mainActivity_profilePicture);
         notificationBell = findViewById(R.id.main_activity_notifications_bell);
 
+//        SendNotification.sendnotification("application accepted", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+//        SendNotification.sendnotification("application rejected", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+//        SendNotification.sendnotification("new member added", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+//        SendNotification.sendnotification("added to chatgroup", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+//        SendNotification.sendnotification("task added", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+//        SendNotification.sendnotification("member removed", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+//        SendNotification.sendnotification("resource added", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
+
         db=FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
 

@@ -1,7 +1,5 @@
 package com.example.teamup.Notification;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,10 +28,11 @@ public class SendNotification {
         applicationStatus.put("state", state);
         applicationStatus.put("projectId", projectId);
         String from = firebaseAuth.getCurrentUser().getUid();
-        String timeStamp = getCurrentTimeStamp();
+        String getDate = getCurrentDateStamp();
         applicationStatus.put("from", from);
         applicationStatus.put("projectName", projectName);
-        applicationStatus.put("timestamp", timeStamp);
+        applicationStatus.put("date", getDate);
+        applicationStatus.put("timestamp", System.currentTimeMillis());
 
         db.collection("Users/" + toUserId + "/Notifications").add(applicationStatus).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -50,7 +49,7 @@ public class SendNotification {
 
     }
 
-    public static String getCurrentTimeStamp() {
+    public static String getCurrentDateStamp() {
         try {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

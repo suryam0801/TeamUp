@@ -4,31 +4,41 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Notification implements Parcelable {
-    private String projectName, projectId, from, state, timestamp;
+    private String projectName, projectId, from, state, date;
+    private Long timestamp;
 
     public Notification () {
 
     }
 
-    public Notification(String projectName, String projectId, String from, String state, String timestamp) {
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "projectName='" + projectName + '\'' +
+                ", projectId='" + projectId + '\'' +
+                ", from='" + from + '\'' +
+                ", state='" + state + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", date='" + date + '\'' +
+                '}';
+    }
+
+    public Notification(String projectName, String projectId, String from, String state, Long timestamp, String date) {
         this.projectName = projectName;
         this.projectId = projectId;
         this.from = from;
         this.state = state;
         this.timestamp = timestamp;
+        this.date = date;
     }
 
 
+    public String getDate() {
+        return date;
+    }
 
-    @Override
-    public String toString() {
-        return "Notification{" +
-                "name='" + projectName + '\'' +
-                ", projectId='" + projectId + '\'' +
-                ", from='" + from + '\'' +
-                ", state='" + state + '\'' +
-                ", timestamp='" + timestamp + '\'' +
-                '}';
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getProjectName() {
@@ -63,11 +73,11 @@ public class Notification implements Parcelable {
         this.state = state;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -83,7 +93,8 @@ public class Notification implements Parcelable {
         parcel.writeString(projectId);
         parcel.writeString(from);
         parcel.writeString(state);
-        parcel.writeString(timestamp);
+        parcel.writeLong(timestamp);
+        parcel.writeString(date);
     }
 
     private Notification(Parcel in) {
@@ -91,7 +102,8 @@ public class Notification implements Parcelable {
         projectId = in.readString();
         from = in.readString();
         state = in.readString();
-        timestamp = in.readString();
+        timestamp = in.readLong();
+        date = in.readString();
     }
 
     public static final Parcelable.Creator<Notification> CREATOR
