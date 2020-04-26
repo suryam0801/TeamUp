@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
 import com.example.teamup.ControlPanel.ControlPanel;
+import com.example.teamup.Notification.NotificationActivity;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -152,6 +154,34 @@ public class WorkbenchTab extends Fragment{
             }
         });
 
+        Utility.setListViewHeightBasedOnChildren(myProjectsRv);
+        Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
+        Utility.setListViewHeightBasedOnChildren(pastProjectsRv);
+
+    }
+
+    public static class Utility {
+
+        public static void setListViewHeightBasedOnChildren(ListView listView) {
+            ListAdapter listAdapter = listView.getAdapter();
+            if (listAdapter == null) {
+                // pre-condition
+                return;
+            }
+
+            int totalHeight = 0;
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.AT_MOST);
+            for (int i = 0; i < listAdapter.getCount(); i++) {
+                View listItem = listAdapter.getView(i, null, listView);
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+        }
     }
 
     public void setNewItemValues(){
