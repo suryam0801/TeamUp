@@ -15,6 +15,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -120,9 +121,9 @@ public class ProjectWall extends AppCompatActivity {
                 builder.setView(dialogue);
 
 
-                final Button button=dialogue.findViewById(R.id.fileSelectAlertButton);
+                final LinearLayout fileSelect= dialogue.findViewById(R.id.fileSelectAlertButton);
 
-                button.setOnClickListener(new View.OnClickListener() {
+                fileSelect.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -144,12 +145,8 @@ public class ProjectWall extends AppCompatActivity {
                     }
                 });
 
-                builder.setTitle("Choose file");
-
-
                alertDialog=builder.create();
                 alertDialog.show();
-
 
             }
         });
@@ -159,9 +156,7 @@ public class ProjectWall extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
         super
                 .onRequestPermissionsResult(requestCode,
@@ -276,7 +271,9 @@ public class ProjectWall extends AppCompatActivity {
                                 map.put("Link",downloadUri.toString());
                                 map.put("Time",System.currentTimeMillis());
                                 map.put("FileName",file_name);
-
+                                map.put("ownerId", SessionStorage.getUser(ProjectWall.this).getUserId());
+                                map.put("ownerName", SessionStorage.getUser(ProjectWall.this).getFirstName().trim() + " " +
+                                        SessionStorage.getUser(ProjectWall.this).getLastName().trim());
 
                                 firebaseFirestore.collection("ProjectWall").document(project.getProjectId())
                                         .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -305,16 +302,9 @@ public class ProjectWall extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 });
-
-
                     }
-
-
                 }
             });
-
-            builder.setTitle("Choose file");
-
 
             alertDialog=builder.create();
             alertDialog.show();
