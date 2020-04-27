@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser.getCurrentUser()!=null)
         {
+            Log.d(TAG, currentUser.getCurrentUser().getUid());
             startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
             finish();
         } else {
@@ -47,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser.getCurrentUser()!=null)
         {
+            Log.d(TAG, currentUser.getCurrentUser().getUid());
             startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
-            //Toast.makeText(MainActivity.this,currentUser.getCurrentUser().getDisplayName(),Toast.LENGTH_LONG).show();
             finish();
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

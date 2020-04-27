@@ -1,21 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/project_info_dialog"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/fileSelectAlertButton"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add new files"
+        android:textColor="#3B3B3B"
+        android:fontFamily="@font/roboto_bold"
+        android:drawableEnd="@drawable/ic_clear_black_24dp"
+        android:textSize="16dp">
+    </TextView>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="Select File"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="Choose file to upload"
+        android:textColor="#9D9D9D"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5.5dp"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="12dp">
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:id="@+id/fileSelectAlertButton"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/dashed_background">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:background="@drawable/ic_cloud_upload_black_24dp">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#6CACFF"
+            android:layout_marginLeft="13dp"
+            android:text="Click here to upload files"
+            android:textSize="12dp"
+            android:fontFamily="@font/roboto_regular">
+        </TextView>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
