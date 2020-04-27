@@ -34,6 +34,7 @@
                     android:id="@+id/my_projects_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_marginTop="21dp"
+                    android:dividerHeight="7dp"
                     android:layout_height="wrap_content" />
 
                 <TextView

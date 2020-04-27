@@ -124,6 +124,7 @@ public class WorkbenchTab extends Fragment{
     public void populateData(){
 
         myProjectsRv.setAdapter(myAdapter);
+        Utility.setListViewHeightBasedOnChildren(myProjectsRv);
         myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -135,6 +136,7 @@ public class WorkbenchTab extends Fragment{
         });
 
         workingProjectsRv.setAdapter(workingAdapter);
+        Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
         workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -147,17 +149,13 @@ public class WorkbenchTab extends Fragment{
 
 
         pastProjectsRv.setAdapter(completedAdapter);
+        Utility.setListViewHeightBasedOnChildren(pastProjectsRv);
         pastProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //figuring out what to do when completed projects is selected
             }
         });
-
-        Utility.setListViewHeightBasedOnChildren(myProjectsRv);
-        Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
-        Utility.setListViewHeightBasedOnChildren(pastProjectsRv);
-
     }
 
     public static class Utility {
