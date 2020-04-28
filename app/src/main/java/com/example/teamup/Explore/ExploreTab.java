@@ -396,7 +396,7 @@ public class ExploreTab extends Fragment {
         Object[] array={applicant};
 
 
-        db.collection("Projects").document("86d0e543-39f7-4b24-93ee-cac279bd4701").update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
