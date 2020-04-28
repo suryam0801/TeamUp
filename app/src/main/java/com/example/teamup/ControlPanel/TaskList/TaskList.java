@@ -40,6 +40,7 @@ public class TaskList extends AppCompatActivity {
     private List<Task> tasksMedium = new ArrayList<>();
     private List<Task> tasksLow = new ArrayList<>();
     private List<Task> TaskListOngoing = new ArrayList<>();
+    private List<Boolean> ongoingIsSelected = new ArrayList<>();
     private List<Task> TaskListCompleted = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView markCompleted;
@@ -205,6 +206,9 @@ public class TaskList extends AppCompatActivity {
                     }
                 }
 
+                for (Task t : TaskListOngoing)
+                    ongoingIsSelected.add(false);
+
                 adapterOngoing = new TaskAdapter(getApplicationContext(), TaskListOngoing);
                 adapterCompleted = new TaskAdapter(getApplicationContext(), TaskListCompleted);
                 project.setTaskList(TaskListOngoing);
@@ -220,18 +224,27 @@ public class TaskList extends AppCompatActivity {
                     public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                                    int pos, long id) {
 
-                        if(!tasksSelected.contains(TaskListOngoing.get(pos)))
-                            tasksSelected.add(TaskListOngoing.get(pos));
-                        else if (tasksSelected.contains(TaskListOngoing.get(pos)))
-                            tasksSelected.remove(TaskListOngoing.get(pos));
+                        if(ongoingIsSelected.get(pos) == false) {
+                            ongoingIsSelected.set(pos, true);
+                            lvOngoing.getChildAt(pos).findViewById(R.id.selectedIndicator).setVisibility(View.VISIBLE);
+                            if(!tasksSelected.contains(TaskListOngoing.get(pos)))
+                                tasksSelected.add(TaskListOngoing.get(pos));
 
-                        if(!tasksSelected.isEmpty())
-                            markCompleted.setVisibility(View.VISIBLE);
-                        else if(tasksSelected.isEmpty())
-                            markCompleted.setVisibility(View.INVISIBLE);
+                            if(!tasksSelected.isEmpty())
+                                markCompleted.setVisibility(View.VISIBLE);
 
-                        Log.d(TAG, tasksSelected.toString());
+                            Log.d(TAG, tasksSelected.toString());
+                        } else if (ongoingIsSelected.get(pos) == true) {
+                            ongoingIsSelected.set(pos, false);
+                            lvOngoing.getChildAt(pos).findViewById(R.id.selectedIndicator).setVisibility(View.GONE);
+                            if (tasksSelected.contains(TaskListOngoing.get(pos)))
+                                tasksSelected.remove(TaskListOngoing.get(pos));
 
+                            if(tasksSelected.isEmpty())
+                                markCompleted.setVisibility(View.INVISIBLE);
+
+                            Log.d(TAG, tasksSelected.toString());
+                        }
                         return true;
                     }
                 });

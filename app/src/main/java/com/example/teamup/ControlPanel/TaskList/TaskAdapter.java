@@ -2,10 +2,13 @@ package com.example.teamup.ControlPanel.TaskList;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.teamup.model.Project;
@@ -19,9 +22,9 @@ public class TaskAdapter extends BaseAdapter{
     private Context mContext;
     private List<Task> TaskList;
     private FirebaseFirestore db;
-    private Project project;
-    private String TAG = "TASK_LIST_ADAPTER";
     private TextView name, description;
+    private ImageView colorIcon;
+    private ImageView selectedIndicator;
 
     public TaskAdapter(Context mContext, List<Task> TaskList){
         this.mContext = mContext;
@@ -50,19 +53,32 @@ public class TaskAdapter extends BaseAdapter{
 
         name = v.findViewById(R.id.task_name_taskObject);
         description = v.findViewById(R.id.task_description_taskObject);
+        LinearLayout background = v.findViewById(R.id.task_object_background);
+        colorIcon = v.findViewById(R.id.task_object_color_icon);
+        selectedIndicator = v.findViewById(R.id.selectedIndicator);
 
         name.setText(TaskList.get(position).getTaskName());
         description.setText(TaskList.get(position).getTaskName());
 
+        GradientDrawable gd = new GradientDrawable();
+        gd.setShape(GradientDrawable.OVAL);
+        gd.setCornerRadius(15.0f); // border corner radius
+
         switch (TaskList.get(position).getPriority()){
             case "High":
-                v.setBackground(mContext.getResources().getDrawable(R.drawable.high_priority_task_background));
+                background.setBackground(mContext.getResources().getDrawable(R.drawable.high_priority_task_background));
+                gd.setColor(Color.parseColor("#FF6161"));
+                colorIcon.setBackground(gd);
                 break;
             case "Medium":
-                v.setBackground(mContext.getResources().getDrawable(R.drawable.medium_priority_taskbackground));
+                background.setBackground(mContext.getResources().getDrawable(R.drawable.medium_priority_taskbackground));
+                gd.setColor(Color.parseColor("#36D1DC"));
+                colorIcon.setBackground(gd);
                 break;
             case "Low":
-                v.setBackground(mContext.getResources().getDrawable(R.drawable.low_priority_taskbackground));
+                background.setBackground(mContext.getResources().getDrawable(R.drawable.low_priority_taskbackground));
+                gd.setColor(Color.parseColor("#11F692"));
+                colorIcon.setBackground(gd);
                 break;
         }
 

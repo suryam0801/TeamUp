@@ -55,6 +55,8 @@ public class FileComments extends AppCompatActivity {
         commentSend = findViewById(R.id.comment_send_button);
         commentsList = new ArrayList<>();
 
+        commentEditText.clearFocus();
+
         project = SessionStorage.getProject(FileComments.this);
 
         loadComments();
@@ -62,7 +64,8 @@ public class FileComments extends AppCompatActivity {
         commentSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeCommentEntry();
+                if(!commentEditText.getText().toString().trim().equals(""))
+                    makeCommentEntry();
             }
         });
     }
@@ -92,7 +95,7 @@ public class FileComments extends AppCompatActivity {
     public void makeCommentEntry () {
         Map<String, Object> map = new HashMap<>();
         map.put("timestamp", System.currentTimeMillis());
-        map.put("comment", commentEditText.getText().toString());
+        map.put("comment", commentEditText.getText().toString().trim());
         map.put("commentorId", SessionStorage.getUser(FileComments.this).getUserId());
         map.put("commentorPicURL", SessionStorage.getUser(FileComments.this).getProfileImageLink());
         map.put("commentorName", SessionStorage.getUser(FileComments.this).getFirstName().trim() + " " +
@@ -103,7 +106,7 @@ public class FileComments extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-
+                    startActivity(new Intent(getApplicationContext(), FileComments.class));
                 }
             }
         });
