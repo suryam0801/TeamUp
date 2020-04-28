@@ -65,7 +65,6 @@ public class NotificationAdapter extends BaseAdapter{
         gd.setShape(GradientDrawable.OVAL);
         gd.setCornerRadius(15.0f); // border corner radius
 
-
         SpannableStringBuilder acceptText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " has been accepted. You can start a conversation with the group now.");
         SpannableStringBuilder rejectText = new SpannableStringBuilder("Your request to join "  + notif.getProjectName() + " has been rejected. Explore all the other projects that would love to have you and your skills"); //start index: 20
         SpannableStringBuilder newMember = new SpannableStringBuilder("New member has been added to " + notif.getProjectName() + " mobile application group."); //start index: 28
