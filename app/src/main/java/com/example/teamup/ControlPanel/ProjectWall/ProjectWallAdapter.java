@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.example.teamup.R;
 import com.example.teamup.model.ProjectWallDataClass;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -49,16 +50,35 @@ public class ProjectWallAdapter extends RecyclerView.Adapter<ProjectWallAdapter.
 
         long currentTime = System.currentTimeMillis();
 
+        long days = TimeUnit.MILLISECONDS.toDays(currentTime - createdTime);
         long hours = TimeUnit.MILLISECONDS.toHours(currentTime - createdTime);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime - createdTime);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime - createdTime);
 
         holder.fileName.setText(fileName);
         holder.ownerName.setText(ownerName);
         holder.description.setText(description);
+
+        if(seconds < 60) {
+            holder.timeSincePosting.setText(seconds + "s ago");
+        } else if (minutes > 1 && minutes < 60){
+            holder.timeSincePosting.setText(minutes + "m ago");
+        } else if (hours > 1 && hours < 24) {
+            holder.timeSincePosting.setText(hours + "h ago");
+        } else if (days > 1 && days < 365 ) {
+            if(days > 7)
+                holder.timeSincePosting.setText((days/7) + "w ago");
+            else
+                holder.timeSincePosting.setText(days + "d ago");
+        }
+
+/*
+
         if(minutes > 60)
             holder.timeSincePosting.setText("Posted " + hours + "h ago");
         else
             holder.timeSincePosting.setText("Posted " + minutes + "min ago");
+*/
 
         Glide.with(context)
                 .load(projectWallDataClass.getOwnerPicURL())

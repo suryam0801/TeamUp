@@ -3,6 +3,9 @@ package com.example.teamup.ControlPanel.ProjectWall;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -67,9 +70,16 @@ public class CommentAdapter extends BaseAdapter {
 
         final long currentTime = System.currentTimeMillis();
 
+        long days = TimeUnit.MILLISECONDS.toDays(currentTime - createdTime);
         long hours = TimeUnit.MILLISECONDS.toHours(currentTime - createdTime);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime - createdTime);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime - createdTime);
 
+/*
+        SpannableStringBuilder nameString = new SpannableStringBuilder(name + " " + cmnt);
+        ForegroundColorSpan fcsBlack = new ForegroundColorSpan(Color.BLACK);
+        nameString.setSpan(fcsBlack, 0, name.length() + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+*/
 
         userName.setText(name);
         comment.setText(cmnt);
@@ -77,11 +87,19 @@ public class CommentAdapter extends BaseAdapter {
                 .load(profPicURI)
                 .placeholder(ContextCompat.getDrawable(mContext, R.drawable.ic_account_circle_black_24dp))
                 .into(profPic);
-        if(minutes > 60)
-            timeElapsed.setText("Posted " + hours + "h ago");
-        else
-            timeElapsed.setText("Posted " + minutes + "min ago");
 
+        if(seconds < 60) {
+            timeElapsed.setText(seconds + "s ago");
+        } else if (minutes > 1 && minutes < 60){
+            timeElapsed.setText(minutes + "m ago");
+        } else if (hours > 1 && hours < 24) {
+            timeElapsed.setText(hours + "h ago");
+        } else if (days > 1 && days < 365 ) {
+            if(days > 7)
+                timeElapsed.setText((days/7) + "w ago");
+            else
+                timeElapsed.setText(days + "d ago");
+        }
 
         return pview;
     }
