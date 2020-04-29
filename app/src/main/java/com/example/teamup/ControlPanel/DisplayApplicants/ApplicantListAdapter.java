@@ -33,7 +33,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDialog.BottomSheetListener{
+public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDialog.BottomSheetListener {
     private Context mContext;
     private List<Applicant> ApplicantList;
     FirebaseFirestore db;
@@ -100,12 +100,11 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful())
-                                {
-                                    db.collection("Projects").document(project.getProjectId()).update("applicantList",ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                if (task.isSuccessful()) {
+                                    db.collection("Projects").document(project.getProjectId()).update("applicantList", ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            db.collection("Projects").document(project.getProjectId()).update("applicantId",FieldValue.arrayRemove(selectedApplicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(project.getProjectId()).update("applicantId", FieldValue.arrayRemove(selectedApplicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -115,7 +114,7 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                                                 public void onFailure(@NonNull Exception e) {
                                                 }
                                             });
-                                            db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayUnion(newWorker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayUnion(newWorker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -131,12 +130,12 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                                         public void onFailure(@NonNull Exception e) {
                                         }
                                     });
-                                }else {
+                                } else {
                                 }
                             }
                         });
 
-                db.collection("Users").document(selectedApplicant.getUserId()).update("workingProjects",selectedApplicant.getWorkingProject()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Users").document(selectedApplicant.getUserId()).update("workingProjects", selectedApplicant.getWorkingProject()).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -152,8 +151,8 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(),selectedApplicant.getShortPitch(),selectedApplicant.getProjectId(),selectedApplicant.getUserId(),selectedApplicant,project.getProjectName());
-                bottomSheet.show(((AppCompatActivity)mContext).getSupportFragmentManager(), "exampleBottomSheet");
+                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(), selectedApplicant.getShortPitch(), selectedApplicant.getProjectId(), selectedApplicant.getUserId(), selectedApplicant, project.getProjectName());
+                bottomSheet.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "exampleBottomSheet");
             }
         });
         //Save product id to tag
@@ -167,24 +166,3 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
         return text;
     }
 }
-
-
-/*ApplicantList.remove(a);
-                db.collection("Projects").document(project.getProjectId()).update("applicantList",ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        db.collection("Projects").document(project.getProjectId()).update("applicantId",FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });*/

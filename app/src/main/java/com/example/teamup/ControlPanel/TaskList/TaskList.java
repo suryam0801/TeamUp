@@ -80,8 +80,8 @@ public class TaskList extends AppCompatActivity {
         loadTasks(project.getProjectId());
     }
 
-    public void markTasksAsCompleted () {
-        for(Task t : tasksSelected) {
+    public void markTasksAsCompleted() {
+        for (Task t : tasksSelected) {
             db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayRemove(t)).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -95,7 +95,7 @@ public class TaskList extends AppCompatActivity {
             });
             t.setTaskStatus("completed");
         }
-            for(Task t : tasksSelected){
+        for (Task t : tasksSelected) {
             db.collection("Projects").document(project.getProjectId()).update("taskList", FieldValue.arrayUnion(t)).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -110,18 +110,18 @@ public class TaskList extends AppCompatActivity {
         }
     }
 
-    public void clearNewTaskCount(){
+    public void clearNewTaskCount() {
         project.setNewTasks(0);
         SessionStorage.saveProject(TaskList.this, project);
         db.collection("Projects").document(project.getProjectId()).update("newTasks", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "onSuccess: "+"New Tasks Set To 0");
+                Log.d(TAG, "onSuccess: " + "New Tasks Set To 0");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+"Failed to clear new task count");
+                Log.d(TAG, "onFailure: " + "Failed to clear new task count");
             }
         });
     }
@@ -186,7 +186,7 @@ public class TaskList extends AppCompatActivity {
 
                 if (tasksHigh != null) {
                     for (Task t : tasksHigh) {
-                        if(t.getTaskStatus().equals("ongoing"))
+                        if (t.getTaskStatus().equals("ongoing"))
                             TaskListOngoing.add(t);
                         else
                             TaskListCompleted.add(t);
@@ -195,7 +195,7 @@ public class TaskList extends AppCompatActivity {
 
                 if (tasksMedium != null) {
                     for (Task t : tasksMedium) {
-                        if(t.getTaskStatus().equals("ongoing"))
+                        if (t.getTaskStatus().equals("ongoing"))
                             TaskListOngoing.add(t);
                         else
                             TaskListCompleted.add(t);
@@ -204,7 +204,7 @@ public class TaskList extends AppCompatActivity {
 
                 if (tasksLow != null) {
                     for (Task t : tasksLow) {
-                        if(t.getTaskStatus().equals("ongoing"))
+                        if (t.getTaskStatus().equals("ongoing"))
                             TaskListOngoing.add(t);
                         else
                             TaskListCompleted.add(t);
@@ -229,13 +229,13 @@ public class TaskList extends AppCompatActivity {
                     public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                                    int pos, long id) {
 
-                        if(ongoingIsSelected.get(pos) == false) {
+                        if (ongoingIsSelected.get(pos) == false) {
                             ongoingIsSelected.set(pos, true);
                             lvOngoing.getChildAt(pos).findViewById(R.id.selectedIndicator).setVisibility(View.VISIBLE);
-                            if(!tasksSelected.contains(TaskListOngoing.get(pos)))
+                            if (!tasksSelected.contains(TaskListOngoing.get(pos)))
                                 tasksSelected.add(TaskListOngoing.get(pos));
 
-                            if(!tasksSelected.isEmpty())
+                            if (!tasksSelected.isEmpty())
                                 markCompleted.setVisibility(View.VISIBLE);
 
                             Log.d(TAG, tasksSelected.toString());
@@ -245,7 +245,7 @@ public class TaskList extends AppCompatActivity {
                             if (tasksSelected.contains(TaskListOngoing.get(pos)))
                                 tasksSelected.remove(TaskListOngoing.get(pos));
 
-                            if(tasksSelected.isEmpty())
+                            if (tasksSelected.isEmpty())
                                 markCompleted.setVisibility(View.INVISIBLE);
 
                             Log.d(TAG, tasksSelected.toString());

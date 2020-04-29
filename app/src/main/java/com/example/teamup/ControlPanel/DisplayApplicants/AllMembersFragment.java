@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.teamup.EditOrView.EditOrViewProfile;
@@ -43,12 +44,13 @@ public class AllMembersFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    ListView listViewWorkers;
+    private ListView listViewWorkers;
     private List<Worker> WorkersList;
     private MemberListAdapter adapter;
-    Project project;
-    FirebaseFirestore db;
-    FirebaseAuth currentUser;
+    private Project project;
+    private LinearLayout emptyPlaceHolder;
+    private FirebaseFirestore db;
+    private FirebaseAuth currentUser;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -92,6 +94,7 @@ public class AllMembersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_members, container, false);
 
         listViewWorkers = view.findViewById(R.id.listview_allmembers);
+        emptyPlaceHolder = view.findViewById(R.id.members_empty_display);
         project= SessionStorage.getProject(getActivity());
         assert project != null;
         db = FirebaseFirestore.getInstance();
@@ -138,6 +141,9 @@ public class AllMembersFragment extends Fragment {
                         }
                     }
                 }
+
+                if(WorkersList.isEmpty())
+                    emptyPlaceHolder.setVisibility(View.VISIBLE);
                 adapter = new MemberListAdapter(getActivity(), WorkersList);
                 listViewWorkers.setAdapter(adapter);
 

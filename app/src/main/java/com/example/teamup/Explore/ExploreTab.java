@@ -61,21 +61,21 @@ public class ExploreTab extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public final String TAG= ExploreTab.this.getClass().getSimpleName();
-    FirebaseFirestore db=FirebaseFirestore.getInstance();
+    public final String TAG = ExploreTab.this.getClass().getSimpleName();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     ListView lvproject;
     Project projects;
-    private ArrayList<Project> ProjectList = new ArrayList<Project>() ;
+    private ArrayList<Project> ProjectList = new ArrayList<Project>();
     private ProjectAdapter adapter;
-    Button createProject,workbench;
+    Button createProject, workbench;
     Dialog dialog, completedDialog;
     ChipGroup chipGroup;
     int butttonCounter = 0;
     boolean applicantExists = false, workerExists = false, sameCreator = false;
 
-    Button search,menu;
-   EditText prsearch;
+    Button search, menu;
+    EditText prsearch;
 
     public ExploreTab() {
         // Required empty public constructor
@@ -108,15 +108,15 @@ public class ExploreTab extends Fragment {
 
         final View view = inflater.inflate(R.layout.activity_explore, container, false);
 
-        lvproject=view.findViewById(R.id.listview_explore_projects);
-        currentUser=FirebaseAuth.getInstance();
+        lvproject = view.findViewById(R.id.listview_explore_projects);
+        currentUser = FirebaseAuth.getInstance();
         createProject = view.findViewById(R.id.addproject);
         dialog = new Dialog(getActivity());
         completedDialog = new Dialog(getActivity());
         chipGroup = view.findViewById(R.id.chip_group_create_skills);
 
         //search ET
-        prsearch =view.findViewById(R.id.editText);
+        prsearch = view.findViewById(R.id.editText);
         prsearch.clearFocus();
 
         prsearch.setShowSoftInputOnFocus(true);
@@ -125,12 +125,8 @@ public class ExploreTab extends Fragment {
             @Override
             public void onClick(View v) {
                 prsearch.setCursorVisible(true);
-                Log.d(TAG, "searchbar: "+"clicked");
             }
         });
-
-
-
 
 
         createProject.setOnClickListener(new View.OnClickListener() {
@@ -140,13 +136,13 @@ public class ExploreTab extends Fragment {
             }
         });
 
-        projects=new Project();
+        projects = new Project();
         loadprojectlist();
 
         return view;
     }
 
-    public void showApplyDialogue(final int pos){
+    public void showApplyDialogue(final int pos) {
         dialog.setContentView(R.layout.explore_project_display_popup);
 
         final TextView projectName = dialog.findViewById(R.id.popup_project_name);
@@ -180,15 +176,15 @@ public class ExploreTab extends Fragment {
         creatorName.setText(ProjectList.get(pos).getCreatorName());
         projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
 
-        if (sameCreator==true) {
+        if (sameCreator == true) {
             acceptButton.setText("This is your project");
             acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
             acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
-        } else if(applicantExists==true) {
+        } else if (applicantExists == true) {
             acceptButton.setText("Request send already");
             acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
             acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
-        } else if (workerExists==true) {
+        } else if (workerExists == true) {
             acceptButton.setText("Already Accepted");
             acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
             acceptButton.setBackground(getResources().getDrawable(R.drawable.unpressable_button));
@@ -216,13 +212,13 @@ public class ExploreTab extends Fragment {
 
         int i = 0;
 
-        if(skillsArray!=null) {
+        if (skillsArray != null) {
             for (String s : skillsArray) {
                 allChips.get(i).setText(s);
                 allChips.get(i).setVisibility(View.VISIBLE);
                 i++;
             }
-            for(int x = i; x < allChips.size(); x++){
+            for (int x = i; x < allChips.size(); x++) {
                 allChips.get(x).setVisibility(View.GONE);
             }
         }
@@ -230,11 +226,11 @@ public class ExploreTab extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(butttonCounter % 2 == 0){
+                if (butttonCounter % 2 == 0) {
                     dialog.dismiss();
-                } else if (butttonCounter % 2 == 1){
+                } else if (butttonCounter % 2 == 1) {
                     String reason = String.valueOf(entryEdit.getText());
-                    if(reason==null || reason.equals("") || reason.replaceAll("\\s", "").equals("")){
+                    if (reason == null || reason.equals("") || reason.replaceAll("\\s", "").equals("")) {
                     } else {
                         saveApplicant(reason, ProjectList.get(pos).getProjectId());
                     }
@@ -245,7 +241,7 @@ public class ExploreTab extends Fragment {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(applicantExists == false  && sameCreator == false && workerExists == false && butttonCounter % 2 == 0){
+                if (applicantExists == false && sameCreator == false && workerExists == false && butttonCounter % 2 == 0) {
 
                     scrollView.setVisibility(View.GONE);
                     projectShortDescription.setVisibility(View.GONE);
@@ -261,7 +257,7 @@ public class ExploreTab extends Fragment {
                     cancelButton.setTextColor(Color.parseColor("#35C80B"));
                     cancelButton.setText("Submit Application");
                     butttonCounter++;
-                } else if (applicantExists == false && sameCreator == false && workerExists == false && butttonCounter % 2 == 1){
+                } else if (applicantExists == false && sameCreator == false && workerExists == false && butttonCounter % 2 == 1) {
                     scrollView.setVisibility(View.VISIBLE);
                     projectShortDescription.setVisibility(View.VISIBLE);
                     shortPlaceholder.setVisibility(View.VISIBLE);
@@ -293,7 +289,7 @@ public class ExploreTab extends Fragment {
     }
 
 
-    public void showCompletedDialog(){
+    public void showCompletedDialog() {
         completedDialog.setContentView(R.layout.application_confirmation_popup);
         completedDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
@@ -308,24 +304,22 @@ public class ExploreTab extends Fragment {
     }
 
     public void loadprojectlist() {
-        ProjectList=new ArrayList<>();
-        if (ProjectList.size()>0)
+        ProjectList = new ArrayList<>();
+        if (ProjectList.size() > 0)
             ProjectList.clear();
         db.collection("Projects")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()&&task.getResult()!=null)
-                        {
-                            for (DocumentSnapshot documentSnapshot:task.getResult())
-                            {
-                                Project project= documentSnapshot.toObject(Project.class);
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                Project project = documentSnapshot.toObject(Project.class);
 //                                Log.d(TAG, project.toString());
 //                                Log.d(TAG, "____________________________________________________");
                                 ProjectList.add(project);
                             }
-                            adapter= new ProjectAdapter(getActivity(),ProjectList);
+                            adapter = new ProjectAdapter(getActivity(), ProjectList);
                             lvproject.setAdapter(adapter);
 
                             prsearch.addTextChangedListener(new TextWatcher() {
@@ -351,18 +345,18 @@ public class ExploreTab extends Fragment {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     applicantExists = false;
 
-                                    if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                    if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                         Log.d(TAG, ProjectList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
                                         sameCreator = true;
                                     }
 
-                                    if(ProjectList.get(i).getApplicantId()!=null){
-                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                    if (ProjectList.get(i).getApplicantId() != null) {
+                                        if (ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             applicantExists = true;
                                         }
                                     }
 
-                                    if(ProjectList.get(i).getWorkersId()!=null){
+                                    if (ProjectList.get(i).getWorkersId() != null) {
                                         if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             workerExists = true;
                                         }
@@ -372,8 +366,8 @@ public class ExploreTab extends Fragment {
                                 }
                             });
 
-                        }else {
-                            Log.d("Logger","No such Valid Item");
+                        } else {
+                            Log.d("Logger", "No such Valid Item");
                         }
 
                     }
@@ -384,11 +378,11 @@ public class ExploreTab extends Fragment {
         });
     }
 
-    public void saveApplicant(String shortPitch, final String projectId){
+    public void saveApplicant(String shortPitch, final String projectId) {
 
         User user = SessionStorage.getUser(getActivity());
 
-        final Applicant applicant=new Applicant();
+        final Applicant applicant = new Applicant();
         applicant.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         applicant.setApplicantName(currentUser.getCurrentUser().getDisplayName());
         applicant.setProjectId(projectId);
@@ -398,42 +392,41 @@ public class ExploreTab extends Fragment {
         applicant.setSpecialization(user.getSpecialization());
         applicant.setLocation(user.getLocation());
 
-        Object[] array={applicant};
+        Object[] array = {applicant};
 
 
         db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                        {
-                            Log.d(TAG, "onComplete: "+"Success");
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: " + "Success");
                             List<String> applicantIds = new ArrayList<>();
-                            if(projects.getApplicantId()==null){
+                            if (projects.getApplicantId() == null) {
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantId",FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantId", FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                        Log.d(TAG, "onSuccess: " + "Applicant Id update");
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                        Log.d(TAG, "onFailure: " + "Applicant Id update");
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantId",FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantId", FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                        Log.d(TAG, "onSuccess: " + "Applicant Id update");
                                         dialog.dismiss();
                                         showCompletedDialog();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                        Log.d(TAG, "onFailure: " + "Applicant Id update");
                                     }
                                 });
                             }
@@ -444,19 +437,19 @@ public class ExploreTab extends Fragment {
                             db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "onSuccess: "+"Applicant Id update");
+                                    Log.d(TAG, "onSuccess: " + "Applicant Id update");
                                     dialog.dismiss();
                                     showCompletedDialog();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "onFailure: "+"Applicant Id update");
+                                    Log.d(TAG, "onFailure: " + "Applicant Id update");
                                 }
                             });
 
-                        }else {
-                            Log.d(TAG, "onComplete: "+"Failure");
+                        } else {
+                            Log.d(TAG, "onComplete: " + "Failure");
                         }
                     }
                 });

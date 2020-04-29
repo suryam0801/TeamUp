@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,13 +50,14 @@ public class ApplicantDisplayFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    FirebaseFirestore db;
-    FirebaseAuth currentUser;
-    String TAG = "APPLICANTS_DISPLAY";
-    ListView lvApplicant;
+    private FirebaseFirestore db;
+    private FirebaseAuth currentUser;
+    private String TAG = "APPLICANTS_DISPLAY";
+    private LinearLayout emptyPlaceHolder;
+    private ListView lvApplicant;
     private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
-    Project project;
+    private Project project;
 
     public ApplicantDisplayFragment() {
         // Required empty public constructor
@@ -96,6 +98,7 @@ public class ApplicantDisplayFragment extends Fragment {
         final View view = inflater.inflate(R.layout.activity_my_projects_view, container, false);
 
         lvApplicant = view.findViewById(R.id.listview_applicant);
+        emptyPlaceHolder = view.findViewById(R.id.applicants_empty_display);
         project = SessionStorage.getProject(getActivity());
         assert project != null;
         db = FirebaseFirestore.getInstance();
@@ -184,6 +187,8 @@ public class ApplicantDisplayFragment extends Fragment {
 
                     }
                 }
+                if(ApplicantList.isEmpty())
+                    emptyPlaceHolder.setVisibility(View.VISIBLE);
                 adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
                 project.setApplicantList(ApplicantList);
                 lvApplicant.setAdapter(adapter);
