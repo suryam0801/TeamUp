@@ -151,7 +151,7 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(), selectedApplicant.getShortPitch(), selectedApplicant.getProjectId(), selectedApplicant.getUserId(), selectedApplicant, project.getProjectName());
+                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(), selectedApplicant.getShortPitch(), selectedApplicant.getProjectId(), selectedApplicant.getUserId(), selectedApplicant, project.getProjectName(), ApplicantList);
                 bottomSheet.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "exampleBottomSheet");
             }
         });

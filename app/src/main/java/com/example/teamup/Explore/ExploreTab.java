@@ -404,7 +404,7 @@ public class ExploreTab extends Fragment {
                             List<String> applicantIds = new ArrayList<>();
                             if (projects.getApplicantId() == null) {
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantId", FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document(projectId).update("applicantId", FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: " + "Applicant Id update");
@@ -416,7 +416,7 @@ public class ExploreTab extends Fragment {
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("applicantId", FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document(projectId).update("applicantId", FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: " + "Applicant Id update");
@@ -434,7 +434,7 @@ public class ExploreTab extends Fragment {
                             int newApplicants = projects.getNewApplicants() + 1;
                             projects.setNewApplicants(newApplicants);
                             SessionStorage.saveProject(getActivity(), projects);
-                            db.collection("Projects").document("aa3cd8ff-b7d5-4c2d-a752-890680fb21b8").update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            db.collection("Projects").document(projectId).update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "onSuccess: " + "Applicant Id update");

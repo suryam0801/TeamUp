@@ -52,14 +52,14 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
     ;
     String projectName;
 
-    public BottomsheetDialog(String applname, String appldesc, String project_id, String uid, Applicant a, String projectName) {
+    public BottomsheetDialog(String applname, String appldesc, String project_id, String uid, Applicant a, String projectName, List<Applicant> ApplicantList) {
         this.applname = applname;
         this.appldesc = appldesc;
         this.project_id = project_id;
         this.uid = uid;
         this.a = a;
         this.projectName = projectName;
-
+        this.ApplicantList = ApplicantList;
     }
 
     @Override
@@ -104,10 +104,11 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ApplicantList.remove(a);
                 mListener.onButtonClicked("Rejected");
                 SendNotification.sendnotification("application rejected", project.getProjectId(), project.getProjectName(), a.getUserId());
                 Log.d(TAG, "THIS PROJECT ID" + project.getProjectId());
-                db.collection("Projects").document(project.getProjectId()).update("applicantList", FieldValue.arrayRemove(a)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                db.collection("Projects").document(project.getProjectId()).update("applicantList", ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         db.collection("Projects").document(project.getProjectId()).update("applicantId", FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
