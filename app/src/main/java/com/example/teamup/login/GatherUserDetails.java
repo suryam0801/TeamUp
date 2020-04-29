@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.teamup.ControlPanel.ProjectWall.ProjectWall;
 import com.example.teamup.R;
+import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,7 +64,7 @@ public class GatherUserDetails extends AppCompatActivity {
     private Uri downloadUri;
     private CircleImageView profilePic;
 
-    String primSkill, secSkill, loc, fName, lName, email, password, userId,profileImageLink;
+    String primSkill, secSkill, loc, fName, lName, email, password, userId,profileImageLink,contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +79,18 @@ public class GatherUserDetails extends AppCompatActivity {
         storageReference= FirebaseStorage.getInstance().getReference();
 
 
+        final EditText firstname = findViewById(R.id.fname);
+        final EditText lastname = findViewById(R.id.lname);
+        final EditText phn_num = findViewById(R.id.contact);
         final EditText primarySkill = findViewById(R.id.primarySkill);
         final EditText secondarySkill = findViewById(R.id.secondarySkill);
         final EditText location = findViewById(R.id.location);
         Button register = findViewById(R.id.registerButton);
         Button profilepicButton = findViewById(R.id.profilePicSetterImage);
         profilePic=findViewById(R.id.profile_image);
-
-        fName = getIntent().getStringExtra("fName");
-        lName = getIntent().getStringExtra("lName");
+//        contact=getIntent().getStringExtra("phn_num");
+//        fName = getIntent().getStringExtra("fName");
+//        lName = getIntent().getStringExtra("lName");
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
 
@@ -116,10 +120,12 @@ public class GatherUserDetails extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                fName = firstname.getText().toString();
+                lName = lastname.getText().toString();
                 primSkill = primarySkill.getText().toString();
                 secSkill = secondarySkill.getText().toString();
                 loc = location.getText().toString();
+                contact = "+91"+phn_num.getText().toString();
 
                 registerFunction();
             }
@@ -219,95 +225,51 @@ public class GatherUserDetails extends AppCompatActivity {
 
     private void addUserToCollection() {
 
-                String token_id= FirebaseInstanceId.getInstance().getToken();
-                User user = new User(fName,lName,email,primSkill,secSkill,loc,userId,downloadUri.toString(), 0, 0, 0,token_id);
-                db.collection("Users")
-                        .document(userId)
-                        .set(user)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+        String token_id= FirebaseInstanceId.getInstance().getToken();
+        User user = new User(fName,lName,contact,primSkill,secSkill,loc,userId,downloadUri.toString(), 0, 0, 0,token_id);
+        db.collection("Users")
+                .document(userId)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
 
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-
-
-
-
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public void registerFunction(){
-
-        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName))
+        Log.d("GATHERUSERDETAILS: ", "Function Called25");
+        if(!TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName))
         {
-            firebaseAuth.createUserWithEmailAndPassword(email,password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if(task.isSuccessful())
-                            {
-
-                                userId = firebaseAuth.getInstance().getCurrentUser().getUid();
-                                Log.d("GATHERUSERDETAILS: ", userId);
-                                addUserToCollection();
-
-                                firebaseAuth.getCurrentUser().sendEmailVerification()
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful())
-                                                {
-
-                                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                            .setDisplayName(fName+" "+lName)
-                                                            .build();
-
-                                                    firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
-                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+            Log.d("GATHERUSERDETAILS: ", "Function Called");
+             userId = firebaseAuth.getInstance().getCurrentUser().getUid();
+             Log.d("GATHERUSERDETAILS: ", userId);
+             addUserToCollection();
+             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                     .setDisplayName(fName+" "+lName)
+                     .build();
+                firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
+                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-
-                                                                    if(task.isSuccessful()) {
-
-                                                                        Toast.makeText(GatherUserDetails.this, "Verification link has  been sent " +
-                                                                                "to your email, Please verify and Login", Toast.LENGTH_LONG).show();
-
-                                                                        firebaseAuth.signOut();
-
-                                                                        startActivity(new Intent(GatherUserDetails.this, LoginActivity.class));
-                                                                        finish();
-
-                                                                    }
-                                                                    else {
-                                                                        Toast.makeText(GatherUserDetails.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                                                        firebaseAuth.signOut();
-                                                                        firebaseAuth.getCurrentUser().delete();
-                                                                    }
-                                                                }
-                                                            });
-                                                }
-                                                else {
-                                                    firebaseAuth.signOut();
-                                                    firebaseAuth.getCurrentUser().delete();
-                                                    Toast.makeText(GatherUserDetails.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                                }
-
-                                            }
-                                        });
-                            }
-                            else {
-                                Toast.makeText(GatherUserDetails.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(GatherUserDetails.this, "User Registered Successfully", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(GatherUserDetails.this, TabbedActivityMain.class));
+                                        finish();
+                                    }
+                                    else {
+                                        Toast.makeText(GatherUserDetails.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                                        firebaseAuth.signOut();
+                                        firebaseAuth.getCurrentUser().delete();
+                                    } }
+                     });
         }
         else {
             Toast.makeText(GatherUserDetails.this,"Enter Valid details",Toast.LENGTH_LONG).show();

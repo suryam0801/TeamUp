@@ -12,6 +12,9 @@
     <color name="color3">#796e25</color>
     <color name="color4">#59717c</color>
     <color name="grey">#C0C0C0</color>
-
+    <color name="disabledBtnBg">#999999</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="lightGray">#F2F2F2</color>
+
 </resources>

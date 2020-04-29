@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_begin="182dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -114,14 +114,15 @@
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
         android:fontFamily="@font/roboto_black"
         android:text="TeamUp"
-        android:textSize="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/textInputLayout5"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:textColor="#2196F3"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:textSize="50dp"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/beneathTitle"

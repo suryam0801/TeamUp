@@ -26,16 +26,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -84,7 +78,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
 
         requestjoin.setText(a.getShortPitch());
         name.setText(applname);
-        desc.setText(a.getApplicantEmail());
+        desc.setText(a.getApplicantPhn());
 
         Glide.with(getContext())
                 .load(a.getProfilePicURL())
