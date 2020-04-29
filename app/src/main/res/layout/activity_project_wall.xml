@@ -6,6 +6,32 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".ControlPanel.ProjectWall.ProjectWall">
+
+    <LinearLayout
+        android:id="@+id/projectWall_empty_display"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="167dp"
+            android:layout_height="160dp"
+            android:background="@drawable/empty_members_placeholder"></ImageView>
+
+        <TextView
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:lineSpacingExtra="5dp"
+            android:paddingTop="43dp"
+            android:text="There are current no documents in this project. Click the button to upload and share a new document."
+            android:textAlignment="center"
+            android:textColor="#828282"
+            android:textSize="12dp"></TextView>
+
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/projectViewRecyclerView"
         android:layout_width="0dp"
