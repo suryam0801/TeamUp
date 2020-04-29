@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class Applicant implements Parcelable {
 
-    private String projectId,applicantName,applicantEmail,userId,shortPitch, profilePicURL, specialization, location;
+    private String projectId,applicantName, applicantPhn,userId,shortPitch, profilePicURL, specialization, location;
     private int workingProject;
 
     public Applicant() {
@@ -16,7 +16,7 @@ public class Applicant implements Parcelable {
         return "Applicant{" +
                 "projectId='" + projectId + '\'' +
                 ", applicantName='" + applicantName + '\'' +
-                ", applicantEmail='" + applicantEmail + '\'' +
+                ", applicantEmail='" + applicantPhn + '\'' +
                 ", userId='" + userId + '\'' +
                 ", shortPitch='" + shortPitch + '\'' +
                 ", profilePicURL='" + profilePicURL + '\'' +
@@ -30,7 +30,7 @@ public class Applicant implements Parcelable {
 
         this.projectId = projectId;
         this.applicantName = applicantName;
-        this.applicantEmail = applicantEmail;
+        this.applicantPhn = applicantEmail;
         this.userId = userId;
         this.shortPitch = shortPitch;
         this.profilePicURL = profilePicURL;
@@ -89,12 +89,12 @@ public class Applicant implements Parcelable {
         this.applicantName = applicantName;
     }
 
-    public String getApplicantEmail() {
-        return applicantEmail;
+    public String getApplicantPhn() {
+        return applicantPhn;
     }
 
-    public void setApplicantEmail(String applicantEmail) {
-        this.applicantEmail = applicantEmail;
+    public void setApplicantPhn(String applicantPhn) {
+        this.applicantPhn = applicantPhn;
     }
 
     public String getUserId() {
@@ -122,7 +122,7 @@ public class Applicant implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(projectId);
         parcel.writeString(applicantName);
-        parcel.writeString(applicantEmail);
+        parcel.writeString(applicantPhn);
         parcel.writeString(userId);
         parcel.writeString(shortPitch);
         parcel.writeString(profilePicURL);
@@ -134,7 +134,7 @@ public class Applicant implements Parcelable {
     private Applicant(Parcel in) {
         projectId = in.readString();
         applicantName = in.readString();
-        applicantEmail = in.readString();
+        applicantPhn = in.readString();
         userId = in.readString();
         shortPitch = in.readString();
         profilePicURL = in.readString();

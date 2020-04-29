@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.teamup.login.LoginActivity;
+import com.example.teamup.login.PhoneLogin;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
             finish();
         } else {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, PhoneLogin.class));
             finish();
         }
     }
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
             finish();
         } else {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            startActivity(new Intent(MainActivity.this, PhoneLogin.class));
             finish();
         }
 

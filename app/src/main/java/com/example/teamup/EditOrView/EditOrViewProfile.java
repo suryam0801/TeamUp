@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.login.LoginActivity;
+import com.example.teamup.login.PhoneLogin;
 import com.example.teamup.login.SignUpActivity;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
@@ -133,7 +134,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         firebaseAuth.signOut();
-                        startActivity(new Intent(EditOrViewProfile.this, LoginActivity.class));
+                        startActivity(new Intent(EditOrViewProfile.this, PhoneLogin.class));
                     }
                 });
             }
@@ -240,7 +241,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                         .into(profileImageView);
 
                 userName.setText(user.getFirstName() + " " + user.getLastName());
-                userEmail.setText(user.getEmail());
+                userEmail.setText(user.getContact());
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
@@ -266,7 +267,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                         .into(profileImageView);
 
                 userName.setText(user.getFirstName() + " " + user.getLastName());
-                userEmail.setText(user.getEmail());
+                userEmail.setText(user.getContact());
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");

@@ -47,6 +47,7 @@ public class TabbedActivityMain extends AppCompatActivity {
     FirebaseAuth currentUser;
     User user;
     ExploreTab fragobj;
+    String id;
 
 
     @Override
@@ -65,6 +66,8 @@ public class TabbedActivityMain extends AppCompatActivity {
         viewPager = findViewById(R.id.main_viewpager);
         profPic = findViewById(R.id.mainActivity_profilePicture);
         notificationBell = findViewById(R.id.main_activity_notifications_bell);
+
+        id=getIntent().getStringExtra("id");
 
 //        SendNotification.sendnotification("application accepted", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
 //        SendNotification.sendnotification("application rejected", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");

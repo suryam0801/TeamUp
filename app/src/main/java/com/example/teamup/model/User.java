@@ -17,7 +17,7 @@ public class User {
         return "User{" +
                 "firstName='" + firstName + '\n' +
                 ", lastName='" + lastName + '\n' +
-                ", email='" + email + '\n' +
+                ", contact='" + contact + '\n' +
                 ", specialization='" + specialization + '\n' +
                 ", secondarySkill='" + secondarySkill + '\n' +
                 ", profileImageLink='" + profileImageLink + '\n' +
@@ -53,7 +53,7 @@ public class User {
     private User(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
-        email = in.readString();
+        contact = in.readString();
         specialization = in.readString();
         secondarySkill = in.readString();
         location = in.readString();
@@ -66,13 +66,13 @@ public class User {
         token_id = in.readString();
     }
 
-    public User(String firstName, String lastName, String email,
+    public User(String firstName, String lastName,String contact,
                 String specialization, String secondarySkill, String location,
                 String userId,String profileImageLink, int createdProjects, int workingProjects,
                 int completedProjects,String token_id) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.contact=contact;
         this.specialization = specialization;
         this.secondarySkill = secondarySkill;
         this.location = location;
@@ -89,7 +89,7 @@ public class User {
 
     private String lastName;
 
-    private String email;
+    private String contact;
 
     private String specialization;
 
@@ -169,13 +169,20 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+public String getContact() {
+    return contact;
+}
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public String getUserId() {

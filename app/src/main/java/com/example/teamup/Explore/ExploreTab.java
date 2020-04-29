@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -388,7 +386,7 @@ public class ExploreTab extends Fragment {
         applicant.setApplicantName(currentUser.getCurrentUser().getDisplayName());
         applicant.setProjectId(projectId);
         applicant.setShortPitch(shortPitch);
-        applicant.setApplicantEmail(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
+        applicant.setApplicantPhn(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
         applicant.setProfilePicURL(user.getProfileImageLink());
         applicant.setSpecialization(user.getSpecialization());
         applicant.setLocation(user.getLocation());
