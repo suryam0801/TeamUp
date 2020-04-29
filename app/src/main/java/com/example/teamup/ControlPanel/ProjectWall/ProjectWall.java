@@ -15,6 +15,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.ProjectWallDataClass;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,7 +56,7 @@ public class ProjectWall extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
-    private  Project project;
+    private Project project;
     private Uri filePath;
     private ArrayList<ProjectWallDataClass> arrayList;
     AlertDialog alertDialog;
@@ -68,21 +70,21 @@ public class ProjectWall extends AppCompatActivity {
         setContentView(R.layout.activity_project_wall);
 
 
-        fab=findViewById(R.id.newResourceFAB);
+        fab = findViewById(R.id.newResourceFAB);
 
-        arrayList=new ArrayList<>();
+        arrayList = new ArrayList<>();
 
-        firebaseFirestore=FirebaseFirestore.getInstance();
-        storageReference=FirebaseStorage.getInstance().getReference();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
 
-        recyclerView=findViewById(R.id.projectViewRecyclerView);
+        recyclerView = findViewById(R.id.projectViewRecyclerView);
 
         project = SessionStorage.getProject(this);
 
-        final Query query=firebaseFirestore.collection("ProjectWall").document(project.getProjectId())
-                .collection("Files").orderBy("Time",Query.Direction.DESCENDING);
+        final Query query = firebaseFirestore.collection("ProjectWall").document(project.getProjectId())
+                .collection("Files").orderBy("Time", Query.Direction.DESCENDING);
 
-        final ProjectWallAdapter projectWallAdapter=new ProjectWallAdapter(this,arrayList);
+        final ProjectWallAdapter projectWallAdapter = new ProjectWallAdapter(this, arrayList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(projectWallAdapter);
@@ -91,12 +93,11 @@ public class ProjectWall extends AppCompatActivity {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     arrayList.clear();
-                    for(DocumentSnapshot doc:task.getResult()) {
+                    for (DocumentSnapshot doc : task.getResult()) {
 
-                        ProjectWallDataClass projectWallDataClass=doc.toObject(ProjectWallDataClass.class);
+                        ProjectWallDataClass projectWallDataClass = doc.toObject(ProjectWallDataClass.class);
 
                         arrayList.add(projectWallDataClass);
 
@@ -111,30 +112,28 @@ public class ProjectWall extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder= new AlertDialog.Builder(ProjectWall.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProjectWall.this);
 
-                LayoutInflater  inflater=getLayoutInflater();
+                LayoutInflater inflater = getLayoutInflater();
 
-                final View dialogue=inflater.inflate(R.layout.file_upload_alert_layout_1,null);
+                final View dialogue = inflater.inflate(R.layout.file_upload_alert_layout_1, null);
 
                 builder.setView(dialogue);
 
 
-                final Button button=dialogue.findViewById(R.id.fileSelectAlertButton);
+                final LinearLayout fileSelect = dialogue.findViewById(R.id.fileSelectAlertButton);
 
-                button.setOnClickListener(new View.OnClickListener() {
+                fileSelect.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if(ContextCompat.checkSelfPermission(ProjectWall.this,
+                        if (ContextCompat.checkSelfPermission(ProjectWall.this,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED)
-                        {
+                                != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(ProjectWall.this,
                                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                     STORAGE_PERMISSION_CODE);
-                        }
-                        else {
+                        } else {
 
                             Intent intent = new Intent();
                             intent.setType("*/*");
@@ -144,25 +143,17 @@ public class ProjectWall extends AppCompatActivity {
                     }
                 });
 
-                builder.setTitle("Choose file");
-
-
-               alertDialog=builder.create();
+                alertDialog = builder.create();
                 alertDialog.show();
-
 
             }
         });
 
 
-
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super
                 .onRequestPermissionsResult(requestCode,
                         permissions,
@@ -174,8 +165,7 @@ public class ProjectWall extends AppCompatActivity {
                         "Storage Permission Granted",
                         Toast.LENGTH_SHORT)
                         .show();
-            }
-            else {
+            } else {
                 Toast.makeText(ProjectWall.this,
                         "Storage Permission Denied",
                         Toast.LENGTH_SHORT)
@@ -194,23 +184,24 @@ public class ProjectWall extends AppCompatActivity {
 
             ContentResolver contentResolver = getContentResolver();
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-            String extension= mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(filePath));
+            String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(filePath));
 
-            AlertDialog.Builder builder= new AlertDialog.Builder(ProjectWall.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProjectWall.this);
 
-            LayoutInflater  inflater=getLayoutInflater();
+            LayoutInflater inflater = getLayoutInflater();
 
-            final View dialogue=inflater.inflate(R.layout.file_upload_alert_layout_2,null);
+            final View dialogue = inflater.inflate(R.layout.file_upload_alert_layout_2, null);
 
             builder.setView(dialogue);
 
 
-            final ImageView imageView=dialogue.findViewById(R.id.filePreviewImage);
-            final EditText editText=dialogue.findViewById(R.id.fileNameEditText);
-            final Button button=dialogue.findViewById(R.id.fileUploadAlertButton);
+            final ImageView imageView = dialogue.findViewById(R.id.filePreviewImage);
+            final EditText nameEditText = dialogue.findViewById(R.id.fileNameEditText);
+            final EditText descriptionEditText = dialogue.findViewById(R.id.fileDescriptionEditText);
+            final Button button = dialogue.findViewById(R.id.fileUploadAlertButton);
 
 
-            if(extension!=null) {
+            if (extension != null) {
                 switch (extension) {
                     case "pdf":
                         imageView.setImageResource(R.drawable.pdf_image);
@@ -233,15 +224,15 @@ public class ProjectWall extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    final String file_name=editText.getText().toString();
-                    if(!TextUtils.isEmpty(file_name) && filePath != null)
-                    {
+                    final String file_name = nameEditText.getText().toString();
+                    final String file_description = descriptionEditText.getText().toString();
+                    if (!TextUtils.isEmpty(file_name) && filePath != null) {
                         //displaying a progress dialog while upload is going on
                         final ProgressDialog progressDialog = new ProgressDialog(ProjectWall.this);
                         progressDialog.setTitle("Uploading");
                         progressDialog.show();
 
-                        final StorageReference riversRef = storageReference.child("ProjectWall/"+ project.getProjectId() +"/"+file_name);
+                        final StorageReference riversRef = storageReference.child("ProjectWall/" + project.getProjectId() + "/" + file_name);
 
                         riversRef.putFile(filePath).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -260,7 +251,7 @@ public class ProjectWall extends AppCompatActivity {
                                         }
 
                                         // Continue with the task to get the download URL
-                                        return  riversRef.getDownloadUrl();
+                                        return riversRef.getDownloadUrl();
                                     }
                                 }).addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
@@ -270,22 +261,25 @@ public class ProjectWall extends AppCompatActivity {
 
                                 //and displaying a success toast
                                 Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-                                Uri downloadUri=uri;
+                                Uri downloadUri = uri;
 
-                                Map<String,Object> map=new HashMap<>();
-                                map.put("Link",downloadUri.toString());
-                                map.put("Time",System.currentTimeMillis());
-                                map.put("FileName",file_name);
-
+                                Map<String, Object> map = new HashMap<>();
+                                map.put("Link", downloadUri.toString());
+                                map.put("Time", System.currentTimeMillis());
+                                map.put("FileName", file_name);
+                                map.put("ownerId", SessionStorage.getUser(ProjectWall.this).getUserId());
+                                map.put("ownerName", SessionStorage.getUser(ProjectWall.this).getFirstName().trim() + " " +
+                                        SessionStorage.getUser(ProjectWall.this).getLastName().trim());
+                                map.put("description", file_description);
+                                map.put("ownerPicURL", SessionStorage.getUser(ProjectWall.this).getProfileImageLink());
 
                                 firebaseFirestore.collection("ProjectWall").document(project.getProjectId())
                                         .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful())
-                                        {
-                                            Intent intent=new Intent(ProjectWall.this,ProjectWall.class);
-                                            intent.putExtra("project",project);
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(ProjectWall.this, ProjectWall.class);
+                                            intent.putExtra("project", project);
                                             startActivity(intent);
                                         }
                                     }
@@ -305,18 +299,11 @@ public class ProjectWall extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 });
-
-
                     }
-
-
                 }
             });
 
-            builder.setTitle("Choose file");
-
-
-            alertDialog=builder.create();
+            alertDialog = builder.create();
             alertDialog.show();
 
 

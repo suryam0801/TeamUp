@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Explore.ExploreTab"
+    android:background="@color/card_back"
     android:orientation="vertical"
-    android:background="@color/card_back">
+    tools:context=".Explore.ExploreTab">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,34 +19,29 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginLeft="16dp"
-            android:fontFamily="@font/roboto_regular"
             android:layout_marginTop="15dp"
-            android:textSize="16dp"
             android:layout_marginRight="16dp"
             android:background="#F8F8F8"
             android:drawableLeft="@drawable/ic_search_black_24dp"
             android:drawablePadding="18dp"
-            android:paddingLeft="16dp"
-android:focusableInTouchMode="true"
-
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/roboto_regular"
             android:hapticFeedbackEnabled="true"
             android:hint="Search"
+
+            android:paddingLeft="16dp"
             android:singleLine="true"
             android:textColor="#828282"
-            android:textColorHint="#828282"/>
-
-
-
-
-
+            android:textColorHint="#828282"
+            android:textSize="16dp" />
 
     </FrameLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
 
         <ListView
             android:id="@+id/listview_explore_projects"
@@ -54,24 +50,21 @@ android:focusableInTouchMode="true"
             android:layout_weight="20"
             android:divider="@android:color/transparent"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_marginBottom="50dp">
-        </ListView>
+            android:paddingRight="10dp"></ListView>
 
         <Button
             android:id="@+id/addproject"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="20dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/create_project_button_background"
             android:elevation="10dp"
             android:foreground="@drawable/ic_add_black_24dp"
-            android:background="@drawable/create_project_button_background"
-            android:layout_marginTop="20dp"
             android:text="" />
     </FrameLayout>
-
 
 
 </LinearLayout>

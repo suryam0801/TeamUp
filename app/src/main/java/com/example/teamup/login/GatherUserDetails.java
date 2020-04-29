@@ -167,7 +167,6 @@ public class GatherUserDetails extends AppCompatActivity {
             if(filePath != null)
             {
 
-
                 final ProgressDialog progressDialog = new ProgressDialog(GatherUserDetails.this);
                 progressDialog.setTitle("Uploading");
                 progressDialog.show();

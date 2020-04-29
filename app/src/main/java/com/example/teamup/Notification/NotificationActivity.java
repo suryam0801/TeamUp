@@ -81,7 +81,7 @@ public class NotificationActivity extends AppCompatActivity {
 
     public void loadNotifications() {
         db.collection("Users")
-                .document("FHDYmz9FENWtS0GcH5cHgtjYWOc2")
+                .document(SessionStorage.getUser(NotificationActivity.this).getUserId()) // test - FHDYmz9FENWtS0GcH5cHgtjYWOc2
                 .collection("Notifications")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
