@@ -3,6 +3,7 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.se.omapi.Session;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,14 @@ import com.bumptech.glide.Glide;
 import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.Notification.SendNotification;
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldValue;
@@ -37,40 +40,41 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
 
 
     private BottomSheetListener mListener;
-    TextView name,desc,requestjoin;
+    TextView name, desc, requestjoin;
     private Context mContext;
     private List<Applicant> ApplicantList;
-    FirebaseFirestore db= FirebaseFirestore.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
     Project project;
     String TAG = "APPLICANT_LIST_ADAPTER";
-    String applname,appldesc,project_id,uid;
-    Applicant a= new Applicant();;
+    String applname, appldesc, project_id, uid;
+    Applicant a = new Applicant();
+    ;
     String projectName;
 
     public BottomsheetDialog(String applname, String appldesc, String project_id, String uid, Applicant a, String projectName) {
         this.applname = applname;
         this.appldesc = appldesc;
-        this.project_id=project_id;
-        this.uid=uid;
-        this.a=a;
-        this.projectName=projectName;
+        this.project_id = project_id;
+        this.uid = uid;
+        this.a = a;
+        this.projectName = projectName;
 
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style. AppBottomSheetDialogTheme);
-        firebaseAuth=FirebaseAuth.getInstance();
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
-    public View onCreateView( LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottomsheetlayout, container, false);
-        name=v.findViewById(R.id.btmname);
-        desc=v.findViewById(R.id.btmdesc);
-        requestjoin=v.findViewById(R.id.reqjoin);
+        name = v.findViewById(R.id.btmname);
+        desc = v.findViewById(R.id.btmdesc);
+        requestjoin = v.findViewById(R.id.reqjoin);
         Button reject = v.findViewById(R.id.btnreject);
         Button accept = v.findViewById(R.id.btnaccept);
         Button viewProfile = v.findViewById(R.id.view_applicant_profile_button);
@@ -79,6 +83,8 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
         requestjoin.setText(a.getShortPitch());
         name.setText(applname);
         desc.setText(a.getApplicantPhn());
+
+        project = SessionStorage.getProject(getActivity());
 
         Glide.with(getContext())
                 .load(a.getProfilePicURL())
@@ -99,7 +105,24 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onButtonClicked("Rejected");
-                SendNotification.sendnotification("rejected", a.getProjectId(), project.getProjectName(), a.getUserId());
+                SendNotification.sendnotification("application rejected", project.getProjectId(), project.getProjectName(), a.getUserId());
+                Log.d(TAG, "THIS PROJECT ID" + project.getProjectId());
+                db.collection("Projects").document(project.getProjectId()).update("applicantList", FieldValue.arrayRemove(a)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        db.collection("Projects").document(project.getProjectId()).update("applicantId", FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "JOB SUCCESSFUL!!!!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "JOB Failed!!!!");
+                            }
+                        });
+                    }
+                });
                 dismiss();
             }
         });
@@ -107,18 +130,15 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onButtonClicked("Accepted");
-                dismiss();
-                db.collection("Projects").document(a.getProjectId()).update("workersList", FieldValue.arrayUnion(a))
+                db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(a))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful())
-                                {
-                                    db.collection("Projects").document(a.getProjectId()).update("applicantList",ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>()
-                                    {
+                                if (task.isSuccessful()) {
+                                    db.collection("Projects").document(project.getProjectId()).update("applicantList", FieldValue.arrayRemove(a)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            db.collection("Projects").document(a.getProjectId()).update("applicantId",FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(project.getProjectId()).update("applicantId", FieldValue.arrayRemove(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -129,7 +149,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
                                                     Log.d(TAG, "JOB Failed!!!!");
                                                 }
                                             });
-                                            db.collection("Projects").document(a.getProjectId()).update("workersId",FieldValue.arrayUnion(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayUnion(a.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -143,18 +163,19 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
                                         }
                                     });
 
-                                    SendNotification.sendnotification("accepted", a.getProjectId(), project.getProjectName(), a.getUserId());
-                                }else {
+                                    SendNotification.sendnotification("application accepted", project.getProjectId(), project.getProjectName(), a.getUserId());
+                                } else {
                                 }
                             }
                         });
-
+                dismiss();
             }
 
 
         });
         return v;
     }
+
     public interface BottomSheetListener {
         String onButtonClicked(String text);
     }

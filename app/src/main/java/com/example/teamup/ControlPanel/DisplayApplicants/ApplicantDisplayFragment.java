@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,13 +50,14 @@ public class ApplicantDisplayFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    FirebaseFirestore db;
-    FirebaseAuth currentUser;
-    String TAG = "APPLICANTS_DISPLAY";
-    ListView lvApplicant;
+    private FirebaseFirestore db;
+    private FirebaseAuth currentUser;
+    private String TAG = "APPLICANTS_DISPLAY";
+    private LinearLayout emptyPlaceHolder;
+    private ListView lvApplicant;
     private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
-    Project project;
+    private Project project;
 
     public ApplicantDisplayFragment() {
         // Required empty public constructor
@@ -96,6 +98,7 @@ public class ApplicantDisplayFragment extends Fragment {
         final View view = inflater.inflate(R.layout.activity_my_projects_view, container, false);
 
         lvApplicant = view.findViewById(R.id.listview_applicant);
+        emptyPlaceHolder = view.findViewById(R.id.applicants_empty_display);
         project = SessionStorage.getProject(getActivity());
         assert project != null;
         db = FirebaseFirestore.getInstance();
@@ -105,18 +108,18 @@ public class ApplicantDisplayFragment extends Fragment {
         return view;
     }
 
-    public void clearNewApplicantCount(){
+    public void clearNewApplicantCount() {
         project.setNewApplicants(0);
         SessionStorage.saveProject(getActivity(), project);
         db.collection("Projects").document(project.getProjectId()).update("newApplicants", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "onSuccess: "+"New Applicants Set To 0");
+                Log.d(TAG, "onSuccess: " + "New Applicants Set To 0");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+"Failed to clear new applicant count");
+                Log.d(TAG, "onFailure: " + "Failed to clear new applicant count");
             }
         });
     }
@@ -140,16 +143,19 @@ public class ApplicantDisplayFragment extends Fragment {
                     //reads each object in the array
 
                     if (group != null) {
-
                         for (Map<String, String> entry : group) {
                             //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
                             //reads each element in the hashmap
                             String applicantName = "";
                             String applicantId = "";
                             String applicantPitch = "";
-                            String acceptedStatus = "";
-                            String projectID = "";
+                            String applicantAcceptedStatus = "";
+                            String applicantProjectID = "";
                             String applicantEmail = "";
+                            String applicantProfPicURL = "";
+                            String applicantSpecialization = "";
+                            String applicantLocation = "";
+                            String applicantWorkingProjects = "";
 
                             for (String key : entry.keySet()) {
                                 if (key.equals("applicantName"))
@@ -159,22 +165,30 @@ public class ApplicantDisplayFragment extends Fragment {
                                 else if (key.equals("shortPitch"))
                                     applicantPitch = entry.get(key);
                                 else if (key.equals("acceptedStatus"))
-                                    acceptedStatus = entry.get(key);
+                                    applicantAcceptedStatus = entry.get(key);
                                 else if (key.equals("projectId"))
-                                    projectID = entry.get(key);
+                                    applicantProjectID = entry.get(key);
                                 else if (key.equals("applicantEmail"))
                                     applicantEmail = entry.get(key);
+                                else if (key.equals("profilePicURL"))
+                                    applicantProfPicURL = entry.get(key);
+                                else if (key.equals("specialization"))
+                                    applicantSpecialization = entry.get(key);
+                                else if (key.equals("workingProject"))
+                                    applicantWorkingProjects = String.valueOf(entry.get(key));
+                                else if (key.equals("location"))
+                                    applicantLocation = entry.get(key);
                             }
 
-                            User user = SessionStorage.getUser(getActivity());
-
-                            ApplicantList.add(new Applicant(projectID, applicantName, applicantEmail, applicantId,
-                                    acceptedStatus, applicantPitch, user.getProfileImageLink(), user.getSpecialization(),
-                                    user.getLocation(), user.getWorkingProjects()));
+                            ApplicantList.add(new Applicant(applicantProjectID, applicantName, applicantEmail, applicantId,
+                                    applicantAcceptedStatus, applicantPitch, applicantProfPicURL, applicantSpecialization,
+                                    applicantLocation, Integer.parseInt(applicantWorkingProjects.trim())));
                         }
 
                     }
                 }
+                if(ApplicantList.isEmpty())
+                    emptyPlaceHolder.setVisibility(View.VISIBLE);
                 adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
                 project.setApplicantList(ApplicantList);
                 lvApplicant.setAdapter(adapter);

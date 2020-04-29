@@ -58,7 +58,7 @@ public class TaskAdapter extends BaseAdapter{
         selectedIndicator = v.findViewById(R.id.selectedIndicator);
 
         name.setText(TaskList.get(position).getTaskName());
-        description.setText(TaskList.get(position).getTaskName());
+        description.setText(TaskList.get(position).getTaskDescription());
 
         GradientDrawable gd = new GradientDrawable();
         gd.setShape(GradientDrawable.OVAL);
