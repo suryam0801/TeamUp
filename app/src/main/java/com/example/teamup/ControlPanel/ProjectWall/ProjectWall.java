@@ -59,6 +59,7 @@ public class ProjectWall extends AppCompatActivity {
     private Project project;
     private Uri filePath;
     private ArrayList<ProjectWallDataClass> arrayList;
+    private LinearLayout emptyPlaceHolder;
     AlertDialog alertDialog;
     private StorageReference storageReference;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -76,6 +77,8 @@ public class ProjectWall extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        emptyPlaceHolder = findViewById(R.id.projectWall_empty_display);
 
         recyclerView = findViewById(R.id.projectViewRecyclerView);
 
@@ -96,13 +99,14 @@ public class ProjectWall extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     arrayList.clear();
                     for (DocumentSnapshot doc : task.getResult()) {
-
                         ProjectWallDataClass projectWallDataClass = doc.toObject(ProjectWallDataClass.class);
 
                         arrayList.add(projectWallDataClass);
 
                         projectWallAdapter.notifyDataSetChanged();
                     }
+                    if(arrayList.isEmpty())
+                        emptyPlaceHolder.setVisibility(View.VISIBLE);
                 }
             }
         });
