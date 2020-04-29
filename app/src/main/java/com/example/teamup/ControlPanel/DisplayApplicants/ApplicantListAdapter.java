@@ -78,7 +78,7 @@ public class ApplicantListAdapter extends BaseAdapter  implements BottomsheetDia
                 .into(profPic);
 
         final Applicant selectedApplicant = ApplicantList.get(position);
-        int workingProjects = selectedApplicant.getWorkingProject();
+        long workingProjects = selectedApplicant.getWorkingProject();
         workingProjects = workingProjects + 1;
         Log.d(TAG, "WORKING PROJECTS: " + workingProjects);
         selectedApplicant.setWorkingProject(workingProjects);

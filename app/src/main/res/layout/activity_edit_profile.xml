@@ -431,12 +431,12 @@
                     android:layout_height="40dp"
                     android:textAllCaps="false"
                     android:text="Finalize Changes"
-                    android:textColor="#35C80B"
+                    android:textColor="#828282"
                     android:layout_marginRight="10dp"
                     android:layout_weight="50"
                     android:gravity="center"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/confirm_application_buttom_background">
+                    android:background="@drawable/unpressable_button">
                 </Button>
 
                 <Button

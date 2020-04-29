@@ -89,6 +89,8 @@ public class EditOrViewProfile extends AppCompatActivity {
             public void onClick(View view) {
                 specialization.setVisibility(View.GONE);
                 specializationEdit.setVisibility(View.VISIBLE);
+                finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+                finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
             }
         });
         editSecondarySkill.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +98,8 @@ public class EditOrViewProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Hobbies.setVisibility(View.GONE);
                 HobbiesEdit.setVisibility(View.VISIBLE);
+                finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+                finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
             }
         });
         editLocation.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +107,8 @@ public class EditOrViewProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Location.setVisibility(View.GONE);
                 locationEdit.setVisibility(View.VISIBLE);
+                finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+                finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
             }
         });
         finalizeChanges.setOnClickListener(new View.OnClickListener() {
@@ -112,11 +118,11 @@ public class EditOrViewProfile extends AppCompatActivity {
                 String sSkill = String.valueOf(HobbiesEdit.getText());
                 String loc = String.valueOf(locationEdit.getText());
 
-                if(!pSkill.equals(""))
+                if(!pSkill.trim().equals(""))
                     user.setSpecialization(pSkill);
-                if(!sSkill.equals(""))
+                if(!sSkill.trim().equals(""))
                     user.setSecondarySkill(sSkill);
-                if(!loc.equals(""))
+                if(!loc.trim().equals(""))
                     user.setLocation(loc);
 
 

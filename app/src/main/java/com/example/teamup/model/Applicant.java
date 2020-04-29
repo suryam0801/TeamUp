@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class Applicant implements Parcelable {
 
     private String projectId,applicantName, applicantPhn,userId,shortPitch, profilePicURL, specialization, location;
-    private int workingProject;
+    private long workingProject;
 
     public Applicant() {
     }
@@ -14,19 +14,20 @@ public class Applicant implements Parcelable {
     @Override
     public String toString() {
         return "Applicant{" +
-                "projectId='" + projectId + '\'' +
-                ", applicantName='" + applicantName + '\'' +
-                ", applicantEmail='" + applicantPhn + '\'' +
-                ", userId='" + userId + '\'' +
-                ", shortPitch='" + shortPitch + '\'' +
-                ", profilePicURL='" + profilePicURL + '\'' +
-                ", primarySkill='" + specialization + '\'' +
-                ", location='" + location + '\'' +
+                "projectId='" + projectId + '\n' +
+                ", applicantName='" + applicantName + '\n' +
+                ", applicantPhn='" + applicantPhn + '\n' +
+                ", userId='" + userId + '\n' +
+                ", shortPitch='" + shortPitch + '\n' +
+                ", profilePicURL='" + profilePicURL + '\n' +
+                ", specialization='" + specialization + '\n' +
+                ", location='" + location + '\n' +
+                ", workingProject=" + workingProject +
                 '}';
     }
 
     public Applicant(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus,
-                     String shortPitch, String profilePicURL, String primarySkill, String location, int workingProject) {
+                     String shortPitch, String profilePicURL, String primarySkill, String location, long workingProject) {
 
         this.projectId = projectId;
         this.applicantName = applicantName;
@@ -39,11 +40,11 @@ public class Applicant implements Parcelable {
         this.workingProject = workingProject;
     }
 
-    public int getWorkingProject() {
+    public long getWorkingProject() {
         return workingProject;
     }
 
-    public void setWorkingProject(int workingProject) {
+    public void setWorkingProject(long workingProject) {
         this.workingProject = workingProject;
     }
 
@@ -128,7 +129,7 @@ public class Applicant implements Parcelable {
         parcel.writeString(profilePicURL);
         parcel.writeString(specialization);
         parcel.writeString(location);
-        parcel.writeInt(workingProject);
+        parcel.writeLong(workingProject);
     }
 
     private Applicant(Parcel in) {
@@ -140,7 +141,7 @@ public class Applicant implements Parcelable {
         profilePicURL = in.readString();
         specialization = in.readString();
         location = in.readString();
-        workingProject = in.readInt();
+        workingProject = in.readLong();
     }
 
     public static final Parcelable.Creator<Applicant> CREATOR

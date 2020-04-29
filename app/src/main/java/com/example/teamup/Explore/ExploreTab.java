@@ -351,12 +351,19 @@ public class ExploreTab extends Fragment {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     applicantExists = false;
 
+                                    if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                        Log.d(TAG, ProjectList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
+                                        sameCreator = true;
+                                    }
+
                                     if(ProjectList.get(i).getApplicantId()!=null){
-                                        if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
-                                            sameCreator = true;
-                                        } else if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
+                                        if(ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())){
                                             applicantExists = true;
-                                        } else if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                        }
+                                    }
+
+                                    if(ProjectList.get(i).getWorkersId()!=null){
+                                        if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             workerExists = true;
                                         }
                                     }
