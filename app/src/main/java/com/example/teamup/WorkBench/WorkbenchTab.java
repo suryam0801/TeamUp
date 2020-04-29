@@ -89,8 +89,8 @@ public class WorkbenchTab extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initializeAdapters();
         firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        initializeAdapters();
         getMyProjects();
         getWorkingProjects();
         assert firebaseUser != null;
@@ -124,7 +124,6 @@ public class WorkbenchTab extends Fragment{
     public void populateData(){
 
         myProjectsRv.setAdapter(myAdapter);
-        Utility.setListViewHeightBasedOnChildren(myProjectsRv);
         myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -134,9 +133,9 @@ public class WorkbenchTab extends Fragment{
                 startActivity(intent);
             }
         });
+        Utility.setListViewHeightBasedOnChildren(myProjectsRv);
 
         workingProjectsRv.setAdapter(workingAdapter);
-        Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
         workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -146,16 +145,18 @@ public class WorkbenchTab extends Fragment{
                 startActivity(intent);
             }
         });
+        Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
+
 
 
         pastProjectsRv.setAdapter(completedAdapter);
-        Utility.setListViewHeightBasedOnChildren(pastProjectsRv);
         pastProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //figuring out what to do when completed projects is selected
             }
         });
+        Utility.setListViewHeightBasedOnChildren(pastProjectsRv);
     }
 
     public static class Utility {
@@ -208,6 +209,7 @@ public class WorkbenchTab extends Fragment{
     }
 
     public void getMyProjects(){
+        Log.d(TAG, "INSIDE GET PROJECTS: " + firebaseUser.getUid());
         //Lists the projects creted by the particular user
         final Query myProjects = db.collection("Projects").whereEqualTo("creatorId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -219,11 +221,13 @@ public class WorkbenchTab extends Fragment{
                     if (project.getProjectStatus().equals("Completed"))
                     {
                         completedProjectsList.add(project);
+                        Log.d(TAG, "Completed Projects: " + completedProjectsList.toString());
                     }else {
                         myProjectList.add(project);
+                        Log.d(TAG, "My Projects: " + myProjectList.toString());
                     }
                 }
-
+                populateData();
             }
         });
     }

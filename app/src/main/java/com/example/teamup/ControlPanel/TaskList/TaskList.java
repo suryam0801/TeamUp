@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class TaskList extends AppCompatActivity {
     private List<Boolean> ongoingIsSelected = new ArrayList<>();
     private List<Task> TaskListCompleted = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private LinearLayout emptyView;
     private TextView markCompleted;
     private TaskAdapter adapterOngoing, adapterCompleted;
     private List<Task> tasksSelected = new ArrayList<>();
@@ -57,6 +59,7 @@ public class TaskList extends AppCompatActivity {
         setContentView(R.layout.activity_task_list);
 
         storage = new SessionStorage();
+        emptyView = findViewById(R.id.task_list_empty_display);
         lvOngoing = findViewById(R.id.tasklist_display);
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
@@ -176,6 +179,8 @@ public class TaskList extends AppCompatActivity {
                                     break;
                             }
                         }
+                    } else {
+                        emptyView.setVisibility(View.VISIBLE);
                     }
                 }
 
