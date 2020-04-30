@@ -10,6 +10,9 @@
     android:orientation="vertical"
     tools:context=".login.GatherUserDetails">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -200,10 +203,10 @@
                     android:textSize="15dp"
                     android:gravity="start|center"
                     android:drawableEnd="@drawable/right_forward_arrow"/>
-
             </LinearLayout>
-
         </LinearLayout>
+
+    </ScrollView>
 
 
 
