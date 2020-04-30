@@ -114,13 +114,6 @@ public class EditOrViewProfile extends AppCompatActivity {
                 firebaseAuth.signOut();
                 startActivity(new Intent(EditOrViewProfile.this, PhoneLogin.class));
                 Log.d(TAG, "SIGNING OUTTTTTTTTTT");
-                /*Map<String, Object> tokenMap = new HashMap<>();
-                tokenMap.put("token_id", FieldValue.delete());
-                db.collection("Users").document(userID).update(tokenMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    }
-                });*/
             }
         });
 
