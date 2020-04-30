@@ -53,6 +53,17 @@
                 android:text="Sample notification description"
                 android:textColor="@color/black"></TextView>
 
+            <TextView
+                android:id="@+id/notification_time_elapsed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="Time Stamp"
+                android:textColor="#9D9D9D"></TextView>
+
+
         </LinearLayout>
 
     </LinearLayout>

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.teamup.ControlPanel.DisplayApplicants.AllMembersFragment;
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -24,6 +25,7 @@ import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.login.LoginActivity;
 import com.example.teamup.login.PhoneLogin;
 import com.example.teamup.login.SignUpActivity;
+import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.example.teamup.model.Worker;
@@ -81,16 +83,15 @@ public class EditOrViewProfile extends AppCompatActivity {
         HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
         locationEdit = findViewById(R.id.viewProfileChangeLocation);
         removeConfirm = new Dialog(EditOrViewProfile.this);
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         userID = getIntent().getStringExtra("userID");
         flag = getIntent().getStringExtra("flag");
 
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(flag.equals("owner")) {
+                if (flag.equals("owner")) {
                     startActivity(new Intent(EditOrViewProfile.this, TabbedActivityMain.class));
                     finish();
                 } else if (flag.equals("member")) {
@@ -140,11 +141,11 @@ public class EditOrViewProfile extends AppCompatActivity {
                 String sSkill = String.valueOf(HobbiesEdit.getText());
                 String loc = String.valueOf(locationEdit.getText());
 
-                if(!pSkill.trim().equals(""))
+                if (!pSkill.trim().equals(""))
                     user.setSpecialization(pSkill);
-                if(!sSkill.trim().equals(""))
+                if (!sSkill.trim().equals(""))
                     user.setSecondarySkill(sSkill);
-                if(!loc.trim().equals(""))
+                if (!loc.trim().equals(""))
                     user.setLocation(loc);
 
 
@@ -156,8 +157,8 @@ public class EditOrViewProfile extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String,Object> tokenMap=new HashMap<>();
-                tokenMap.put("token_id",FieldValue.delete());
+                Map<String, Object> tokenMap = new HashMap<>();
+                tokenMap.put("token_id", FieldValue.delete());
                 db.collection("Users").document(userID).update(tokenMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -169,10 +170,12 @@ public class EditOrViewProfile extends AppCompatActivity {
         });
 
 
-
-        db=FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         switch (flag) {
+            case "applicant":
+                applicantLoad();
+                break;
             case "member":
                 memberLoad();
                 break;
@@ -182,7 +185,54 @@ public class EditOrViewProfile extends AppCompatActivity {
         }
     }
 
-    public void removeUserConfirmationDialog(){
+    public void applicantLoad() {
+        editProfPic.setVisibility(View.GONE);
+        editSpecialization.setVisibility(View.GONE);
+        editSecondarySkill.setVisibility(View.GONE);
+        editLocation.setVisibility(View.GONE);
+        finalizeChanges.setVisibility(View.GONE);
+
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) logout.getLayoutParams();
+        lp.setMargins(0, 0, 0, 40);
+        logout.setLayoutParams(lp);
+
+        logout.setText("Return to applicant view");
+
+        //code for removing worker from project
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(EditOrViewProfile.this, ApplicantsTabbedActivity.class));
+                finish();
+            }
+        });
+
+        DocumentReference docRef = db.collection("Users").document(userID);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+
+                Log.d("EDITORVIEW", "userID: " + user.toString());
+
+                Glide.with(EditOrViewProfile.this)
+                        .load(user.getProfileImageLink())
+                        .placeholder(ContextCompat.getDrawable(EditOrViewProfile.this, R.drawable.ic_account_circle_black_24dp))
+                        .into(profileImageView);
+
+                userName.setText(user.getFirstName() + " " + user.getLastName());
+                userEmail.setText("User Number is Private"); //user.getContact()
+                createdProjects.setText(user.getCreatedProjects() + "");
+                workingProjects.setText(user.getWorkingProjects() + "");
+                completedProjects.setText(user.getCompletedProjects() + "");
+                specialization.setText(user.getSpecialization());
+                Hobbies.setText(user.getSecondarySkill());
+                Location.setText(user.getLocation());
+            }
+        });
+    }
+
+    public void removeUserConfirmationDialog() {
         removeConfirm.setContentView(R.layout.remove_user_dialog_layout);
         final Button remove = removeConfirm.findViewById(R.id.remove_user_accept_button);
         Button cancel = removeConfirm.findViewById(R.id.remove_user_cancel_button);
@@ -206,10 +256,10 @@ public class EditOrViewProfile extends AppCompatActivity {
         removeConfirm.show();
     }
 
-    public void removeUser(){
+    public void removeUser() {
         Project project = SessionStorage.getProject(EditOrViewProfile.this);
         Worker worker = SessionStorage.getWorker(EditOrViewProfile.this);
-        db.collection("Projects").document(project.getProjectId()).update("workersId",FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
             }
@@ -218,7 +268,7 @@ public class EditOrViewProfile extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
             }
         });
-        db.collection("Projects").document(project.getProjectId()).update("workersList",FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
             }
@@ -237,7 +287,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         finalizeChanges.setVisibility(View.GONE);
 
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) logout.getLayoutParams();
-        lp.setMargins(0,0,0,40);
+        lp.setMargins(0, 0, 0, 40);
         logout.setLayoutParams(lp);
 
         logout.setText("Remove From Project");
@@ -266,7 +316,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                         .into(profileImageView);
 
                 userName.setText(user.getFirstName() + " " + user.getLastName());
-                userEmail.setText(user.getContact());
+                userEmail.setText("User Number is Private"); //user.getContact()
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
@@ -292,7 +342,8 @@ public class EditOrViewProfile extends AppCompatActivity {
                         .into(profileImageView);
 
                 userName.setText(user.getFirstName() + " " + user.getLastName());
-                userEmail.setText(user.getContact());
+                Log.d(TAG, "USER NUMBER: \n" + user.getContact());
+                userEmail.setText(user.getContact() + "(visible only to you)");
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
@@ -302,7 +353,4 @@ public class EditOrViewProfile extends AppCompatActivity {
             }
         });
     }
-
-
-
 }
