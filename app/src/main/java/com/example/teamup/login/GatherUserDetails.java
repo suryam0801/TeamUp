@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -63,7 +64,7 @@ public class GatherUserDetails extends AppCompatActivity {
     private static final int STORAGE_PERMISSION_CODE = 101;
     private Uri downloadUri;
     private CircleImageView profilePic;
-
+    SharedPreferences pref;
     String primSkill, secSkill, loc, fName, lName, email, password, userId,profileImageLink,contact;
 
     @Override
@@ -81,16 +82,14 @@ public class GatherUserDetails extends AppCompatActivity {
 
         final EditText firstname = findViewById(R.id.fname);
         final EditText lastname = findViewById(R.id.lname);
-        final EditText phn_num = findViewById(R.id.contact);
         final EditText primarySkill = findViewById(R.id.primarySkill);
         final EditText secondarySkill = findViewById(R.id.secondarySkill);
         final EditText location = findViewById(R.id.location);
         Button register = findViewById(R.id.registerButton);
         Button profilepicButton = findViewById(R.id.profilePicSetterImage);
         profilePic=findViewById(R.id.profile_image);
-//        contact=getIntent().getStringExtra("phn_num");
-//        fName = getIntent().getStringExtra("fName");
-//        lName = getIntent().getStringExtra("lName");
+
+        pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
 
@@ -125,8 +124,8 @@ public class GatherUserDetails extends AppCompatActivity {
                 primSkill = primarySkill.getText().toString();
                 secSkill = secondarySkill.getText().toString();
                 loc = location.getText().toString();
-                contact = "+91"+phn_num.getText().toString();
-
+//                contact = "+91"+phn_num.getText().toString();
+                contact=pref.getString("key_name5", null);
                 registerFunction();
             }
         });
