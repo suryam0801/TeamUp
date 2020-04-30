@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -42,6 +45,8 @@ public class PhoneLogin extends AppCompatActivity {
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 private String complete_phone_number = "";
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
 
     @Override
@@ -62,6 +67,8 @@ private String complete_phone_number = "";
         mGenerateBtn = findViewById(R.id.generate_btn);
         mLoginProgress = findViewById(R.id.login_progress_bar);
         mLoginFeedbackText = findViewById(R.id.login_form_feedback);
+        pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        editor = pref.edit();
 
         mGenerateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +77,30 @@ private String complete_phone_number = "";
                 String country_code = mCountryCode.getText().toString();
                 String phone_number = mPhoneNumber.getText().toString();
 
+
+                mCountryCode.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        if(!s.toString().startsWith("91 ")){
+                            s.charAt(0);
+                        }
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
                 complete_phone_number = "+" + country_code + phone_number;
+                editor.putString("key_name5", complete_phone_number);
+                editor.apply();
+
 
                 if(country_code.isEmpty() || phone_number.isEmpty()){
                     mLoginFeedbackText.setText("Please fill in the form to continue.");

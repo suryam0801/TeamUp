@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.75" />
+
     <TextView
         android:id="@+id/desc"
         android:layout_width="0dp"
@@ -30,12 +31,13 @@
         android:fontFamily="@font/roboto_light"
         android:text="A 4 digit OTP will be sent via sms to verify your number."
         android:textAlignment="center"
-        android:textSize="16sp"
         android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_number_text" />
+
     <Button
         android:id="@+id/generate_btn"
         android:layout_width="0dp"
@@ -58,7 +60,7 @@
         android:id="@+id/country_code_text"
         android:layout_width="65dp"
         android:layout_height="53dp"
-        android:layout_marginStart="65dp"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/text_input_bg"
         android:ems="10"
@@ -127,8 +129,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_black"
         android:text="Login to Continue"
-        android:textSize="14dp"
         android:textColor="#D1D1D1"
+        android:textSize="14dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Title" />
@@ -166,8 +168,8 @@
         android:fontFamily="@font/roboto_medium"
         android:text="Working . . ."
         android:textColor="@android:color/holo_red_light"
-        android:visibility="invisible"
         android:textIsSelectable="true"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/generate_btn" />
