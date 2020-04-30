@@ -395,7 +395,7 @@ public class ExploreTab extends Fragment {
         Object[] array = {applicant};
 
 
-        db.collection("Projects").document(projectId).update("applicantList", FieldValue.arrayUnion(array))
+        db.collection("Projects").document("ad358079-a353-4fbd-bab4-7490f09b176c").update("applicantList", FieldValue.arrayUnion(array))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -404,7 +404,7 @@ public class ExploreTab extends Fragment {
                             List<String> applicantIds = new ArrayList<>();
                             if (projects.getApplicantId() == null) {
                                 applicantIds.add(applicant.getUserId());
-                                db.collection("Projects").document(projectId).update("applicantId", FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("ad358079-a353-4fbd-bab4-7490f09b176c").update("applicantId", FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: " + "Applicant Id update");
@@ -416,7 +416,7 @@ public class ExploreTab extends Fragment {
                                     }
                                 });
                             } else {
-                                db.collection("Projects").document(projectId).update("applicantId", FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                db.collection("Projects").document("ad358079-a353-4fbd-bab4-7490f09b176c").update("applicantId", FieldValue.arrayUnion(applicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d(TAG, "onSuccess: " + "Applicant Id update");
@@ -434,7 +434,7 @@ public class ExploreTab extends Fragment {
                             int newApplicants = projects.getNewApplicants() + 1;
                             projects.setNewApplicants(newApplicants);
                             SessionStorage.saveProject(getActivity(), projects);
-                            db.collection("Projects").document(projectId).update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            db.collection("Projects").document("ad358079-a353-4fbd-bab4-7490f09b176c").update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "onSuccess: " + "Applicant Id update");

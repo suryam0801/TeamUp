@@ -307,7 +307,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
-                            android:text="Specialized Field"
+                            android:text="Other Interests / Skills"
                             android:textColor="#828282"
                             android:fontFamily="@font/roboto_regular">
                         </TextView>
@@ -369,7 +369,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
-                            android:text="Specialized Field"
+                            android:text="Location"
                             android:textColor="#828282"
                             android:fontFamily="@font/roboto_regular">
                         </TextView>

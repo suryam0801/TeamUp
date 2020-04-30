@@ -97,7 +97,7 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), EditOrViewProfile.class);
                 intent.putExtra("userID", a.getUserId());
-                intent.putExtra("flag", "member");
+                intent.putExtra("flag", "applicant");
                 startActivity(intent);
             }
         });
@@ -163,7 +163,6 @@ public class BottomsheetDialog extends BottomSheetDialogFragment {
                                             });
                                         }
                                     });
-
                                     SendNotification.sendnotification("application accepted", project.getProjectId(), project.getProjectName(), a.getUserId());
                                 } else {
                                 }
