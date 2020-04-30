@@ -262,7 +262,7 @@ public class WorkbenchTab extends Fragment {
                     if (project.getProjectStatus().equals("Completed")) {
                         completedProjectsList.add(project);
                     } else {
-                        //myProjectList.add(project);
+                        myProjectList.add(project);
                     }
                 }
                 populateData();

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -48,7 +50,8 @@ public class TaskList extends AppCompatActivity {
     private TextView markCompleted;
     private TaskAdapter adapterOngoing, adapterCompleted;
     private List<Task> tasksSelected = new ArrayList<>();
-    ListView lvOngoing, lvCompleted;
+    private ListView lvOngoing, lvCompleted;
+    private ImageButton back;
     private SessionStorage storage;
 
     @Override
@@ -64,6 +67,7 @@ public class TaskList extends AppCompatActivity {
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
         markCompleted = findViewById(R.id.task_view_markascompleted);
+        back = findViewById(R.id.bck_task_list);
         clearNewTaskCount();
         newTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +82,14 @@ public class TaskList extends AppCompatActivity {
             }
         });
         loadTasks(project.getProjectId());
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TaskList.this, ControlPanel.class));
+                finish();
+            }
+        });
     }
 
     public void markTasksAsCompleted() {

@@ -12,12 +12,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.login.LoginActivity;
 import com.example.teamup.login.PhoneLogin;
 import com.example.teamup.login.SignUpActivity;
@@ -44,6 +47,7 @@ public class EditOrViewProfile extends AppCompatActivity {
     private Button editProfPic, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
     private EditText specializationEdit, HobbiesEdit, locationEdit;
     private Dialog removeConfirm;
+    private ImageButton back;
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
 
@@ -72,11 +76,29 @@ public class EditOrViewProfile extends AppCompatActivity {
         profileImageView = findViewById(R.id.profile_view_profile_image);
         finalizeChanges = findViewById(R.id.profile_finalize_changes);
         logout = findViewById(R.id.profile_logout);
+        back = findViewById(R.id.bck_view_edit_profile);
         specializationEdit = findViewById(R.id.viewProfileChangeSpecialization);
         HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
         locationEdit = findViewById(R.id.viewProfileChangeLocation);
         removeConfirm = new Dialog(EditOrViewProfile.this);
         firebaseAuth=FirebaseAuth.getInstance();
+
+        userID = getIntent().getStringExtra("userID");
+        flag = getIntent().getStringExtra("flag");
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(flag.equals("owner")) {
+                    startActivity(new Intent(EditOrViewProfile.this, TabbedActivityMain.class));
+                    finish();
+                } else if (flag.equals("member")) {
+                    startActivity(new Intent(EditOrViewProfile.this, ApplicantsTabbedActivity.class));
+                    finish();
+                }
+            }
+        });
 
         editProfPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,9 +171,6 @@ public class EditOrViewProfile extends AppCompatActivity {
 
 
         db=FirebaseFirestore.getInstance();
-
-        userID = getIntent().getStringExtra("userID");
-        flag = getIntent().getStringExtra("flag");
 
         switch (flag) {
             case "member":
