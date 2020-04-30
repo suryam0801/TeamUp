@@ -61,6 +61,9 @@ public class ProjectWall extends AppCompatActivity {
     private ArrayList<ProjectWallDataClass> arrayList;
     private LinearLayout emptyPlaceHolder;
     AlertDialog alertDialog;
+    AlertDialog.Builder builder;
+    LayoutInflater inflater;
+    View dialogue;
     private StorageReference storageReference;
     private static final int STORAGE_PERMISSION_CODE = 101;
 
@@ -105,7 +108,7 @@ public class ProjectWall extends AppCompatActivity {
 
                         projectWallAdapter.notifyDataSetChanged();
                     }
-                    if(arrayList.isEmpty())
+                    if (arrayList.isEmpty())
                         emptyPlaceHolder.setVisibility(View.VISIBLE);
                 }
             }
@@ -116,11 +119,11 @@ public class ProjectWall extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProjectWall.this);
+                builder = new AlertDialog.Builder(ProjectWall.this);
 
-                LayoutInflater inflater = getLayoutInflater();
+                inflater = getLayoutInflater();
 
-                final View dialogue = inflater.inflate(R.layout.file_upload_alert_layout_1, null);
+                dialogue = inflater.inflate(R.layout.file_upload_alert_layout_1, null);
 
                 builder.setView(dialogue);
 
@@ -138,22 +141,21 @@ public class ProjectWall extends AppCompatActivity {
                                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                     STORAGE_PERMISSION_CODE);
                         } else {
-
-                            Intent intent = new Intent();
-                            intent.setType("*/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_IMAGE_REQUEST);
+                            pickFile();
                         }
                     }
                 });
-
                 alertDialog = builder.create();
                 alertDialog.show();
-
             }
         });
+    }
 
-
+    public void pickFile () {
+        Intent intent = new Intent();
+        intent.setType("*/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -169,6 +171,7 @@ public class ProjectWall extends AppCompatActivity {
                         "Storage Permission Granted",
                         Toast.LENGTH_SHORT)
                         .show();
+                pickFile();
             } else {
                 Toast.makeText(ProjectWall.this,
                         "Storage Permission Denied",

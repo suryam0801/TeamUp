@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,38 +8,46 @@
     tools:context=".ControlPanel.ProjectWall.ProjectWall">
 
     <LinearLayout
-        android:id="@+id/projectWall_empty_display"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="167dp"
-            android:layout_height="160dp"
-            android:background="@drawable/empty_members_placeholder"></ImageView>
+        <LinearLayout
+            android:id="@+id/projectWall_empty_display"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="248dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_regular"
-            android:lineSpacingExtra="5dp"
-            android:paddingTop="43dp"
-            android:text="There are current no documents in this project. Click the button to upload and share a new document."
-            android:textAlignment="center"
-            android:textColor="#828282"
-            android:textSize="12dp"></TextView>
+            <ImageView
+                android:layout_width="167dp"
+                android:layout_height="160dp"
+                android:background="@drawable/empty_members_placeholder"></ImageView>
+
+            <TextView
+                android:layout_width="248dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:lineSpacingExtra="5dp"
+                android:paddingTop="43dp"
+                android:text="There are current no documents in this project. Click the button to upload and share a new document."
+                android:textAlignment="center"
+                android:textColor="#828282"
+                android:textSize="12dp"></TextView>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/projectViewRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/projectViewRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/newResourceFAB"
@@ -48,7 +56,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
-        android:src="@drawable/brochure"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
+</RelativeLayout>
