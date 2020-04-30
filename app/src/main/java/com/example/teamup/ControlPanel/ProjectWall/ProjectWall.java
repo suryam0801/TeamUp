@@ -6,14 +6,17 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -60,7 +64,11 @@ public class ProjectWall extends AppCompatActivity {
     private Uri filePath;
     private ArrayList<ProjectWallDataClass> arrayList;
     private LinearLayout emptyPlaceHolder;
-    AlertDialog alertDialog;
+    private ImageButton back;
+    private AlertDialog alertDialog;
+    private AlertDialog.Builder builder;
+    private LayoutInflater inflater;
+    private View dialogue;
     private StorageReference storageReference;
     private static final int STORAGE_PERMISSION_CODE = 101;
 
@@ -68,6 +76,12 @@ public class ProjectWall extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.WHITE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        getSupportActionBar().hide(); //hide the title bar
+
         setContentView(R.layout.activity_project_wall);
 
 
@@ -81,7 +95,7 @@ public class ProjectWall extends AppCompatActivity {
         emptyPlaceHolder = findViewById(R.id.projectWall_empty_display);
 
         recyclerView = findViewById(R.id.projectViewRecyclerView);
-
+        back = findViewById(R.id.bck_projectwall);
         project = SessionStorage.getProject(this);
 
         final Query query = firebaseFirestore.collection("ProjectWall").document(project.getProjectId())
@@ -92,6 +106,14 @@ public class ProjectWall extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(projectWallAdapter);
         recyclerView.setHasFixedSize(true);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ProjectWall.this, ControlPanel.class));
+                finish();
+            }
+        });
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -105,7 +127,7 @@ public class ProjectWall extends AppCompatActivity {
 
                         projectWallAdapter.notifyDataSetChanged();
                     }
-                    if(arrayList.isEmpty())
+                    if (arrayList.isEmpty())
                         emptyPlaceHolder.setVisibility(View.VISIBLE);
                 }
             }
@@ -116,11 +138,11 @@ public class ProjectWall extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProjectWall.this);
+                builder = new AlertDialog.Builder(ProjectWall.this);
 
-                LayoutInflater inflater = getLayoutInflater();
+                inflater = getLayoutInflater();
 
-                final View dialogue = inflater.inflate(R.layout.file_upload_alert_layout_1, null);
+                dialogue = inflater.inflate(R.layout.file_upload_alert_layout_1, null);
 
                 builder.setView(dialogue);
 
@@ -138,22 +160,21 @@ public class ProjectWall extends AppCompatActivity {
                                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                     STORAGE_PERMISSION_CODE);
                         } else {
-
-                            Intent intent = new Intent();
-                            intent.setType("*/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_IMAGE_REQUEST);
+                            pickFile();
                         }
                     }
                 });
-
                 alertDialog = builder.create();
                 alertDialog.show();
-
             }
         });
+    }
 
-
+    public void pickFile () {
+        Intent intent = new Intent();
+        intent.setType("*/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_IMAGE_REQUEST);
     }
 
     @Override
@@ -169,6 +190,7 @@ public class ProjectWall extends AppCompatActivity {
                         "Storage Permission Granted",
                         Toast.LENGTH_SHORT)
                         .show();
+                pickFile();
             } else {
                 Toast.makeText(ProjectWall.this,
                         "Storage Permission Denied",

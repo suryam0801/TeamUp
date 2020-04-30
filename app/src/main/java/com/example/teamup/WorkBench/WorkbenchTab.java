@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.ControlPanel.ControlPanel;
+import com.example.teamup.CreateProject;
 import com.example.teamup.Notification.NotificationActivity;
+import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -42,7 +47,7 @@ import java.util.Scanner;
  * Use the {@link WorkbenchTab#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WorkbenchTab extends Fragment{
+public class WorkbenchTab extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,16 +56,19 @@ public class WorkbenchTab extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ListView myProjectsRv,workingProjectsRv,pastProjectsRv;
+    private ListView myProjectsRv, workingProjectsRv, pastProjectsRv;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static final String TAG= "WORKBENCHTAB";
+    private static final String TAG = "WORKBENCHTAB";
     private FirebaseUser firebaseUser;
-    private List<Project> myProjectList=new ArrayList<>();
-    private List<Project> workingProjectList=new ArrayList<>();
-    private List<Project> completedProjectsList=new ArrayList<>();
+    private List<Project> myProjectList = new ArrayList<>();
+    private List<Project> workingProjectList = new ArrayList<>();
+    private List<Project> completedProjectsList = new ArrayList<>();
     private WorkbenchDisplayAdapter myAdapter;
+    private ViewPager viewPager;
     private WorkbenchDisplayAdapter workingAdapter;
+    private LinearLayout myProjectsEmpty, workingProjectsEmpty, completedProjectsEmpty;
     private WorkbenchDisplayAdapter completedAdapter;
+    private Button createProject, exploreProjects;
     private String MY_PREFS_NAME = "TeamUp", DEFAULT_RETRIEVE_VALUE = "no such project";
 
     public WorkbenchTab() {
@@ -89,7 +97,7 @@ public class WorkbenchTab extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         initializeAdapters();
         getMyProjects();
         getWorkingProjects();
@@ -108,45 +116,78 @@ public class WorkbenchTab extends Fragment{
 
         final View view = inflater.inflate(R.layout.activity_work_bench, container, false);
 
-        myProjectsRv=view.findViewById(R.id.my_projects_recycler_view);
-        workingProjectsRv=view.findViewById(R.id.working_projects_recycler_view);
-        pastProjectsRv=view.findViewById(R.id.past_projects_recycler_view);
+        myProjectsRv = view.findViewById(R.id.my_projects_recycler_view);
+        workingProjectsRv = view.findViewById(R.id.working_projects_recycler_view);
+        pastProjectsRv = view.findViewById(R.id.past_projects_recycler_view);
+        myProjectsEmpty = view.findViewById(R.id.workbench_empty_myprojects_placeholder);
+        workingProjectsEmpty = view.findViewById(R.id.workbench_empty_workingProjects_placeholder);
+        createProject = view.findViewById(R.id.workbench_create_project_nav);
+        exploreProjects = view.findViewById(R.id.workbench_explore_projects_nav);
+        viewPager = getActivity().findViewById(R.id.main_viewpager);
+
+        createProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CreateProject.class));
+                getActivity().finish();
+            }
+        });
+
+        exploreProjects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewPager.setCurrentItem(0);
+            }
+        });
 
         return view;
     }
 
-    public void initializeAdapters(){
-        myAdapter= new WorkbenchDisplayAdapter(getActivity(),myProjectList, true);
-        workingAdapter= new WorkbenchDisplayAdapter(getActivity(),workingProjectList, false);
-        completedAdapter= new WorkbenchDisplayAdapter(getActivity(),completedProjectsList, false);
+    public void initializeAdapters() {
+        myAdapter = new WorkbenchDisplayAdapter(getActivity(), myProjectList, true);
+        workingAdapter = new WorkbenchDisplayAdapter(getActivity(), workingProjectList, false);
+        completedAdapter = new WorkbenchDisplayAdapter(getActivity(), completedProjectsList, false);
     }
 
-    public void populateData(){
+    public void populateData() {
 
-        myProjectsRv.setAdapter(myAdapter);
-        myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                SessionStorage.saveProject(getActivity(), myProjectList.get(i));
-                setNewItemValues();
-                Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                startActivity(intent);
-            }
-        });
-        Utility.setListViewHeightBasedOnChildren(myProjectsRv);
+        if (!myProjectList.isEmpty()) {
+            myProjectsEmpty.setVisibility(View.GONE);
+            myProjectsRv.setVisibility(View.VISIBLE);
+            myProjectsRv.setAdapter(myAdapter);
+            myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    SessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                    setNewItemValues();
+                    Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                    startActivity(intent);
+                }
+            });
+            Utility.setListViewHeightBasedOnChildren(myProjectsRv);
+        } else {
+            myProjectsEmpty.setVisibility(View.VISIBLE);
+            myProjectsRv.setVisibility(View.GONE);
+        }
 
-        workingProjectsRv.setAdapter(workingAdapter);
-        workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                SessionStorage.saveProject(getActivity(), myProjectList.get(i));
-                setNewItemValues();
-                Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                startActivity(intent);
-            }
-        });
-        Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
-
+        if (!workingProjectList.isEmpty()) {
+            workingProjectsEmpty.setVisibility(View.GONE);
+            workingProjectsRv.setVisibility(View.VISIBLE);
+            workingProjectsRv.setAdapter(workingAdapter);
+            workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    SessionStorage.saveProject(getActivity(), workingProjectList.get(i));
+                    setNewItemValues();
+                    Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                    startActivity(intent);
+                }
+            });
+            Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
+        } else {
+            workingProjectsEmpty.setVisibility(View.VISIBLE);
+            workingProjectsRv.setVisibility(View.GONE);
+        }
 
 
         pastProjectsRv.setAdapter(completedAdapter);
@@ -183,7 +224,7 @@ public class WorkbenchTab extends Fragment{
         }
     }
 
-    public void setNewItemValues(){
+    public void setNewItemValues() {
 
         Project p = SessionStorage.getProject(getActivity());
 
@@ -191,9 +232,9 @@ public class WorkbenchTab extends Fragment{
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        if(prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE).equals(DEFAULT_RETRIEVE_VALUE)) {
+        if (prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE).equals(DEFAULT_RETRIEVE_VALUE)) {
             // data stored in format: tasklist / applicants / chatroom / projectwall
-            editor.putString(p.getProjectName(),  0 + "/" + 0 + "/" + 0 + "/" + 0);
+            editor.putString(p.getProjectName(), 0 + "/" + 0 + "/" + 0 + "/" + 0);
             editor.commit();
         } else {
             String values = prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE);
@@ -203,12 +244,12 @@ public class WorkbenchTab extends Fragment{
             int t = Math.abs(p.getTaskList().size() - Integer.parseInt(scan.next()));
             int a = Math.abs(p.getApplicantId().size() - Integer.parseInt(scan.next()));
 
-            editor.putString(p.getProjectName().trim(),  t + "/" + a + "/" + 0 + "/" + 0);
+            editor.putString(p.getProjectName().trim(), t + "/" + a + "/" + 0 + "/" + 0);
             editor.commit();
         }
     }
 
-    public void getMyProjects(){
+    public void getMyProjects() {
         Log.d(TAG, "INSIDE GET PROJECTS: " + firebaseUser.getUid());
         //Lists the projects creted by the particular user
         final Query myProjects = db.collection("Projects").whereEqualTo("creatorId", Objects.requireNonNull(firebaseUser.getUid()));
@@ -218,13 +259,10 @@ public class WorkbenchTab extends Fragment{
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
                     assert project != null;
-                    if (project.getProjectStatus().equals("Completed"))
-                    {
+                    if (project.getProjectStatus().equals("Completed")) {
                         completedProjectsList.add(project);
-                        Log.d(TAG, "Completed Projects: " + completedProjectsList.toString());
-                    }else {
+                    } else {
                         myProjectList.add(project);
-                        Log.d(TAG, "My Projects: " + myProjectList.toString());
                     }
                 }
                 populateData();
@@ -232,19 +270,18 @@ public class WorkbenchTab extends Fragment{
         });
     }
 
-    public void getWorkingProjects(){
+    public void getWorkingProjects() {
         //Gets the projects the user is working for
         Query myProjects = db.collection("Projects").whereArrayContains("workersId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Log.d(TAG, "onSuccess: "+queryDocumentSnapshots.size());
+                Log.d(TAG, "onSuccess: " + queryDocumentSnapshots.size());
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
                     Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    if (project!=null && project.getWorkersId()!=null && !project.getCreatorId().equals(firebaseUser.getUid())) {
+                    if (project != null && project.getWorkersId() != null && !project.getCreatorId().equals(firebaseUser.getUid())) {
                         List<Worker> workerList = project.getWorkersList();
-                        for(Worker worker:workerList)
-                        {
+                        for (Worker worker : workerList) {
                             if (worker.getUserId().equals(firebaseUser.getUid())) {
                                 if (project.getProjectStatus().equals("Completed"))
                                     completedProjectsList.add(project);
@@ -259,7 +296,7 @@ public class WorkbenchTab extends Fragment{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+e.getMessage());
+                Log.d(TAG, "onFailure: " + e.getMessage());
             }
         });
     }

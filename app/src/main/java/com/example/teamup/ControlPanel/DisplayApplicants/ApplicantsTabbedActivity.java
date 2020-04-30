@@ -3,12 +3,15 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -19,6 +22,7 @@ public class ApplicantsTabbedActivity extends AppCompatActivity  implements Bott
     private ViewPager viewPager;
     private TabItem newRequests, membersDisplay;
     public PagerAdapterApplicants pagerAdapter;
+    private ImageButton back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +34,21 @@ public class ApplicantsTabbedActivity extends AppCompatActivity  implements Bott
         setContentView(R.layout.activity_applicants_tabbed);
 
         tabLayout = findViewById(R.id.applicants_tab_layout);
+        back = findViewById(R.id.bck_applicants);
         newRequests = findViewById(R.id.applicants_new_requests);
         //membersDisplay = findViewById(R.id.main_workbench_tab);
         viewPager = findViewById(R.id.applicants_viewpager);
 
         pagerAdapter = new PagerAdapterApplicants(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ApplicantsTabbedActivity.this, ControlPanel.class));
+                finish();
+            }
+        });
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 

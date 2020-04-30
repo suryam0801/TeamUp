@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -41,8 +42,9 @@ public class ControlPanel extends AppCompatActivity {
     private CardView projectWall, taskList, chatRoom, applicants;
     private Button projectWallbtn, chatroombtn, tasklistbtn, applicantsbtn;
     private String TAG = "CONTROL PANEL: ", MY_PREFS_NAME = "TeamUp", DEFAULT_RETRIEVE_VALUE = "no such project";
-    GridLayout gridLayout;
-    Project project;
+    private GridLayout gridLayout;
+    private Project project;
+    private ImageButton back;
     int newApplicants = 0, newTasks = 0;
     SharedPreferences preferences;
 
@@ -69,6 +71,15 @@ public class ControlPanel extends AppCompatActivity {
         chatroombtn = findViewById(R.id.chatRoom_newNotifications_button);
         tasklistbtn = findViewById(R.id.taskList_newNotifications_button);
         applicantsbtn = findViewById(R.id.applicants_newNotifications_button);
+        back = findViewById(R.id.bck_control_panel);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ControlPanel.this, TabbedActivityMain.class));
+                finish();
+            }
+        });
 
         project = SessionStorage.getProject(ControlPanel.this);
 

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkBench.WorkbenchTab"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/card_back"
+    android:orientation="vertical"
     android:padding="21dp"
     android:paddingRight="21dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    tools:context=".WorkBench.WorkbenchTab">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -24,18 +25,55 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="27dp"
                     android:fontFamily="@font/roboto_bold"
                     android:text="Created Projects"
                     android:textColor="@color/black"
-                    android:textSize="16dp"/>
+                    android:textSize="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:id="@+id/workbench_empty_myprojects_placeholder"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_marginTop="20dp"
+                        android:text="Seems like you haven't created any projects in a while. Create a new project and manage it now."
+                        android:textColor="#B6B6B6">
+                    </TextView>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workbench_create_project_nav"
+                        android:background="@drawable/light_blue_nav_button"
+                        android:textColor="#6CACFF"
+                        android:text="Create new project"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_marginTop="12dp"
+                        android:textAllCaps="false"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="15dp"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                        >
+                    </Button>
+
+                </LinearLayout>
 
                 <ListView
                     android:id="@+id/my_projects_recycler_view"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
-                    android:dividerHeight="7dp"
-                    android:layout_height="wrap_content" />
+                    android:divider="@color/white"
+                    android:dividerHeight="12dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -46,12 +84,50 @@
                     android:textColor="@color/black"
                     android:textSize="16dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:id="@+id/workbench_empty_workingProjects_placeholder"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_marginTop="20dp"
+                        android:text="You are currently not working in any projects. Go to explore section and find projects to team up."
+                        android:textColor="#B6B6B6">
+                    </TextView>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workbench_explore_projects_nav"
+                        android:background="@drawable/light_blue_nav_button"
+                        android:textColor="#6CACFF"
+                        android:text="Explore Projects"
+                        android:layout_marginTop="12dp"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:textAllCaps="false"
+                        android:textSize="14dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="start|center_vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="15dp"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                        >
+                    </Button>
+
+                </LinearLayout>
+
+
                 <ListView
                     android:id="@+id/working_projects_recycler_view"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
-                    android:layout_height="wrap_content" />
-
+                    android:dividerHeight="12dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -60,19 +136,18 @@
                     android:fontFamily="@font/roboto_bold"
                     android:text="Completed"
                     android:textColor="@color/black"
-                    android:textSize="16dp"/>
+                    android:textSize="16dp" />
 
                 <ListView
                     android:id="@+id/past_projects_recycler_view"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
-                    android:layout_height="wrap_content" />
+                    android:dividerHeight="12dp" />
 
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
-
-
 
 
 </LinearLayout>

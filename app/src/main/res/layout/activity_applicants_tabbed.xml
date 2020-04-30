@@ -18,7 +18,7 @@
         android:gravity="center">
 
         <ImageButton
-            android:id="@+id/bck_create"
+            android:id="@+id/bck_applicants"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleX=".8"
