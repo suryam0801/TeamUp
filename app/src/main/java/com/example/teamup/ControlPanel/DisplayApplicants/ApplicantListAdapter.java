@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.teamup.Notification.SendNotification;
 import com.example.teamup.login.GatherUserDetails;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
@@ -107,6 +108,7 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
                                             db.collection("Projects").document(project.getProjectId()).update("applicantId", FieldValue.arrayRemove(selectedApplicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
+                                                    SendNotification.sendnotification("application accepted", project.getProjectId(), project.getProjectName(), selectedApplicant.getUserId());
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {

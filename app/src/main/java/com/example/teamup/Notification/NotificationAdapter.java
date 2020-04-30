@@ -19,13 +19,14 @@ import com.example.teamup.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class NotificationAdapter extends BaseAdapter{
     private Context mContext;
     private List<Notification> NotificationList;
     private FirebaseFirestore db;
     private String TAG = "NOTIFICATION_LIST_ADAPTER";
-    private TextView notificationTitle, notificationDescription;
+    private TextView notificationTitle, notificationDescription, timeElapsedTextView;
     private LinearLayout backgroundColor;
     private AppCompatImageView foregroundIcon;
 
@@ -60,6 +61,28 @@ public class NotificationAdapter extends BaseAdapter{
         notificationDescription = v.findViewById(R.id.notification_object_description);
         backgroundColor = v.findViewById(R.id.notification_background_icon);
         foregroundIcon = v.findViewById(R.id.notification_foreground_icon);
+        timeElapsedTextView = v.findViewById(R.id.notification_time_elapsed);
+
+
+        long createdTime = notif.getTimestamp();
+        long currentTime = System.currentTimeMillis();
+        long days = TimeUnit.MILLISECONDS.toDays(currentTime - createdTime);
+        long hours = TimeUnit.MILLISECONDS.toHours(currentTime - createdTime);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime - createdTime);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime - createdTime);
+
+        if(seconds < 60) {
+            timeElapsedTextView.setText(seconds + "s ago");
+        } else if (minutes > 1 && minutes < 60){
+            timeElapsedTextView.setText(minutes + "m ago");
+        } else if (hours > 1 && hours < 24) {
+            timeElapsedTextView.setText(hours + "h ago");
+        } else if (days > 1 && days < 365 ) {
+            if(days > 7)
+                timeElapsedTextView.setText((days/7) + "w ago");
+            else
+                timeElapsedTextView.setText(days + "d ago");
+        }
 
         GradientDrawable gd = new GradientDrawable();
         gd.setShape(GradientDrawable.OVAL);

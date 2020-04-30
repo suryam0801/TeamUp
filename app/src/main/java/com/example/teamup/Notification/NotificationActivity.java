@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.Explore.ProjectAdapter;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.Notification;
 import com.example.teamup.model.Project;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,6 +57,7 @@ public class NotificationActivity extends AppCompatActivity {
     private ListView thisWeekListView, previousListView;
     private List<Notification> thisWeekNotifs, previousNotifs;
     private NotificationAdapter adapterThisWeek, adapterPrevious;
+    private ImageButton back;
     private FirebaseFirestore db;
 
 
@@ -69,12 +72,17 @@ public class NotificationActivity extends AppCompatActivity {
 
         thisWeekListView = findViewById(R.id.thisweek_notifications_display);
         previousListView = findViewById(R.id.all_time_notifications_display);
-
+        back = findViewById(R.id.bck_notifications);
         thisWeekNotifs = new ArrayList<>();
         previousNotifs = new ArrayList<>();
 
-        String test = "hello my name is surya manivannan name and i love to run";
-        Log.d(TAG, "INDEX: " + test.indexOf("name"));
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(NotificationActivity.this, TabbedActivityMain.class));
+                finish();
+            }
+        });
 
         loadNotifications();
     }
@@ -108,7 +116,6 @@ public class NotificationActivity extends AppCompatActivity {
                                     previousNotifs.add(notification);
                                 else
                                     thisWeekNotifs.add(notification);
-
                             }
 
                             adapterThisWeek = new NotificationAdapter(getApplicationContext(), thisWeekNotifs);
