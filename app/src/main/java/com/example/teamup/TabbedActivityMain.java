@@ -94,6 +94,8 @@ public class TabbedActivityMain extends AppCompatActivity {
             }
         });
 
+
+
         profPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

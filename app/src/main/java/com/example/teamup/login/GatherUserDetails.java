@@ -14,6 +14,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,8 +52,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.type.LatLng;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -80,14 +86,17 @@ public class GatherUserDetails extends AppCompatActivity {
         storageReference= FirebaseStorage.getInstance().getReference();
 
 
+        final AutoCompleteTextView location=findViewById(R.id.location);
         final EditText firstname = findViewById(R.id.fname);
         final EditText lastname = findViewById(R.id.lname);
         final EditText primarySkill = findViewById(R.id.primarySkill);
         final EditText secondarySkill = findViewById(R.id.secondarySkill);
-        final EditText location = findViewById(R.id.location);
+//        final EditText location = findViewById(R.id.location);
         Button register = findViewById(R.id.registerButton);
         Button profilepicButton = findViewById(R.id.profilePicSetterImage);
         profilePic=findViewById(R.id.profile_image);
+
+        location.setAdapter(new PlaceAutoSuggestAdapter(GatherUserDetails.this,android.R.layout.simple_list_item_1));
 
         pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         email = getIntent().getStringExtra("email");
@@ -116,6 +125,33 @@ public class GatherUserDetails extends AppCompatActivity {
             }
         });
 
+        location.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("Address : ",location.getText().toString());
+//                LatLng latLng=getLatLngFromAddress(location.getText().toString());
+//                if(latLng!=null) {
+//                    Log.d("Lat Lng : ", " " + latLng.latitude + " " + latLng.longitude);
+//                    Address address=getAddressFromLatLng(latLng);
+//                    if(address!=null) {
+//                        Log.d("Address : ", "" + address.toString());
+//                        Log.d("Address Line : ",""+address.getAddressLine(0));
+//                        Log.d("Phone : ",""+address.getPhone());
+//                        Log.d("Pin Code : ",""+address.getPostalCode());
+//                        Log.d("Feature : ",""+address.getFeatureName());
+//                        Log.d("More : ",""+address.getLocality());
+//                    }
+//                    else {
+//                        Log.d("Adddress","Address Not Found");
+//                    }
+//                }
+//                else {
+//                    Log.d("Lat Lng","Lat Lng Not Found");
+//                }
+
+            }
+        });
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +166,27 @@ public class GatherUserDetails extends AppCompatActivity {
             }
         });
     }
+
+//    private LatLng getLatLngFromAddress(String toString) {
+//        Geocoder geocoder=new Geocoder(GatherUserDetails.this);
+//        List<Address> addressList;
+//
+//        try {
+//            addressList = geocoder.getFromLocationName(address, 1);
+//            if(addressList!=null){
+//                Address singleaddress=addressList.get(0);
+//                LatLng latLng=new LatLng(singleaddress.getLatitude(),singleaddress.getLongitude());
+//                return latLng;
+//            }
+//            else{
+//                return null;
+//            }
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -273,4 +330,23 @@ public class GatherUserDetails extends AppCompatActivity {
             Toast.makeText(GatherUserDetails.this,"Enter Valid details",Toast.LENGTH_LONG).show();
         }
     }
+//    private Address getAddressFromLatLng(LatLng latLng){
+//        Geocoder geocoder=new Geocoder(GatherUserDetails.this);
+//        List<Address> addresses;
+//        try {
+//            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
+//            if(addresses!=null){
+//                Address address=addresses.get(0);
+//                return address;
+//            }
+//            else{
+//                return null;
+//            }
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//    }
 }
