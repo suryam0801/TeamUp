@@ -178,7 +178,7 @@
                     android:textColor="#B3B1B1"
                     android:textSize="11dp">
                 </TextView>
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

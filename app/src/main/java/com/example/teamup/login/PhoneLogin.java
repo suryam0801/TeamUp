@@ -150,16 +150,6 @@ private String complete_phone_number = "";
             }
         };
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if(mCurrentUser != null){
-//            sendUserToHome();
-//        }
-//    }
-
-
     private void sendUserToHome() {
         Intent homeIntent = new Intent(PhoneLogin.this, TabbedActivityMain.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
