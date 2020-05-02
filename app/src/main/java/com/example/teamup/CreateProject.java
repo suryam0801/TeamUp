@@ -43,7 +43,6 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
     FirebaseFirestore db;
     FirebaseAuth currentUser;
     ChipGroup chipGroup;
-    ImageButton bck;
     EditText projName, projDescription, skillSetEntry;
 
     @Override
@@ -60,7 +59,6 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
         currentUser=FirebaseAuth.getInstance();
 
         //initializing all UI elements
-        bck = findViewById(R.id.bck_create);
         projName = findViewById(R.id.projectName);
         projDescription = findViewById(R.id.projectDescription);
         Button createProjectSubmit = (Button)findViewById(R.id.createProjectSubmit);
@@ -107,11 +105,10 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
                 if(entry.equals("") || entry.equals(null) || entry.replaceAll("\\s", "").equals("")){
                     Toast.makeText(getApplicationContext(), "Please Enter Your Preferred Skill", Toast.LENGTH_LONG).show();
                 } else {
-                    setTag(skillSetEntry.getText().toString());
+                    setTag(entry);
                 }
             }
         });
-
     }
 
     private void setTag(String name) {
@@ -135,6 +132,7 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 chipGroup.removeView(chip);
+
             }
         });
         chipGroup.addView(chip);

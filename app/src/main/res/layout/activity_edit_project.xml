@@ -8,211 +8,251 @@
     android:background="#FFFFFF"
     tools:context=".CreateProject">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#2196F3">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/bck_create"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="12dp"
-                android:scaleX=".8"
-                android:scaleY=".8"
-                android:background="@android:color/transparent"
-                android:src="@drawable/chevron_left_white"></ImageButton>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#2196F3">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <TextView
+                    <ImageButton
+                        android:id="@+id/bck_create"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="12dp"
+                        android:scaleX=".8"
+                        android:scaleY=".8"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/chevron_left_white"></ImageButton>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:text="Edit Your Project"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20dp"></TextView>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#50AAF8"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Name"
+                        android:layout_marginLeft="23dp"
+                        android:textSize="12dp"
+                        android:textColor="#DEDADA"
+                        android:fontFamily="@font/roboto_regular"></TextView>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Project Name"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textColorHint="@color/white"
+                        android:backgroundTint="#50AAF8"
+                        android:id="@+id/edit_project_projectname">
+                    </EditText>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Project Category"
+                        android:layout_marginLeft="23dp"
+                        android:textSize="12dp"
+                        android:textColor="#DEDADA"
+                        android:fontFamily="@font/roboto_regular"></TextView>
+
+                    <Spinner
+                        android:id="@+id/edit_project_categorySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="0dp"/>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="#50AAF8"
+                        android:layout_marginBottom="28dp"></View>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="21dp"
+                    android:text="Description (100 words)"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="23dp"
+                    android:textColor="#C3BDBD"
+                    android:fontFamily="@font/roboto_regular"></TextView>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:hint="Enter Project Description Here"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9B9696"
+                    android:textSize="16dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:backgroundTint="@color/black"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/edit_project_projectDescription">
+                </EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Preferred Skills (What skills does your project require?)"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="#C3BDBD"
+                    android:fontFamily="@font/roboto_regular"></TextView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="20"
+                        android:hint="Enter Skills"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="16dp"
+                        android:textColorHint="#9B9696"
+                        android:backgroundTint="@color/black"
+                        android:id="@+id/edit_project_skill_entry_edittext"></EditText>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_weight="70"
+                        android:text="add"
+                        android:layout_marginRight="20dp"
+                        android:textColor="#5B86E5"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:background="@drawable/create_project_skill_add_button"
+                        android:id="@+id/edit_project_addSkillSet"
+                        android:layout_gravity="center"></Button>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/roboto_regular"
-                android:paddingLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="Edit Your Project"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp"></TextView>
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#50AAF8"></View>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="50"
+                    android:layout_marginTop="10dp">
+                    <com.google.android.material.chip.ChipGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/editProject_chip_group_skills">
+                    </com.google.android.material.chip.ChipGroup>
+                </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Name"
-                android:layout_marginLeft="23dp"
-                android:textSize="12dp"
-                android:textColor="#DEDADA"
-                android:fontFamily="@font/roboto_regular"></TextView>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Enter Project Name Here"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/white"
-                android:textSize="16dp"
-                android:fontFamily="@font/roboto_regular"
-                android:textColorHint="@color/white"
-                android:backgroundTint="#50AAF8"
-                android:id="@+id/projectName">
-            </EditText>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
 
+                    <Button
+                        android:id="@+id/edit_project_discardChanges"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:textAllCaps="false"
+                        android:text="Discard Changes"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_weight="50"
+                        android:gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:textColor="#50AAF8"
+                        android:layout_marginBottom="40dp"
+                        android:background="@drawable/light_blue_nav_button">
+                    </Button>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Project Category"
-                android:layout_marginLeft="23dp"
-                android:textSize="12dp"
-                android:textColor="#DEDADA"
-                android:fontFamily="@font/roboto_regular"></TextView>
+                    <Button
+                        android:id="@+id/edit_project_finalize_changes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:textAllCaps="false"
+                        android:text="Finalize Changes"
+                        android:textColor="#828282"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_weight="50"
+                        android:gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/unpressable_button">
+                    </Button>
 
-            <Spinner
-                android:id="@+id/categorySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="0dp"/>
+                </LinearLayout>
+            </LinearLayout>
 
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#50AAF8"
-                android:layout_marginBottom="28dp"></View>
 
         </LinearLayout>
+    </ScrollView>
 
-    </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
-            android:text="Description (100 words)"
-            android:textSize="12dp"
-            android:layout_marginLeft="23dp"
-            android:textColor="#C3BDBD"
-            android:fontFamily="@font/roboto_regular"></TextView>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="Enter Project Description Here"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:textColor="@color/black"
-            android:textColorHint="#9B9696"
-            android:textSize="16dp"
-            android:fontFamily="@font/roboto_regular"
-            android:backgroundTint="@color/black"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/projectDescription">
-        </EditText>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Preferred Skills (What skills does your project require?)"
-            android:textSize="15dp"
-            android:layout_marginLeft="23dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="#C3BDBD"
-            android:fontFamily="@font/roboto_regular"></TextView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="20"
-                android:hint="Enter Skills"
-                android:textColor="@color/black"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:textSize="16dp"
-                android:textColorHint="#9B9696"
-                android:backgroundTint="@color/black"
-                android:id="@+id/skill_entry_edittext"></EditText>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_weight="70"
-                android:text="add"
-                android:layout_marginRight="20dp"
-                android:textColor="#5B86E5"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:background="@drawable/create_project_skill_add_button"
-                android:id="@+id/addSkillSet"
-                android:layout_gravity="center"></Button>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="50"
-            android:layout_marginTop="10dp">
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chip_group_create_skills">
-            </com.google.android.material.chip.ChipGroup>
-        </ScrollView>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="Create Task"
-            android:textSize="18dp"
-            android:layout_gravity="center|bottom"
-            android:background="@drawable/gradient_button"
-            android:id="@+id/createProjectSubmit">
-        </Button>
-    </LinearLayout>
 
 
 </LinearLayout>

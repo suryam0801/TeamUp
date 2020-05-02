@@ -29,6 +29,7 @@ import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.ControlPanel.chat.ChatRoom;
 import com.example.teamup.ControlPanel.chat.ChatRoomBaseActivity;
 import com.example.teamup.EditOrView.EditOrViewProfile;
+import com.example.teamup.EditOrView.EditOrViewProject;
 import com.example.teamup.Explore.ExploreTab;
 import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.Applicant;
@@ -93,7 +94,8 @@ public class ControlPanel extends AppCompatActivity {
         editProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editProject();
+                startActivity(new Intent(ControlPanel.this, EditOrViewProject.class));
+                finish();
             }
         });
 
@@ -156,9 +158,6 @@ public class ControlPanel extends AppCompatActivity {
         removeConfirm.show();
     }
 
-    public void editProject () {
-
-    }
 
     public void removeProject () {
         db.collection("Projects").document(project.getProjectId()).delete()
