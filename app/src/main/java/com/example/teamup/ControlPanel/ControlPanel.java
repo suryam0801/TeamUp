@@ -154,12 +154,11 @@ public class ControlPanel extends AppCompatActivity {
         });
 
         removeConfirm.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
         removeConfirm.show();
     }
 
 
-    public void removeProject () {
+    public void removeProject() {
         db.collection("Projects").document(project.getProjectId()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -175,12 +174,15 @@ public class ControlPanel extends AppCompatActivity {
         User user = SessionStorage.getUser(ControlPanel.this);
         int newCreatedProjects = user.getCreatedProjects() - 1;
         user.setCreatedProjects(newCreatedProjects);
-        db.collection("Users").document(user.getUserId()).update("createdProjects",user.getCreatedProjects()).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "JOB SUCCESSFUL!!!!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        db.collection("Users").document(user.getUserId()).update("createdProjects", user.getCreatedProjects())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "JOB SUCCESSFUL!!!!");
+                        startActivity(new Intent(ControlPanel.this, TabbedActivityMain.class));
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
             }
