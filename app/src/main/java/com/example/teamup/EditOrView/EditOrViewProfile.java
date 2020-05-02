@@ -108,6 +108,11 @@ public class EditOrViewProfile extends AppCompatActivity {
         userID = getIntent().getStringExtra("userID");
         flag = getIntent().getStringExtra("flag");
 
+        Glide.with(EditOrViewProfile.this)
+                .load(user.getProfileImageLink())
+                .placeholder(ContextCompat.getDrawable(EditOrViewProfile.this, R.drawable.profile_image))
+                .into(profileImageView);
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -390,11 +395,6 @@ public class EditOrViewProfile extends AppCompatActivity {
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
-                Glide.with(EditOrViewProfile.this)
-                        .load(user.getProfileImageLink())
-                        .placeholder(ContextCompat.getDrawable(EditOrViewProfile.this, R.drawable.ic_account_circle_black_24dp))
-                        .into(profileImageView);
-
                 userName.setText(user.getFirstName() + " " + user.getLastName());
                 userEmail.setText("User Number is Private"); //user.getContact()
                 createdProjects.setText(user.getCreatedProjects() + "");
@@ -438,11 +438,6 @@ public class EditOrViewProfile extends AppCompatActivity {
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
-                Glide.with(EditOrViewProfile.this)
-                        .load(user.getProfileImageLink())
-                        .placeholder(ContextCompat.getDrawable(EditOrViewProfile.this, R.drawable.ic_account_circle_black_24dp))
-                        .into(profileImageView);
-
                 userName.setText(user.getFirstName() + " " + user.getLastName());
                 userEmail.setText("User Number is Private"); //user.getContact()
                 createdProjects.setText(user.getCreatedProjects() + "");
@@ -463,11 +458,6 @@ public class EditOrViewProfile extends AppCompatActivity {
                 user = documentSnapshot.toObject(User.class);
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
-
-                Glide.with(EditOrViewProfile.this)
-                        .load(user.getProfileImageLink())
-                        .placeholder(ContextCompat.getDrawable(EditOrViewProfile.this, R.drawable.ic_account_circle_black_24dp))
-                        .into(profileImageView);
 
                 userName.setText(user.getFirstName() + " " + user.getLastName());
                 Log.d(TAG, "USER NUMBER: \n" + user.getContact());
