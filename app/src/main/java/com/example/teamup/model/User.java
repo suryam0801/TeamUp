@@ -1,8 +1,6 @@
 package com.example.teamup.model;
 import android.os.Parcel;
 
-import java.util.ArrayList;
-
 
 public class User {
 
@@ -18,8 +16,7 @@ public class User {
                 "firstName='" + firstName + '\n' +
                 ", lastName='" + lastName + '\n' +
                 ", contact='" + contact + '\n' +
-                ", specialization='" + specialization + '\n' +
-                ", secondarySkill='" + secondarySkill + '\n' +
+                ", specialization='" + interests + '\n' +
                 ", profileImageLink='" + profileImageLink + '\n' +
                 ", location='" + location + '\n' +
                 ", userId='" + userId + '\n' +
@@ -54,8 +51,7 @@ public class User {
         firstName = in.readString();
         lastName = in.readString();
         contact = in.readString();
-        specialization = in.readString();
-        secondarySkill = in.readString();
+        interests = in.readString();
         location = in.readString();
         userId = in.readString();
         profileImageLink = in.readString();
@@ -66,15 +62,13 @@ public class User {
         token_id = in.readString();
     }
 
-    public User(String firstName, String lastName,String contact,
-                String specialization, String secondarySkill, String location,
-                String userId,String profileImageLink, int createdProjects, int workingProjects,
-                int completedProjects,String token_id) {
+    public User(String firstName, String lastName, String contact,
+                String interests, String location, String userId, String profileImageLink,
+                int createdProjects, int workingProjects, int completedProjects, String token_id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contact=contact;
-        this.specialization = specialization;
-        this.secondarySkill = secondarySkill;
+        this.interests = interests;
         this.location = location;
         this.userId = userId;
         this.profileImageLink=profileImageLink;
@@ -91,9 +85,7 @@ public class User {
 
     private String contact;
 
-    private String specialization;
-
-    private String secondarySkill;
+    private String interests;
 
     private String profileImageLink;
 
@@ -128,20 +120,12 @@ public class User {
         this.profileImageLink = profileImageLink;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public String getInterests() {
+        return interests;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
-    public String getSecondarySkill() {
-        return secondarySkill;
-    }
-
-    public void setSecondarySkill(String secondarySkill) {
-        this.secondarySkill = secondarySkill;
+    public void setInterests(String interests) {
+        this.interests = interests;
     }
 
     public String getLocation() {
@@ -177,7 +161,7 @@ public class User {
 //    public void setEmail(String email) {
 //        this.email = email;
 //    }
-public String getContact() {
+    public String getContact() {
     return contact;
 }
 

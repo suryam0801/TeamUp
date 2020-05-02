@@ -136,7 +136,7 @@ public class AllMembersFragment extends Fragment {
 
                             User user = SessionStorage.getUser(getActivity());
 
-                            WorkersList.add(new Worker(projectID, workerName, workerId, user.getProfileImageLink(), user.getSpecialization(),
+                            WorkersList.add(new Worker(projectID, workerName, workerId, user.getProfileImageLink(), user.getInterests(),
                                     user.getLocation()));
                         }
                     }

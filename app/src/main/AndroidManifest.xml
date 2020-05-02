@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,9 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".login.OtpActivity"></activity>
+        <activity android:name=".login.SkillsPicker"></activity>
+        <activity android:name=".login.OtpActivity" />
         <activity android:name=".login.PhoneLogin" />
-        <activity android:name=".ControlPanel.ProjectWall.FileComments"></activity>
+        <activity android:name=".ControlPanel.ProjectWall.FileComments" />
         <activity android:name=".ControlPanel.TaskList.CreateTask" />
         <activity android:name=".EditOrView.EditOrViewProfile" />
         <activity android:name=".EditOrView.EditOrViewProject" />

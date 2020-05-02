@@ -157,7 +157,6 @@ public class ControlPanel extends AppCompatActivity {
         removeConfirm.show();
     }
 
-
     public void removeProject() {
         db.collection("Projects").document(project.getProjectId()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

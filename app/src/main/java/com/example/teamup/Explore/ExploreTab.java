@@ -28,9 +28,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 //import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
-import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.login.SkillsPicker;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
@@ -132,7 +132,7 @@ public class ExploreTab extends Fragment {
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CreateProject.class));
+                startActivity(new Intent(getActivity(), SkillsPicker.class));
             }
         });
 
@@ -389,7 +389,7 @@ public class ExploreTab extends Fragment {
         applicant.setShortPitch(shortPitch);
         applicant.setApplicantPhn(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
         applicant.setProfilePicURL(user.getProfileImageLink());
-        applicant.setSpecialization(user.getSpecialization());
+        applicant.setSpecialization(user.getInterests());
         applicant.setLocation(user.getLocation());
 
         Object[] array = {applicant};

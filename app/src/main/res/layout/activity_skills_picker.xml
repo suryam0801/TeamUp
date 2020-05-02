@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".login.SkillsPicker">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/roboto_black"
+        android:text="TeamUp"
+        android:textColor="#2196F3"
+        android:textSize="50dp" />
+
+    <TextView
+        android:id="@+id/beneathTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/roboto_black"
+        android:text="Select up to 3 fields of interest:"
+        android:textColor="#D1D1D1"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100">
+        <com.igalata.bubblepicker.rendering.BubblePicker
+            android:id="@+id/skills_bubble_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="90"
+            android:background="@color/white"></com.igalata.bubblepicker.rendering.BubblePicker>
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:background="@drawable/gradient_button"
+            android:drawableEnd="@drawable/right_forward_arrow"
+            android:fontFamily="@font/roboto_black"
+            android:gravity="start|center"
+            android:paddingLeft="19dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingRight="19dp"
+            android:text="Finish Registration"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFFFF"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+</LinearLayout>

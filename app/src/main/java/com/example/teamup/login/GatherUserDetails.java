@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.Manifest;
@@ -66,13 +67,12 @@ public class GatherUserDetails extends AppCompatActivity {
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private Uri filePath;
-    private User user;
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
     private Uri downloadUri;
     private CircleImageView profilePic;
     SharedPreferences pref;
-    String primSkill, secSkill, loc, fName, lName, email, password, userId,profileImageLink,contact;
+    String loc, fName, lName, email, password, contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,22 +82,20 @@ public class GatherUserDetails extends AppCompatActivity {
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         getSupportActionBar().hide();
         setContentView(R.layout.activity_gather_user_details);
-        firebaseAuth=FirebaseAuth.getInstance();
-        db=FirebaseFirestore.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
 
 
-        final AutoCompleteTextView location=findViewById(R.id.location);
+        final AutoCompleteTextView location = findViewById(R.id.location);
         final EditText firstname = findViewById(R.id.fname);
         final EditText lastname = findViewById(R.id.lname);
-        final EditText primarySkill = findViewById(R.id.primarySkill);
-        final EditText secondarySkill = findViewById(R.id.secondarySkill);
 //        final EditText location = findViewById(R.id.location);
         Button register = findViewById(R.id.registerButton);
         Button profilepicButton = findViewById(R.id.profilePicSetterImage);
-        profilePic=findViewById(R.id.profile_image);
+        profilePic = findViewById(R.id.profile_image);
 
-        location.setAdapter(new PlaceAutoSuggestAdapter(GatherUserDetails.this,android.R.layout.simple_list_item_1));
+        location.setAdapter(new PlaceAutoSuggestAdapter(GatherUserDetails.this, android.R.layout.simple_list_item_1));
 
         pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         email = getIntent().getStringExtra("email");
@@ -107,15 +105,13 @@ public class GatherUserDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(ContextCompat.checkSelfPermission(GatherUserDetails.this,
+                if (ContextCompat.checkSelfPermission(GatherUserDetails.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED)
-                {
+                        != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(GatherUserDetails.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             STORAGE_PERMISSION_CODE);
-                }
-                else {
+                } else {
 
                     Intent intent = new Intent();
                     intent.setType("image/*");
@@ -158,12 +154,19 @@ public class GatherUserDetails extends AppCompatActivity {
             public void onClick(View view) {
                 fName = firstname.getText().toString();
                 lName = lastname.getText().toString();
-                primSkill = primarySkill.getText().toString();
-                secSkill = secondarySkill.getText().toString();
                 loc = location.getText().toString();
 //                contact = "+91"+phn_num.getText().toString();
-                contact=pref.getString("key_name5", null);
-                registerFunction();
+                contact = pref.getString("key_name5", null);
+
+                Intent intent = new Intent(GatherUserDetails.this, SkillsPicker.class);
+                intent.putExtra("fName", fName);
+                intent.putExtra("lName", lName);
+                intent.putExtra("loc", loc);
+                intent.putExtra("contact", contact);
+                if(downloadUri != null)
+                    intent.putExtra("uri", downloadUri.toString());
+
+                startActivity(intent);
             }
         });
     }
@@ -192,8 +195,7 @@ public class GatherUserDetails extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
+                                           @NonNull int[] grantResults) {
         super
                 .onRequestPermissionsResult(requestCode,
                         permissions,
@@ -205,8 +207,7 @@ public class GatherUserDetails extends AppCompatActivity {
                         "Storage Permission Granted",
                         Toast.LENGTH_SHORT)
                         .show();
-            }
-            else {
+            } else {
                 Toast.makeText(GatherUserDetails.this,
                         "Storage Permission Denied",
                         Toast.LENGTH_SHORT)
@@ -221,15 +222,14 @@ public class GatherUserDetails extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
 
-            if(filePath != null)
-            {
+            if (filePath != null) {
 
                 final ProgressDialog progressDialog = new ProgressDialog(GatherUserDetails.this);
                 progressDialog.setTitle("Uploading");
                 progressDialog.show();
 
-                String id= UUID.randomUUID().toString();
-                final StorageReference profileRef = storageReference.child("ProfilePics/"+id);
+                String id = UUID.randomUUID().toString();
+                final StorageReference profileRef = storageReference.child("ProfilePics/" + id);
 
                 profileRef.putFile(filePath).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -248,15 +248,15 @@ public class GatherUserDetails extends AppCompatActivity {
                                 }
 
                                 // Continue with the task to get the download URL
-                                return  profileRef.getDownloadUrl();
+                                return profileRef.getDownloadUrl();
                             }
                         }).addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         progressDialog.dismiss();
                         //and displaying a success toast
-                        Toast.makeText(getApplicationContext(), "Profile Pic Uploaded ", Toast.LENGTH_LONG).show();
-                        downloadUri=uri;
+                        Toast.makeText(getApplicationContext(), "Profile Pic Uploaded " + uri.toString(), Toast.LENGTH_LONG).show();
+                        downloadUri = uri;
                         Glide.with(GatherUserDetails.this).load(downloadUri.toString()).into(profilePic);
 
                     }
@@ -272,70 +272,13 @@ public class GatherUserDetails extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         });
-
-
             }
 
         }
     }
 
-    private void addUserToCollection() {
 
-        String token_id = FirebaseInstanceId.getInstance().getToken();
-
-        if (downloadUri != null) {
-            user = new User(fName, lName, contact, primSkill, secSkill, loc, userId, downloadUri.toString(), 0, 0, 0, token_id);
-        } else {
-            user = new User(fName, lName, contact, primSkill, secSkill, loc, userId, "default", 0, 0, 0, token_id);
-        }
-
-        db.collection("Users")
-                .document(userId)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
-    public void registerFunction(){
-
-        if(!TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName))
-        {
-             userId = firebaseAuth.getInstance().getCurrentUser().getUid();
-             addUserToCollection();
-             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                     .setDisplayName(fName+" "+lName)
-                     .build();
-                firebaseAuth.getCurrentUser().updateProfile(profileUpdates)
-                     .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Toast.makeText(GatherUserDetails.this, "User Registered Successfully", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(GatherUserDetails.this, TabbedActivityMain.class));
-                                        finish();
-                                    }
-                                    else {
-                                        Toast.makeText(GatherUserDetails.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                        firebaseAuth.signOut();
-                                        firebaseAuth.getCurrentUser().delete();
-                                    } }
-                     });
-        }
-        else {
-            Toast.makeText(GatherUserDetails.this,"Enter Valid details",Toast.LENGTH_LONG).show();
-        }
-    }
-//    private Address getAddressFromLatLng(LatLng latLng){
+    //    private Address getAddressFromLatLng(LatLng latLng){
 //        Geocoder geocoder=new Geocoder(GatherUserDetails.this);
 //        List<Address> addresses;
 //        try {
@@ -354,4 +297,5 @@ public class GatherUserDetails extends AppCompatActivity {
 //        }
 //
 //    }
+
 }

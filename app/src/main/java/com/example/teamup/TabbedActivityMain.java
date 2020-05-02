@@ -93,7 +93,7 @@ public class TabbedActivityMain extends AppCompatActivity {
                     SessionStorage.saveUser(TabbedActivityMain.this, user);
                     Glide.with(TabbedActivityMain.this)
                             .load(user.getProfileImageLink())
-                            .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.ic_account_circle_black_24dp))
+                            .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.profile_image))
                             .into(profPic);
                 }
 
