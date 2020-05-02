@@ -117,7 +117,6 @@ public class EditOrViewProfile extends AppCompatActivity {
             }
         });
 
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,7 +184,6 @@ public class EditOrViewProfile extends AppCompatActivity {
                     user.setSecondarySkill(sSkill);
                 if (!loc.trim().equals(""))
                     user.setLocation(loc);
-
 
                 db.collection("Users").document(userID).set(user);
             }

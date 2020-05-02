@@ -20,7 +20,7 @@
             android:layout_marginLeft="13dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/sample_background">
+            android:background="@drawable/remove_button_background">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/explore_card_icon_foreground"

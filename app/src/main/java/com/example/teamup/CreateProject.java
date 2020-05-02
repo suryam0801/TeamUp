@@ -223,7 +223,6 @@ public class CreateProject extends Activity implements AdapterView.OnItemSelecte
             public void onFailure(@NonNull Exception e) {
             }
         });
-
     }
 
     @Override
