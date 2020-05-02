@@ -23,16 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.teamup.ControlPanel.DisplayApplicants.AllMembersFragment;
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;
-import com.example.teamup.login.GatherUserDetails;
-import com.example.teamup.login.LoginActivity;
 import com.example.teamup.login.PhoneLogin;
-import com.example.teamup.login.SignUpActivity;
-import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.example.teamup.model.Worker;
@@ -50,8 +45,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -107,6 +100,8 @@ public class EditOrViewProfile extends AppCompatActivity {
 
         userID = getIntent().getStringExtra("userID");
         flag = getIntent().getStringExtra("flag");
+
+        user = SessionStorage.getUser(EditOrViewProfile.this);
 
         Glide.with(EditOrViewProfile.this)
                 .load(user.getProfileImageLink())
@@ -180,13 +175,10 @@ public class EditOrViewProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String pSkill = String.valueOf(specializationEdit.getText());
-                String sSkill = String.valueOf(HobbiesEdit.getText());
                 String loc = String.valueOf(locationEdit.getText());
 
                 if (!pSkill.trim().equals(""))
-                    user.setSpecialization(pSkill);
-                if (!sSkill.trim().equals(""))
-                    user.setSecondarySkill(sSkill);
+                    user.setInterests(pSkill);
                 if (!loc.trim().equals(""))
                     user.setLocation(loc);
 
@@ -400,8 +392,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
-                specialization.setText(user.getSpecialization());
-                Hobbies.setText(user.getSecondarySkill());
+                specialization.setText(user.getInterests());
                 Location.setText(user.getLocation());
             }
         });
@@ -443,8 +434,8 @@ public class EditOrViewProfile extends AppCompatActivity {
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
-                specialization.setText(user.getSpecialization());
-                Hobbies.setText(user.getSecondarySkill());
+                specialization.setText(user.getInterests());
+
                 Location.setText(user.getLocation());
             }
         });
@@ -465,8 +456,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                 createdProjects.setText(user.getCreatedProjects() + "");
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
-                specialization.setText(user.getSpecialization());
-                Hobbies.setText(user.getSecondarySkill());
+                specialization.setText(user.getInterests());
                 Location.setText(user.getLocation());
             }
         });
