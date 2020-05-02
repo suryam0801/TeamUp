@@ -66,6 +66,7 @@ public class GatherUserDetails extends AppCompatActivity {
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private Uri filePath;
+    private User user;
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
     private Uri downloadUri;
@@ -280,8 +281,14 @@ public class GatherUserDetails extends AppCompatActivity {
 
     private void addUserToCollection() {
 
-        String token_id= FirebaseInstanceId.getInstance().getToken();
-        User user = new User(fName,lName,contact,primSkill,secSkill,loc,userId,downloadUri.toString(), 0, 0, 0,token_id);
+        String token_id = FirebaseInstanceId.getInstance().getToken();
+
+        if (downloadUri != null) {
+            user = new User(fName, lName, contact, primSkill, secSkill, loc, userId, downloadUri.toString(), 0, 0, 0, token_id);
+        } else {
+            user = new User(fName, lName, contact, primSkill, secSkill, loc, userId, "default", 0, 0, 0, token_id);
+        }
+
         db.collection("Users")
                 .document(userId)
                 .set(user)
@@ -300,12 +307,10 @@ public class GatherUserDetails extends AppCompatActivity {
     }
 
     public void registerFunction(){
-        Log.d("GATHERUSERDETAILS: ", "Function Called25");
+
         if(!TextUtils.isEmpty(fName) && !TextUtils.isEmpty(lName))
         {
-            Log.d("GATHERUSERDETAILS: ", "Function Called");
              userId = firebaseAuth.getInstance().getCurrentUser().getUid();
-             Log.d("GATHERUSERDETAILS: ", userId);
              addUserToCollection();
              UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                      .setDisplayName(fName+" "+lName)

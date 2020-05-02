@@ -23,6 +23,7 @@ import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.Explore.ExploreTab;
 import com.example.teamup.Notification.NotificationActivity;
 import com.example.teamup.Notification.SendNotification;
+import com.example.teamup.login.PhoneLogin;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabItem;
@@ -36,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TabbedActivityMain extends AppCompatActivity {
 
-    private static final String TAG ="Tabbed Activity" ;
+    private static final String TAG = "Tabbed Activity";
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TabItem exploreTab, workbenchTab;
@@ -67,7 +68,7 @@ public class TabbedActivityMain extends AppCompatActivity {
         profPic = findViewById(R.id.mainActivity_profilePicture);
         notificationBell = findViewById(R.id.main_activity_notifications_bell);
 
-        id=getIntent().getStringExtra("id");
+        id = getIntent().getStringExtra("id");
 
 //        SendNotification.sendnotification("application accepted", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
 //        SendNotification.sendnotification("application rejected", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
@@ -77,20 +78,25 @@ public class TabbedActivityMain extends AppCompatActivity {
 //        SendNotification.sendnotification("member removed", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
 //        SendNotification.sendnotification("resource added", "31159c09-417f-4dc5-b73a-480873da617d", "Team Up Mobile Application", "FHDYmz9FENWtS0GcH5cHgtjYWOc2");
 
-        db=FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
 
         DocumentReference docRef = db.collection("Users").document(currentUser.getUid());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
-                Log.d("TABBED ACTIVITY MAIN", user.toString());
-                SessionStorage.saveUser(TabbedActivityMain.this, user);
-                Glide.with(TabbedActivityMain.this)
-                        .load(user.getProfileImageLink())
-                        .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.ic_account_circle_black_24dp))
-                        .into(profPic);
+                if (!documentSnapshot.exists()) {
+                    startActivity(new Intent(TabbedActivityMain.this, PhoneLogin.class));
+                } else {
+                    user = documentSnapshot.toObject(User.class);
+                    Log.d("TABBED ACTIVITY MAIN", user.toString());
+                    SessionStorage.saveUser(TabbedActivityMain.this, user);
+                    Glide.with(TabbedActivityMain.this)
+                            .load(user.getProfileImageLink())
+                            .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.ic_account_circle_black_24dp))
+                            .into(profPic);
+                }
+
             }
         });
 
@@ -143,24 +149,25 @@ public class TabbedActivityMain extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     ((EditText) v).clearFocus();
-                    ((EditText)v).setCursorVisible(false);
-                    Log.d(TAG, "Tabbed: "+"cleared focus");
+                    ((EditText) v).setCursorVisible(false);
+                    Log.d(TAG, "Tabbed: " + "cleared focus");
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 //                    ((EditText) v).setCursorVisible(false);
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent(event);
     }
 }
