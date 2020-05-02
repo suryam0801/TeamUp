@@ -53,8 +53,8 @@ public class EditOrViewProfile extends AppCompatActivity {
 
     private CircleImageView profileImageView;
     private TextView userName, userEmail, createdProjects, workingProjects, completedProjects, specialization, Hobbies, Location;
-    private Button editProfPic, editSpecialization, editSecondarySkill, editLocation, finalizeChanges, logout;
-    private EditText specializationEdit, HobbiesEdit, locationEdit;
+    private Button editProfPic, editSpecialization, editLocation, finalizeChanges, logout;
+    private EditText specializationEdit, locationEdit;
     private Dialog removeConfirm;
     private ImageButton back;
     private Uri filePath;
@@ -81,18 +81,15 @@ public class EditOrViewProfile extends AppCompatActivity {
         workingProjects = findViewById(R.id.viewProfileWorkingProjectCount);
         completedProjects = findViewById(R.id.viewProfile_CompletedProjectsCount);
         specialization = findViewById(R.id.viewProfile_specializedField);
-        Hobbies = findViewById(R.id.viewProfile_secondarySkill);
         Location = findViewById(R.id.viewProfile_location);
         editProfPic = findViewById(R.id.profile_view_profilePicSetterImage);
         editSpecialization = findViewById(R.id.editSpecialization);
-        editSecondarySkill = findViewById(R.id.editSecondarySkill);
         editLocation = findViewById(R.id.editLocation);
         profileImageView = findViewById(R.id.profile_view_profile_image);
         finalizeChanges = findViewById(R.id.profile_finalize_changes);
         logout = findViewById(R.id.profile_logout);
         back = findViewById(R.id.bck_view_edit_profile);
         specializationEdit = findViewById(R.id.viewProfileChangeSpecialization);
-        HobbiesEdit = findViewById(R.id.viewProfileChangeSecondarySkill);
         locationEdit = findViewById(R.id.viewProfileChangeLocation);
         removeConfirm = new Dialog(EditOrViewProfile.this);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -149,15 +146,6 @@ public class EditOrViewProfile extends AppCompatActivity {
             public void onClick(View view) {
                 specialization.setVisibility(View.GONE);
                 specializationEdit.setVisibility(View.VISIBLE);
-                finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
-                finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
-            }
-        });
-        editSecondarySkill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Hobbies.setVisibility(View.GONE);
-                HobbiesEdit.setVisibility(View.VISIBLE);
                 finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
                 finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
             }
@@ -360,7 +348,6 @@ public class EditOrViewProfile extends AppCompatActivity {
     public void applicantLoad() {
         editProfPic.setVisibility(View.GONE);
         editSpecialization.setVisibility(View.GONE);
-        editSecondarySkill.setVisibility(View.GONE);
         editLocation.setVisibility(View.GONE);
         finalizeChanges.setVisibility(View.GONE);
 
@@ -401,7 +388,6 @@ public class EditOrViewProfile extends AppCompatActivity {
     public void memberLoad() {
         editProfPic.setVisibility(View.GONE);
         editSpecialization.setVisibility(View.GONE);
-        editSecondarySkill.setVisibility(View.GONE);
         editLocation.setVisibility(View.GONE);
         finalizeChanges.setVisibility(View.GONE);
 

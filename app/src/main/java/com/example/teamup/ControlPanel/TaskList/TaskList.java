@@ -47,7 +47,7 @@ public class TaskList extends AppCompatActivity {
     private List<Task> TaskListCompleted = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LinearLayout emptyView;
-    private TextView markCompleted;
+    private TextView markCompleted, onGoingTaskEmpty;
     private TaskAdapter adapterOngoing, adapterCompleted;
     private List<Task> tasksSelected = new ArrayList<>();
     private ListView lvOngoing, lvCompleted;
@@ -67,6 +67,7 @@ public class TaskList extends AppCompatActivity {
         newTaskButton = findViewById(R.id.new_task_button);
         project = storage.getProject(TaskList.this);
         markCompleted = findViewById(R.id.task_view_markascompleted);
+        onGoingTaskEmpty = findViewById(R.id.ongoingtasks_empty);
         back = findViewById(R.id.bck_task_list);
         clearNewTaskCount();
         newTaskButton.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +121,8 @@ public class TaskList extends AppCompatActivity {
                 }
             });
         }
+        startActivity(new Intent(TaskList.this, TaskList.class));
+        finish();
     }
 
     public void clearNewTaskCount() {
@@ -235,6 +238,11 @@ public class TaskList extends AppCompatActivity {
 
                 ListUtils.setDynamicHeight(lvOngoing);
                 ListUtils.setDynamicHeight(lvCompleted);
+
+                if(TaskListOngoing.isEmpty()){
+                    onGoingTaskEmpty.setVisibility(View.VISIBLE);
+                    lvOngoing.setVisibility(View.GONE);
+                }
 
                 lvOngoing.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override

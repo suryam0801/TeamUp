@@ -121,6 +121,19 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="#828282"
+                        android:textAlignment="center"
+                        android:id="@+id/ongoingtasks_empty"
+                        android:layout_marginBottom="15dp"
+                        android:visibility="gone"
+                        android:text="Congrats! Looks like you finished all your tasks!">
+                    </TextView>
+
                     <ListView
                         android:id="@+id/tasklist_display"
                         android:layout_width="match_parent"
