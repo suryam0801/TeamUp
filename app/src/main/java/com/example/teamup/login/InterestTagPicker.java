@@ -3,6 +3,7 @@ package com.example.teamup.login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,12 +12,14 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.teamup.R;
 import com.example.teamup.TabbedActivityMain;
+import com.example.teamup.model.Tags;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,10 +29,12 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -43,6 +48,7 @@ public class InterestTagPicker extends AppCompatActivity {
     private List<String> locationTags = new ArrayList<>(), interestTagsList = new ArrayList<>();
     private EditText interestTagsEntry;
     private User user;
+    private Tags tags;
     private ChipGroup chipGroup;
     private Button interestTagAdd;
 
@@ -85,6 +91,9 @@ public class InterestTagPicker extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         interestTagsEntry.setFocusable(true);
                         interestTagsEntry.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(interestTagsEntry, InputMethodManager.SHOW_IMPLICIT);
+                        interestTagsEntry.setShowSoftInputOnFocus(true);
                         interestTagsEntry.setText("#");
                         interestTagsEntry.setSelection(interestTagsEntry.getText().length());
                         break;
@@ -182,9 +191,79 @@ public class InterestTagPicker extends AppCompatActivity {
 
         if (downloadUri != null) {
             user = new User(fName, lName, contact, downloadUri, locationTags, interestTagsList, userId, 0, 0, 0, token_id);
+            tags = new Tags(locationTags,interestTagsList);
         } else {
             user = new User(fName, lName, contact, "default", locationTags, interestTagsList, userId, 0, 0, 0, token_id);
+            tags = new Tags(locationTags,interestTagsList);
         }
+
+        List<String> locationinterest = locationTags;
+        HashMap<String, List<String>> List = new HashMap<>();
+        List.put("locationTags", locationinterest);
+
+        for(int i=0;i< locationTags.size();i++)
+        {
+            String loc = locationTags.get(i);
+            db.collection("Tags")
+                    .document("Location-Interest")
+                    .update(loc,FieldValue.arrayUnion(interestTagsList.toArray()))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+                                }
+                            });
+        }
+
+
+
+
+        List<String> locationlist = locationTags;
+        HashMap<String, List<String>> ListLocation = new HashMap<>();
+        ListLocation.put("locationTags", locationlist);
+
+
+
+        db.collection("Tags")
+                .document("Location")
+                .update("locationTags",FieldValue.arrayUnion(locationTags.toArray()))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        List<String> interestlist =interestTagsList;
+        HashMap<String, List<String>> InterestList = new HashMap<>();
+        InterestList.put("interestTags", interestlist);
+
+        db.collection("Tags")
+                .document("Interest")
+                .update("interestTags",FieldValue.arrayUnion(interestlist.toArray()))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
         db.collection("Users")
                 .document(userId)
