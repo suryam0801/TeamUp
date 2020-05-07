@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class InterestTagPicker extends AppCompatActivity {
 
@@ -37,7 +40,7 @@ public class InterestTagPicker extends AppCompatActivity {
     private FirebaseFirestore db;
     private Button register;
     private String tempLoc, fName, lName, userId, downloadUri, contact;
-    private List<String> skillSet, locationTags;
+    private List<String> locationTags = new ArrayList<>(), interestTagsList = new ArrayList<>();
     private EditText interestTagsEntry;
     private User user;
     private ChipGroup chipGroup;
@@ -57,7 +60,6 @@ public class InterestTagPicker extends AppCompatActivity {
         interestTagsEntry = findViewById(R.id.interest_tags_entry);
         interestTagAdd = findViewById(R.id.interest_tag_add_button);
 
-        skillSet = new ArrayList<>();
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -66,6 +68,36 @@ public class InterestTagPicker extends AppCompatActivity {
         tempLoc = getIntent().getStringExtra("locationTags");
         downloadUri = getIntent().getStringExtra("uri");
         contact = getIntent().getStringExtra("contact");
+
+        tempLoc = tempLoc.replace("[", "");
+        tempLoc = tempLoc.replace("]", "");
+        Scanner scan = new Scanner(tempLoc);
+        scan.useDelimiter(", ");
+        while (scan.hasNext()){
+            locationTags.add(scan.next());
+        }
+        Log.d("INTERESTTAGPICKER", locationTags.toString());
+
+        interestTagsEntry.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        interestTagsEntry.setFocusable(true);
+                        interestTagsEntry.requestFocus();
+                        interestTagsEntry.setText("#");
+                        interestTagsEntry.setSelection(interestTagsEntry.getText().length());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.performClick();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+
+            }
+        });
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +118,8 @@ public class InterestTagPicker extends AppCompatActivity {
 
     }
 
-    private void setTag(String name) {
+    private void setTag(final String name) {
+        interestTagsList.add(name);
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -107,11 +140,12 @@ public class InterestTagPicker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chipGroup.removeView(chip);
-
+                interestTagsList.remove(name);
             }
         });
         chipGroup.addView(chip);
         interestTagsEntry.setText("#");
+        interestTagsEntry.setSelection(interestTagsEntry.getText().length());
     }
 
     public void registerFunction() {
@@ -147,9 +181,9 @@ public class InterestTagPicker extends AppCompatActivity {
         String token_id = FirebaseInstanceId.getInstance().getToken();
 
         if (downloadUri != null) {
-            user = new User(fName, lName, contact, skillSet.toString(), tempLoc, userId, downloadUri, 0, 0, 0, token_id);
+            user = new User(fName, lName, contact, downloadUri, locationTags, interestTagsList, userId, 0, 0, 0, token_id);
         } else {
-            user = new User(fName, lName, contact, skillSet.toString(), tempLoc, userId, "default", 0, 0, 0, token_id);
+            user = new User(fName, lName, contact, "default", locationTags, interestTagsList, userId, 0, 0, 0, token_id);
         }
 
         db.collection("Users")

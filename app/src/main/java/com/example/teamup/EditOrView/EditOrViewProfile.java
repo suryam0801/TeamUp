@@ -165,10 +165,10 @@ public class EditOrViewProfile extends AppCompatActivity {
                 String pSkill = String.valueOf(specializationEdit.getText());
                 String loc = String.valueOf(locationEdit.getText());
 
-                if (!pSkill.trim().equals(""))
+                /*if (!pSkill.trim().equals(""))
                     user.setInterests(pSkill);
                 if (!loc.trim().equals(""))
-                    user.setLocation(loc);
+                    user.setLocation(loc);*/
 
                 db.collection("Users").document(userID).set(user);
             }
@@ -370,7 +370,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
+                /*user = documentSnapshot.toObject(User.class);
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
@@ -380,7 +380,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
                 specialization.setText(user.getInterests());
-                Location.setText(user.getLocation());
+                Location.setText(user.getLocation());*/
             }
         });
     }
@@ -411,7 +411,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
+                /*user = documentSnapshot.toObject(User.class);
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
@@ -422,7 +422,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                 completedProjects.setText(user.getCompletedProjects() + "");
                 specialization.setText(user.getInterests());
 
-                Location.setText(user.getLocation());
+                Location.setText(user.getLocation());*/
             }
         });
     }
@@ -432,7 +432,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
+                /*user = documentSnapshot.toObject(User.class);
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
@@ -443,7 +443,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
                 specialization.setText(user.getInterests());
-                Location.setText(user.getLocation());
+                Location.setText(user.getLocation());*/
             }
         });
     }

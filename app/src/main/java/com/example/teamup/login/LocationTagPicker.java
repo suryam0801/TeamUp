@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,12 +16,13 @@ import com.example.teamup.R;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationTagPicker extends AppCompatActivity {
 
     private String loc, fName, lName, userId, downloadUri, contact;
-    private List<String> locationTagsList;
+    private List<String> locationTagsList = new ArrayList<>();
     private Button setInterestTags, locationTagAdd;
     private ChipGroup chipGroup;
     private EditText locationTagEntry;
@@ -54,6 +57,27 @@ public class LocationTagPicker extends AppCompatActivity {
             }
         });
 
+        locationTagEntry.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        locationTagEntry.setFocusable(true);
+                        locationTagEntry.requestFocus();
+                        locationTagEntry.setText("#");
+                        locationTagEntry.setSelection(locationTagEntry.getText().length());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.performClick();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+
+            }
+        });
+
         locationTagAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +90,8 @@ public class LocationTagPicker extends AppCompatActivity {
 
     }
 
-    private void setTag(String name) {
+    private void setTag(final String name) {
+        locationTagsList.add(name);
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -87,11 +112,13 @@ public class LocationTagPicker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chipGroup.removeView(chip);
-
+                locationTagsList.remove(name);
+                Log.d("LOCATIONTAGPICKER", locationTagsList.toString());
             }
         });
         chipGroup.addView(chip);
         locationTagEntry.setText("#");
+        locationTagEntry.setSelection(locationTagEntry.getText().length());
     }
 
 }

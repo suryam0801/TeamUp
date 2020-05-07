@@ -389,8 +389,8 @@ public class ExploreTab extends Fragment {
         applicant.setShortPitch(shortPitch);
         applicant.setApplicantPhn(Objects.requireNonNull(currentUser.getCurrentUser()).getEmail());
         applicant.setProfilePicURL(user.getProfileImageLink());
-        applicant.setSpecialization(user.getInterests());
-        applicant.setLocation(user.getLocation());
+        applicant.setLocationTags(user.getLocationTags().toString());
+        applicant.setInterestTags(user.getInterestTags().toString());
 
         Object[] array = {applicant};
 
