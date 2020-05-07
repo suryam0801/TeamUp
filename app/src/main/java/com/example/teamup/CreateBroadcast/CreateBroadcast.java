@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -38,7 +39,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     private String TAG = "CreateProject", selectedCategory = "";
     private FirebaseFirestore db;
     private FirebaseAuth currentUser;
-    private EditText projName, projDescription;
+    private EditText broadcastName, broadcastDescription;
     private List<String> locationTags, interestTags;
 
 
@@ -61,8 +62,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
             interestTags = getIntent().getExtras().getStringArrayList("interestTags");
 
         //initializing all UI elements
-        projName = findViewById(R.id.projectName);
-        projDescription = findViewById(R.id.projectDescription);
+        broadcastName = findViewById(R.id.projectName);
+        broadcastDescription = findViewById(R.id.projectDescription);
         Button createProjectSubmit = (Button)findViewById(R.id.createProjectSubmit);
         Button addSkillSet = findViewById(R.id.addSkillSet);
         ImageButton back_create = findViewById(R.id.bck_create);
@@ -87,12 +88,12 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
 
             @Override
             public void onClick(View view) {
-                String pName = String.valueOf(projName.getText());
-                String pDescription = String.valueOf(projDescription.getText());
+                String pName = String.valueOf(broadcastName.getText());
+                String pDescription = String.valueOf(broadcastDescription.getText());
                 if(pName.equals("") || pDescription.equals("") || pName.replaceAll("\\s", "").equals("") || pDescription.replaceAll("\\s", "").equals("")){
                     Toast.makeText(getApplicationContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show();
                 } else {
-                    createProject(projName.getText().toString(),projDescription.getText().toString());
+                    createProject(broadcastName.getText().toString(), broadcastDescription.getText().toString());
                 }
 
             }
@@ -104,6 +105,16 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
                 startActivity(new Intent(CreateBroadcast.this, ProjectPickLocationTags.class));
             }
         });
+    }
+
+    private void assignProjectLocations(Broadcast broadcast) {
+
+        for (String loc : locationTags)
+            db.collection("Location-Projects").document(loc).collection("projects").document(broadcast.getBroadcastId()).set(broadcast);
+
+        for (String interest : interestTags)
+            db.collection("Interest-Projects").document(interest).collection("projects").document(broadcast.getBroadcastId()).set(broadcast);
+
     }
 
     @Override
@@ -136,6 +147,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         broadcast.setTaskList(null);
         broadcast.setCategory(selectedCategory);
 
+        assignProjectLocations(broadcast);
 
         Log.d(TAG, broadcast.toString());
 
@@ -189,8 +201,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("projectName", projName.getText().toString());
-        savedInstanceState.putString("projectDescription", projDescription.getText().toString());
+        savedInstanceState.putString("projectName", broadcastName.getText().toString());
+        savedInstanceState.putString("projectDescription", broadcastDescription.getText().toString());
     }
 
     @Override
@@ -200,8 +212,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         // This bundle has also been passed to onCreate.
         String name = savedInstanceState.getString("projectName");
         String description = savedInstanceState.getString("projectDescription");
-        projName.setText(name);
-        projDescription.setText(description);
+        broadcastName.setText(name);
+        broadcastDescription.setText(description);
     }
 
     @Override
