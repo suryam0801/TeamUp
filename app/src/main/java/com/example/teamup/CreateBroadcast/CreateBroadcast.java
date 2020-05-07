@@ -110,7 +110,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     private void createInMasterStore(Broadcast broadcast) {
         for (String loc : locationTags) {
             for (String interest : interestTags) {
-                db.collection("MasterProjectStore").document(loc).collection(interest).document(broadcast.getBroadcastId()).set(broadcast);
+                db.collection("MasterProjectCollection").document(loc).collection(interest).document(broadcast.getBroadcastId()).set(broadcast);
             }
         }
     }

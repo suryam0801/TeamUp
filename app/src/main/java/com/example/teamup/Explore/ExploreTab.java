@@ -39,7 +39,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -64,16 +63,16 @@ public class ExploreTab extends Fragment {
     public final String TAG = ExploreTab.this.getClass().getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
-    ListView lvproject;
-    Broadcast projects;
+    ListView lvBroadcast;
+    Broadcast broadcast;
+    User user;
     private ArrayList<Broadcast> broadcastList = new ArrayList<Broadcast>();
     private BroadcastAdapter adapter;
-    Button createProject, workbench;
+    Button createBroadcast;
     Dialog dialog, completedDialog;
     int butttonCounter = 0;
     boolean applicantExists = false, workerExists = false, sameCreator = false;
 
-    Button search, menu;
     EditText prsearch;
 
     public ExploreTab() {
@@ -94,6 +93,7 @@ public class ExploreTab extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hideKeyboard(getActivity());
+        user = SessionStorage.getUser(getActivity());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -107,9 +107,9 @@ public class ExploreTab extends Fragment {
 
         final View view = inflater.inflate(R.layout.activity_explore, container, false);
 
-        lvproject = view.findViewById(R.id.listview_explore_projects);
+        lvBroadcast = view.findViewById(R.id.listview_explore_projects);
         currentUser = FirebaseAuth.getInstance();
-        createProject = view.findViewById(R.id.addproject);
+        createBroadcast = view.findViewById(R.id.addproject);
         dialog = new Dialog(getActivity());
         completedDialog = new Dialog(getActivity());
 
@@ -127,15 +127,15 @@ public class ExploreTab extends Fragment {
         });
 
 
-        createProject.setOnClickListener(new View.OnClickListener() {
+        createBroadcast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), CreateBroadcast.class));
             }
         });
 
-        projects = new Broadcast();
-        loadprojectlist();
+        broadcast = new Broadcast();
+        loadBroadcastList();
 
         return view;
     }
@@ -286,96 +286,6 @@ public class ExploreTab extends Fragment {
         dialog.show();
     }
 
-
-    public void showCompletedDialog() {
-        completedDialog.setContentView(R.layout.application_confirmation_popup);
-        completedDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                completedDialog.dismiss();
-            }
-        });
-        completedDialog.show();
-    }
-
-    public void loadprojectlist() {
-        broadcastList = new ArrayList<>();
-        if (broadcastList.size() > 0)
-            broadcastList.clear();
-        db.collection("Projects")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                                Broadcast broadcast = documentSnapshot.toObject(Broadcast.class);
-//                                Log.d(TAG, project.toString());
-//                                Log.d(TAG, "____________________________________________________");
-                                broadcastList.add(broadcast);
-                            }
-                            adapter = new BroadcastAdapter(getActivity(), broadcastList);
-                            lvproject.setAdapter(adapter);
-
-                            prsearch.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable s) {
-                                    String text = prsearch.getText().toString().toLowerCase(Locale.getDefault());
-                                    adapter.filter(text);
-                                }
-                            });
-
-
-                            lvproject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    applicantExists = false;
-
-                                    if (broadcastList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
-                                        Log.d(TAG, broadcastList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
-                                        sameCreator = true;
-                                    }
-
-                                    if (broadcastList.get(i).getApplicantId() != null) {
-                                        if (broadcastList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
-                                            applicantExists = true;
-                                        }
-                                    }
-
-                                    if (broadcastList.get(i).getWorkersId() != null) {
-                                        if (broadcastList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
-                                            workerExists = true;
-                                        }
-                                    }
-
-                                    showApplyDialogue(i);
-                                }
-                            });
-
-                        } else {
-                            Log.d("Logger", "No such Valid Item");
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-            }
-        });
-    }
-
     public void saveApplicant(String shortPitch, final String projectId) {
 
         User user = SessionStorage.getUser(getActivity());
@@ -400,7 +310,7 @@ public class ExploreTab extends Fragment {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: " + "Success");
                             List<String> applicantIds = new ArrayList<>();
-                            if (projects.getApplicantId() == null) {
+                            if (broadcast.getApplicantId() == null) {
                                 applicantIds.add(applicant.getUserId());
                                 db.collection("Projects").document(projectId).update("applicantId", FieldValue.arrayUnion(applicantIds)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -429,9 +339,9 @@ public class ExploreTab extends Fragment {
                                 });
                             }
 
-                            int newApplicants = projects.getNewApplicants() + 1;
-                            projects.setNewApplicants(newApplicants);
-                            SessionStorage.saveProject(getActivity(), projects);
+                            int newApplicants = broadcast.getNewApplicants() + 1;
+                            broadcast.setNewApplicants(newApplicants);
+                            SessionStorage.saveProject(getActivity(), broadcast);
                             db.collection("Projects").document(projectId).update("newApplicants", newApplicants).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -453,6 +363,114 @@ public class ExploreTab extends Fragment {
                 });
     }
 
+    public void showCompletedDialog() {
+        completedDialog.setContentView(R.layout.application_confirmation_popup);
+        completedDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completedDialog.dismiss();
+            }
+        });
+        completedDialog.show();
+    }
+
+    public void loadBroadcastList() {
+
+        broadcastList = new ArrayList<>();
+        if (broadcastList.size() > 0)
+            broadcastList.clear();
+
+        List<String> locationTags = user.getLocationTags();
+        List<String> interestTags = user.getInterestTags();
+
+        for (String location : locationTags) {
+            for (String interest : interestTags) {
+
+                db.collection("MasterProjectCollection")
+                        .document(location)
+                        .collection(interest)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful() && task.getResult() != null) {
+                                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                                        Broadcast broadcast = documentSnapshot.toObject(Broadcast.class);
+
+                                        boolean contains = false;
+                                        for (Broadcast b : broadcastList) {
+                                            if (b.getBroadcastId().equals(broadcast.getBroadcastId())) {
+                                                contains = true;
+                                            }
+                                        }
+
+                                        if (!contains)
+                                            broadcastList.add(broadcast);
+                                    }
+                                    adapter = new BroadcastAdapter(getActivity(), broadcastList);
+                                    lvBroadcast.setAdapter(adapter);
+
+                                    prsearch.addTextChangedListener(new TextWatcher() {
+                                        @Override
+                                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                        }
+
+                                        @Override
+                                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                        }
+
+                                        @Override
+                                        public void afterTextChanged(Editable s) {
+                                            String text = prsearch.getText().toString().toLowerCase(Locale.getDefault());
+                                            adapter.filter(text);
+                                        }
+                                    });
+
+
+                                    lvBroadcast.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            applicantExists = false;
+
+                                            if (broadcastList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                                Log.d(TAG, broadcastList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
+                                                sameCreator = true;
+                                            }
+
+                                            if (broadcastList.get(i).getApplicantId() != null) {
+                                                if (broadcastList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                                    applicantExists = true;
+                                                }
+                                            }
+
+                                            if (broadcastList.get(i).getWorkersId() != null) {
+                                                if (broadcastList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                                    workerExists = true;
+                                                }
+                                            }
+
+                                            showApplyDialogue(i);
+                                        }
+                                    });
+
+                                } else {
+                                    Log.d("Logger", "No such Valid Item");
+                                }
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+            }
+        }
+
+    }
 
     public static void hideKeyboard(Activity activity) {
         View view = activity.findViewById(android.R.id.content);
