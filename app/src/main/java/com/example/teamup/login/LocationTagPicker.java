@@ -2,6 +2,7 @@ package com.example.teamup.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -64,6 +66,9 @@ public class LocationTagPicker extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         locationTagEntry.setFocusable(true);
                         locationTagEntry.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(locationTagEntry, InputMethodManager.SHOW_IMPLICIT);
+                        locationTagEntry.setShowSoftInputOnFocus(true);
                         locationTagEntry.setText("#");
                         locationTagEntry.setSelection(locationTagEntry.getText().length());
                         break;
