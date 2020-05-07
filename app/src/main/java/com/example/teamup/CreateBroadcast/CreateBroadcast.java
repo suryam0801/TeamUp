@@ -54,17 +54,17 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
 
         //Initializing firestore
         db = FirebaseFirestore.getInstance();
-        currentUser=FirebaseAuth.getInstance();
+        currentUser = FirebaseAuth.getInstance();
 
-        if(getIntent().hasExtra("locationTags"))
+        if (getIntent().hasExtra("locationTags"))
             locationTags = getIntent().getExtras().getStringArrayList("locationTags");
-        if(getIntent().hasExtra("interestTags"))
+        if (getIntent().hasExtra("interestTags"))
             interestTags = getIntent().getExtras().getStringArrayList("interestTags");
 
         //initializing all UI elements
         broadcastName = findViewById(R.id.projectName);
         broadcastDescription = findViewById(R.id.projectDescription);
-        Button createProjectSubmit = (Button)findViewById(R.id.createProjectSubmit);
+        Button createProjectSubmit = (Button) findViewById(R.id.createProjectSubmit);
         Button addSkillSet = findViewById(R.id.addSkillSet);
         ImageButton back_create = findViewById(R.id.bck_create);
 
@@ -90,7 +90,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
             public void onClick(View view) {
                 String pName = String.valueOf(broadcastName.getText());
                 String pDescription = String.valueOf(broadcastDescription.getText());
-                if(pName.equals("") || pDescription.equals("") || pName.replaceAll("\\s", "").equals("") || pDescription.replaceAll("\\s", "").equals("")){
+                if (pName.equals("") || pDescription.equals("") || pName.replaceAll("\\s", "").equals("") || pDescription.replaceAll("\\s", "").equals("")) {
                     Toast.makeText(getApplicationContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show();
                 } else {
                     createProject(broadcastName.getText().toString(), broadcastDescription.getText().toString());
@@ -107,28 +107,26 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         });
     }
 
-    private void assignProjectLocations(Broadcast broadcast) {
-
-        for (String loc : locationTags)
-            db.collection("Location-Projects").document(loc).collection("projects").document(broadcast.getBroadcastId()).set(broadcast);
-
-        for (String interest : interestTags)
-            db.collection("Interest-Projects").document(interest).collection("projects").document(broadcast.getBroadcastId()).set(broadcast);
-
+    private void createInMasterStore(Broadcast broadcast) {
+        for (String loc : locationTags) {
+            for (String interest : interestTags) {
+                db.collection("MasterProjectStore").document(loc).collection(interest).document(broadcast.getBroadcastId()).set(broadcast);
+            }
+        }
     }
 
     @Override
     public void onBackPressed() {
-        Intent about_intent=new Intent(this, TabbedActivityMain.class);
+        Intent about_intent = new Intent(this, TabbedActivityMain.class);
         startActivity(about_intent);
         about_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     }
 
-    public void createProject(String projectName,String projecDesc){
+    public void createProject(String projectName, String projecDesc) {
 
         List<String> chipsTextList = new ArrayList<>();
 
-        final Broadcast broadcast =new Broadcast();
+        final Broadcast broadcast = new Broadcast();
         broadcast.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
         broadcast.setCreatorName(currentUser.getCurrentUser().getDisplayName());
         broadcast.setBroadcastName(projectName);
@@ -147,7 +145,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         broadcast.setTaskList(null);
         broadcast.setCategory(selectedCategory);
 
-        assignProjectLocations(broadcast);
+        createInMasterStore(broadcast);
 
         Log.d(TAG, broadcast.toString());
 
@@ -186,7 +184,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         int createdProjects = user.getCreatedProjects();
         createdProjects = createdProjects + 1;
 
-        db.collection("Users").document(currentUser.getInstance().getUid()).update("createdProjects",createdProjects).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Users").document(currentUser.getInstance().getUid()).update("createdProjects", createdProjects).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "JOB SUCCESSFUL!!!!");
