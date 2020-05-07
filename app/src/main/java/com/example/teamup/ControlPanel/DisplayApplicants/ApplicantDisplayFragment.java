@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;

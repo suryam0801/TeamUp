@@ -132,27 +132,6 @@
                     android:textColor="@color/black"
                     android:inputType="textEmailAddress" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Location"
-                    android:fontFamily="@font/roboto_regular"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginTop="20dp"
-                    android:textColor="#B3B1B1"
-                    android:textSize="11dp">
-                </TextView>
-                <AutoCompleteTextView
-                    android:id="@+id/location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#ACA9A9"
-                    android:textColorHint="#ACA9A9"
-                    android:fontFamily="@font/roboto_medium"
-                    android:textSize="13dp"
-                    android:textColor="@color/black"
-                    android:inputType="textEmailAddress" />
-
                 <Button
                     android:id="@+id/registerButton"
                     android:layout_width="match_parent"
@@ -160,7 +139,7 @@
                     android:layout_marginTop="40dp"
                     android:background="@drawable/gradient_button"
                     android:fontFamily="@font/roboto_black"
-                    android:text="Continue To Select Interests"
+                    android:text="Continue To Set Location Tags"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFFFF"
                     android:paddingRight="19dp"

@@ -32,7 +32,7 @@
             android:fontFamily="@font/roboto_regular"
             android:paddingRight="25dp"
             android:gravity="center"
-            android:text="Set Interest Tags"
+            android:text="Set Location Tags"
             android:textColor="@color/black"
             android:textSize="20dp">
         </TextView>
@@ -63,7 +63,7 @@
                 android:textSize="14dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Select or add your interest preferences to show updates from the selected tags."
+                android:text="Select or add your location preferences to show updates from the selected tags."
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp">
@@ -76,12 +76,12 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:hint="Eg: #sports #cse #eventmanagement"
+                    android:hint="Eg: #peelamedu #psgtech #coimbatore"
                     android:textColor="@color/black"
                     android:layout_margin="20dp"
                     android:textSize="14dp"
                     android:paddingRight="10dp"
-                    android:id="@+id/interest_tags_entry"
+                    android:id="@+id/location_tags_entry"
                     android:fontFamily="@font/roboto_regular"
                     android:paddingLeft="16dp"
                     android:background="@drawable/skills_adder_background"
@@ -89,7 +89,7 @@
                 </EditText>
 
                 <Button
-                    android:id="@+id/interest_tag_add_button"
+                    android:id="@+id/location_tag_add_button"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_alignParentEnd="true"
@@ -103,13 +103,13 @@
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/interest_tag_chip_group">
+                android:id="@+id/location_tag_chip_group">
             </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/setInterestTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -122,7 +122,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:paddingRight="19dp"
-            android:text="Finish Registration"
+            android:text="Set Interest Tags"
             android:textAllCaps="false"
             android:textColor="#FFFFFFFF"
             android:textSize="15dp" />

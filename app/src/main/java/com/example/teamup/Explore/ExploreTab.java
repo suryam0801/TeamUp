@@ -30,7 +30,7 @@ import androidx.annotation.NonNull;
 //import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.login.SkillsPicker;
+import com.example.teamup.login.InterestTagPicker;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
@@ -132,7 +132,7 @@ public class ExploreTab extends Fragment {
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), SkillsPicker.class));
+                startActivity(new Intent(getActivity(), InterestTagPicker.class));
             }
         });
 

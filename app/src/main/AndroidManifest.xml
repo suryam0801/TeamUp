@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".login.SkillsPicker"></activity>
+        <activity android:name=".login.LocationTagPicker"></activity>
+        <activity android:name=".login.InterestTagPicker" />
         <activity android:name=".login.OtpActivity" />
         <activity android:name=".login.PhoneLogin" />
         <activity android:name=".ControlPanel.ProjectWall.FileComments" />
