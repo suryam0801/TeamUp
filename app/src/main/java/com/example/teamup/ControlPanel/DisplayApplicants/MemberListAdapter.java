@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.Worker;
-import com.example.teamup.model.Project;
 import com.example.teamup.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,13 +22,13 @@ public class MemberListAdapter extends BaseAdapter{
     private Context mContext;
     private List<Worker> workerList;
     FirebaseFirestore db;
-    Project project;
+    Broadcast broadcast;
     String TAG = "APPLICANT_LIST_ADAPTER";
 
     public MemberListAdapter(Context mContext, List<Worker> workerList) {
         this.mContext = mContext;
         this.workerList = workerList;
-        this.project = project;
+        this.broadcast = broadcast;
     }
 
     @Override

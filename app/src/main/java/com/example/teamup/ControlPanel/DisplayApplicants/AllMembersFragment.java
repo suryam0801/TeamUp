@@ -17,8 +17,8 @@ import android.widget.ListView;
 import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.Worker;
-import com.example.teamup.model.Project;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +47,7 @@ public class AllMembersFragment extends Fragment {
     private ListView listViewWorkers;
     private List<Worker> WorkersList;
     private MemberListAdapter adapter;
-    private Project project;
+    private Broadcast broadcast;
     private LinearLayout emptyPlaceHolder;
     private FirebaseFirestore db;
     private FirebaseAuth currentUser;
@@ -95,11 +95,11 @@ public class AllMembersFragment extends Fragment {
 
         listViewWorkers = view.findViewById(R.id.listview_allmembers);
         emptyPlaceHolder = view.findViewById(R.id.members_empty_display);
-        project= SessionStorage.getProject(getActivity());
-        assert project != null;
+        broadcast = SessionStorage.getProject(getActivity());
+        assert broadcast != null;
         db = FirebaseFirestore.getInstance();
         currentUser=FirebaseAuth.getInstance();
-        populateWorkerList(project);
+        populateWorkerList(broadcast);
 
         return view;
     }
@@ -168,9 +168,9 @@ public class AllMembersFragment extends Fragment {
         });
     }
 
-    public void populateWorkerList(Project project){
+    public void populateWorkerList(Broadcast broadcast){
         currentUser=FirebaseAuth.getInstance();
 
-        loadMembers(project.getProjectId());
+        loadMembers(broadcast.getBroadcastId());
     }
 }

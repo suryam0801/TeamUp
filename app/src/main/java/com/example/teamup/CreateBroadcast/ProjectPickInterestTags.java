@@ -1,11 +1,10 @@
-package com.example.teamup.login;
+package com.example.teamup.CreateBroadcast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -21,54 +20,46 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationTagPicker extends AppCompatActivity {
+public class ProjectPickInterestTags extends AppCompatActivity {
 
-    private String loc, fName, lName, userId, downloadUri, contact;
-    private List<String> locationTagsList = new ArrayList<>();
-    private Button setInterestTags, locationTagAdd;
+    private List<String> interestTagList = new ArrayList<>(), locationTagList = new ArrayList<>();
+    private Button finalizeInterestTag, interestTagAdd;
     private ChipGroup chipGroup;
-    private EditText locationTagEntry;
+    private EditText interestTagEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_tag_picker);
+        setContentView(R.layout.activity_project_pick_interest_tags);
 
-        fName = getIntent().getStringExtra("fName");
-        lName = getIntent().getStringExtra("lName");
-        downloadUri = getIntent().getStringExtra("uri");
-        contact = getIntent().getStringExtra("contact");
 
-        setInterestTags = findViewById(R.id.setInterestTags);
-        chipGroup = findViewById(R.id.location_tag_chip_group);
-        locationTagEntry = findViewById(R.id.location_tags_entry);
-        locationTagAdd = findViewById(R.id.location_tag_add_button);
+        finalizeInterestTag = findViewById(R.id.broadcast_finalize_interest_tags);
+        chipGroup = findViewById(R.id.broadcast_interest_tag_chip_group);
+        interestTagEntry = findViewById(R.id.broadcast_interest_tags_entry);
+        interestTagAdd = findViewById(R.id.broadcast_interest_tag_add_button);
 
-        setInterestTags.setOnClickListener(new View.OnClickListener() {
+        locationTagList = getIntent().getExtras().getStringArrayList("locationTags");
+
+        finalizeInterestTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LocationTagPicker.this, InterestTagPicker.class);
-                intent.putExtra("fName", fName);
-                intent.putExtra("lName", lName);
-                intent.putExtra("contact", contact);
-                intent.putExtra("locationTags", locationTagsList.toString());
-                if(downloadUri != null)
-                    intent.putExtra("uri", downloadUri.toString());
-
+                Intent intent = new Intent(ProjectPickInterestTags.this, CreateBroadcast.class);
+                intent.putStringArrayListExtra("locationTags", (ArrayList<String>) locationTagList);
+                intent.putStringArrayListExtra("interestTags", (ArrayList<String>) interestTagList);
                 startActivity(intent);
             }
         });
 
-        locationTagEntry.setOnTouchListener(new View.OnTouchListener() {
+        interestTagEntry.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput(locationTagEntry, InputMethodManager.SHOW_IMPLICIT);
-                        locationTagEntry.setShowSoftInputOnFocus(true);
-                        locationTagEntry.setText("#");
-                        locationTagEntry.setSelection(locationTagEntry.getText().length());
+                        imm.showSoftInput(interestTagEntry, InputMethodManager.SHOW_IMPLICIT);
+                        interestTagEntry.setShowSoftInputOnFocus(true);
+                        interestTagEntry.setText("#");
+                        interestTagEntry.setSelection(interestTagEntry.getText().length());
                         break;
                     case MotionEvent.ACTION_UP:
                         v.performClick();
@@ -81,10 +72,10 @@ public class LocationTagPicker extends AppCompatActivity {
             }
         });
 
-        locationTagAdd.setOnClickListener(new View.OnClickListener() {
+        interestTagAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String interestTag = locationTagEntry.getText().toString();
+                String interestTag = interestTagEntry.getText().toString();
                 if (!interestTag.isEmpty()) {
                     setTag(interestTag);
                 }
@@ -94,7 +85,7 @@ public class LocationTagPicker extends AppCompatActivity {
     }
 
     private void setTag(final String name) {
-        locationTagsList.add(name);
+        interestTagList.add(name);
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -115,13 +106,13 @@ public class LocationTagPicker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chipGroup.removeView(chip);
-                locationTagsList.remove(name);
-                Log.d("LOCATIONTAGPICKER", locationTagsList.toString());
+                interestTagList.remove(name);
+                Log.d("LOCATIONTAGPICKER", interestTagList.toString());
             }
         });
         chipGroup.addView(chip);
-        locationTagEntry.setText("#");
-        locationTagEntry.setSelection(locationTagEntry.getText().length());
+        interestTagEntry.setText("#");
+        interestTagEntry.setSelection(interestTagEntry.getText().length());
     }
 
 }

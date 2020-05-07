@@ -28,7 +28,7 @@ import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.login.PhoneLogin;
-import com.example.teamup.model.Project;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.User;
 import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.Continuation;
@@ -323,9 +323,9 @@ public class EditOrViewProfile extends AppCompatActivity {
     }
 
     public void removeUser() {
-        Project project = SessionStorage.getProject(EditOrViewProfile.this);
+        Broadcast broadcast = SessionStorage.getProject(EditOrViewProfile.this);
         Worker worker = SessionStorage.getWorker(EditOrViewProfile.this);
-        db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Projects").document(broadcast.getBroadcastId()).update("workersId", FieldValue.arrayRemove(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
             }
@@ -334,7 +334,7 @@ public class EditOrViewProfile extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
             }
         });
-        db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("Projects").document(broadcast.getBroadcastId()).update("workersList", FieldValue.arrayRemove(worker)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
             }

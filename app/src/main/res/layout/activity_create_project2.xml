@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context=".CreateProject">
+    tools:context=".CreateBroadcast.CreateBroadcast">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -141,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Preferred Skills (What skills does your project require?)"
+            android:text="Preferred Skills (What skills does your broadcast require?)"
             android:textSize="15dp"
             android:layout_marginLeft="23dp"
             android:layout_marginBottom="5dp"
@@ -151,25 +151,12 @@
             android:layout_width="match_parent"
             android:layout_height="40dp">
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="20"
-                android:hint="Enter Skills"
-                android:textColor="@color/black"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:textSize="16dp"
-                android:textColorHint="#9B9696"
-                android:backgroundTint="@color/black"
-                android:id="@+id/skill_entry_edittext"></EditText>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_weight="70"
                 android:text="add"
                 android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:textColor="#5B86E5"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
@@ -183,21 +170,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="50"
-            android:layout_marginTop="10dp">
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chip_group_create_skills">
-            </com.google.android.material.chip.ChipGroup>
-        </ScrollView>
 
         <Button
             android:layout_width="match_parent"

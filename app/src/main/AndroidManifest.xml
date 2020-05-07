@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".login.LocationTagPicker"></activity>
+        <activity android:name=".CreateBroadcast.ProjectPickLocationTags"></activity>
+        <activity android:name=".CreateBroadcast.ProjectPickInterestTags" />
+        <activity android:name=".login.LocationTagPicker" />
         <activity android:name=".login.InterestTagPicker" />
         <activity android:name=".login.OtpActivity" />
         <activity android:name=".login.PhoneLogin" />
@@ -31,7 +33,7 @@
         <activity android:name=".login.SignUpActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity
-            android:name=".CreateProject"
+            android:name=".CreateBroadcast.CreateBroadcast"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".MainActivity">
             <intent-filter>

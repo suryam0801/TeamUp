@@ -1,11 +1,10 @@
-package com.example.teamup.login;
+package com.example.teamup.CreateBroadcast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -15,46 +14,35 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.teamup.R;
+import com.example.teamup.login.InterestTagPicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationTagPicker extends AppCompatActivity {
+public class ProjectPickLocationTags extends AppCompatActivity {
 
-    private String loc, fName, lName, userId, downloadUri, contact;
-    private List<String> locationTagsList = new ArrayList<>();
-    private Button setInterestTags, locationTagAdd;
+    private List<String> locationTagList = new ArrayList<>();
+    private Button finalizeLocationTag, locationTagAdd;
     private ChipGroup chipGroup;
     private EditText locationTagEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_tag_picker);
+        setContentView(R.layout.activity_project_pick_location_tags);
 
-        fName = getIntent().getStringExtra("fName");
-        lName = getIntent().getStringExtra("lName");
-        downloadUri = getIntent().getStringExtra("uri");
-        contact = getIntent().getStringExtra("contact");
+        finalizeLocationTag = findViewById(R.id.broadcast_finalize_location_tags);
+        chipGroup = findViewById(R.id.broadcast_location_tag_chip_group);
+        locationTagEntry = findViewById(R.id.broadcast_location_tags_entry);
+        locationTagAdd = findViewById(R.id.broadcast_location_tag_add_button);
 
-        setInterestTags = findViewById(R.id.setInterestTags);
-        chipGroup = findViewById(R.id.location_tag_chip_group);
-        locationTagEntry = findViewById(R.id.location_tags_entry);
-        locationTagAdd = findViewById(R.id.location_tag_add_button);
-
-        setInterestTags.setOnClickListener(new View.OnClickListener() {
+        finalizeLocationTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LocationTagPicker.this, InterestTagPicker.class);
-                intent.putExtra("fName", fName);
-                intent.putExtra("lName", lName);
-                intent.putExtra("contact", contact);
-                intent.putExtra("locationTags", locationTagsList.toString());
-                if(downloadUri != null)
-                    intent.putExtra("uri", downloadUri.toString());
-
+                Intent intent = new Intent(ProjectPickLocationTags.this, ProjectPickInterestTags.class);
+                intent.putStringArrayListExtra("locationTags", (ArrayList<String>) locationTagList);
                 startActivity(intent);
             }
         });
@@ -90,11 +78,10 @@ public class LocationTagPicker extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void setTag(final String name) {
-        locationTagsList.add(name);
+        locationTagList.add(name);
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -115,8 +102,8 @@ public class LocationTagPicker extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chipGroup.removeView(chip);
-                locationTagsList.remove(name);
-                Log.d("LOCATIONTAGPICKER", locationTagsList.toString());
+                locationTagList.remove(name);
+                Log.d("LOCATIONTAGPICKER", locationTagList.toString());
             }
         });
         chipGroup.addView(chip);

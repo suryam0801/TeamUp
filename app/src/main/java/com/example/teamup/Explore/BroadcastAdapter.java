@@ -11,35 +11,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.teamup.R;
-import com.example.teamup.model.Project;
+import com.example.teamup.model.Broadcast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-public class ProjectAdapter extends BaseAdapter  {
+public class BroadcastAdapter extends BaseAdapter  {
     private Context mContext;
 
-    private ArrayList<Project> Projectlist;
-    private ArrayList<Project> arraylist;
+    private ArrayList<Broadcast> projectlist;
+    private ArrayList<Broadcast> arraylist;
     private String TAG = "PROJECT ADAPTER";
     private LinearLayout headerBackground, iconBackground;
 
-    public ProjectAdapter(Context mContext,  ArrayList<Project> Projectlist) {
+    public BroadcastAdapter(Context mContext, ArrayList<Broadcast> projectlist) {
         this.mContext = mContext;
-        this.Projectlist = Projectlist;
-        this.arraylist = new ArrayList<Project>();
-        this.arraylist.addAll(Projectlist);
+        this.projectlist = projectlist;
+        this.arraylist = new ArrayList<Broadcast>();
+        this.arraylist.addAll(projectlist);
     }
 
     @Override
     public int getCount() {
-        return Projectlist.size();
+        return projectlist.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return Projectlist.get(position);
+        return projectlist.get(position);
     }
 
     @Override
@@ -57,18 +56,18 @@ public class ProjectAdapter extends BaseAdapter  {
         iconBackground = pview.findViewById(R.id.explore_card_icon_background);
         ImageView iconForeground = pview.findViewById(R.id.explore_card_icon_foreground);
 
-        Project currentProject = Projectlist.get(position);
+        Broadcast currentBroadcast = projectlist.get(position);
 
         //set text for textview
-         final String projectname=currentProject.getProjectName();
-         final String projectdesc=currentProject.getProjectDescription();
-         final String creatorName=currentProject.getCreatorName();
+         final String projectname= currentBroadcast.getBroadcastName();
+         final String projectdesc= currentBroadcast.getBroadcastDescription();
+         final String creatorName= currentBroadcast.getCreatorName();
 
          proname.setText(projectname);
          prodesc.setText(projectdesc);
          procreatorname.setText(creatorName);
 
-        switch (currentProject.getCategory()){
+        switch (currentBroadcast.getCategory()){
              case "Physical Fitness":
                  setResources("#D8E9FF", "#158BF1");
                  iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.physical_fitness_icon));
@@ -99,7 +98,7 @@ public class ProjectAdapter extends BaseAdapter  {
                  break;
          }
 
-         pview.setTag(currentProject.getProjectId());
+         pview.setTag(currentBroadcast.getBroadcastId());
 
         return pview;
     }
@@ -122,17 +121,17 @@ public class ProjectAdapter extends BaseAdapter  {
     // Filter Class
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
-        Projectlist.clear();
+        projectlist.clear();
         if (charText.length() == 0) {
-            Projectlist.addAll(arraylist);
+            projectlist.addAll(arraylist);
         }
         else
         {
-            for (Project pr : arraylist)
+            for (Broadcast pr : arraylist)
             {
-                if (pr.getProjectName().toLowerCase(Locale.getDefault()).contains(charText))
+                if (pr.getBroadcastName().toLowerCase(Locale.getDefault()).contains(charText))
                 {
-                    Projectlist.add(pr);
+                    projectlist.add(pr);
                 }
             }
         }

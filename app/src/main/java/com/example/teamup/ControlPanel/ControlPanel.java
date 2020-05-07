@@ -1,6 +1,5 @@
 package com.example.teamup.ControlPanel;
 
-import android.animation.ArgbEvaluator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,41 +7,27 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
-import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.EditOrView.EditOrViewProject;
-import com.example.teamup.Explore.ExploreTab;
 import com.example.teamup.TabbedActivityMain;
-import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Project;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class ControlPanel extends AppCompatActivity {
 
@@ -50,7 +35,7 @@ public class ControlPanel extends AppCompatActivity {
     private Button projectWallbtn, chatroombtn, tasklistbtn, applicantsbtn, editProject, removeProject;
     private String TAG = "CONTROL PANEL: ", MY_PREFS_NAME = "TeamUp", DEFAULT_RETRIEVE_VALUE = "no such project";
     private GridLayout gridLayout;
-    private Project project;
+    private Broadcast broadcast;
     FirebaseFirestore db;
     private ImageButton back;
     private Dialog removeConfirm;
@@ -110,10 +95,10 @@ public class ControlPanel extends AppCompatActivity {
             }
         });
 
-        project = SessionStorage.getProject(ControlPanel.this);
+        broadcast = SessionStorage.getProject(ControlPanel.this);
 
-        newTasks = project.getNewTasks();
-        newApplicants = project.getNewApplicants();
+        newTasks = broadcast.getNewTasks();
+        newApplicants = broadcast.getNewApplicants();
 
         if (newTasks > 0) {
             tasklistbtn.setVisibility(View.VISIBLE);
@@ -130,8 +115,8 @@ public class ControlPanel extends AppCompatActivity {
         TextView title = removeConfirm.findViewById(R.id.remove_dialog_title);
         TextView description = removeConfirm.findViewById(R.id.remove_dialog_description);
         Button remove = removeConfirm.findViewById(R.id.remove_user_accept_button);
-        title.setText("Delete " + project.getProjectName());
-        description.setText("Are you sure you want to delete " + project.getProjectName() + "?");
+        title.setText("Delete " + broadcast.getBroadcastName());
+        description.setText("Are you sure you want to delete " + broadcast.getBroadcastName() + "?");
         remove.setText("Delete");
         Button cancel = removeConfirm.findViewById(R.id.remove_user_cancel_button);
 
@@ -154,7 +139,7 @@ public class ControlPanel extends AppCompatActivity {
     }
 
     public void removeProject() {
-        db.collection("Projects").document(project.getProjectId()).delete()
+        db.collection("Projects").document(broadcast.getBroadcastId()).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -188,9 +173,9 @@ public class ControlPanel extends AppCompatActivity {
     public void onResume() {  // After a pause OR at startup
         super.onResume();
 
-        project = SessionStorage.getProject(ControlPanel.this);
-        newTasks = project.getNewTasks();
-        newApplicants = project.getNewApplicants();
+        broadcast = SessionStorage.getProject(ControlPanel.this);
+        newTasks = broadcast.getNewTasks();
+        newApplicants = broadcast.getNewApplicants();
 
         if (newTasks == 0) {
             tasklistbtn.setVisibility(View.INVISIBLE);

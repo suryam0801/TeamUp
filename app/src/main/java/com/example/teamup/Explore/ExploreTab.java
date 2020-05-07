@@ -28,11 +28,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 //import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
+import com.example.teamup.CreateBroadcast.CreateBroadcast;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.login.InterestTagPicker;
 import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Project;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -65,12 +65,11 @@ public class ExploreTab extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     ListView lvproject;
-    Project projects;
-    private ArrayList<Project> ProjectList = new ArrayList<Project>();
-    private ProjectAdapter adapter;
+    Broadcast projects;
+    private ArrayList<Broadcast> broadcastList = new ArrayList<Broadcast>();
+    private BroadcastAdapter adapter;
     Button createProject, workbench;
     Dialog dialog, completedDialog;
-    ChipGroup chipGroup;
     int butttonCounter = 0;
     boolean applicantExists = false, workerExists = false, sameCreator = false;
 
@@ -113,7 +112,6 @@ public class ExploreTab extends Fragment {
         createProject = view.findViewById(R.id.addproject);
         dialog = new Dialog(getActivity());
         completedDialog = new Dialog(getActivity());
-        chipGroup = view.findViewById(R.id.chip_group_create_skills);
 
         //search ET
         prsearch = view.findViewById(R.id.editText);
@@ -132,11 +130,11 @@ public class ExploreTab extends Fragment {
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), InterestTagPicker.class));
+                startActivity(new Intent(getActivity(), CreateBroadcast.class));
             }
         });
 
-        projects = new Project();
+        projects = new Broadcast();
         loadprojectlist();
 
         return view;
@@ -172,9 +170,9 @@ public class ExploreTab extends Fragment {
         Chip chip14 = dialog.findViewById(R.id.chip14);
         Chip chip15 = dialog.findViewById(R.id.chip15);
 
-        projectName.setText(ProjectList.get(pos).getProjectName());
-        creatorName.setText(ProjectList.get(pos).getCreatorName());
-        projectShortDescription.setText(ProjectList.get(pos).getProjectDescription());
+        projectName.setText(broadcastList.get(pos).getBroadcastName());
+        creatorName.setText(broadcastList.get(pos).getCreatorName());
+        projectShortDescription.setText(broadcastList.get(pos).getBroadcastDescription());
 
         if (sameCreator == true) {
             acceptButton.setText("This is your project");
@@ -208,7 +206,7 @@ public class ExploreTab extends Fragment {
         allChips.add(chip15);
 
         List<String> skillsArray = new ArrayList<>();
-        skillsArray = (ProjectList.get(pos).getRequiredSkills());
+        skillsArray = (broadcastList.get(pos).getInterestTags());
 
         int i = 0;
 
@@ -232,7 +230,7 @@ public class ExploreTab extends Fragment {
                     String reason = String.valueOf(entryEdit.getText());
                     if (reason == null || reason.equals("") || reason.replaceAll("\\s", "").equals("")) {
                     } else {
-                        saveApplicant(reason, ProjectList.get(pos).getProjectId());
+                        saveApplicant(reason, broadcastList.get(pos).getBroadcastId());
                     }
                 }
             }
@@ -304,9 +302,9 @@ public class ExploreTab extends Fragment {
     }
 
     public void loadprojectlist() {
-        ProjectList = new ArrayList<>();
-        if (ProjectList.size() > 0)
-            ProjectList.clear();
+        broadcastList = new ArrayList<>();
+        if (broadcastList.size() > 0)
+            broadcastList.clear();
         db.collection("Projects")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -314,12 +312,12 @@ public class ExploreTab extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                                Project project = documentSnapshot.toObject(Project.class);
+                                Broadcast broadcast = documentSnapshot.toObject(Broadcast.class);
 //                                Log.d(TAG, project.toString());
 //                                Log.d(TAG, "____________________________________________________");
-                                ProjectList.add(project);
+                                broadcastList.add(broadcast);
                             }
-                            adapter = new ProjectAdapter(getActivity(), ProjectList);
+                            adapter = new BroadcastAdapter(getActivity(), broadcastList);
                             lvproject.setAdapter(adapter);
 
                             prsearch.addTextChangedListener(new TextWatcher() {
@@ -345,19 +343,19 @@ public class ExploreTab extends Fragment {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     applicantExists = false;
 
-                                    if (ProjectList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
-                                        Log.d(TAG, ProjectList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
+                                    if (broadcastList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                        Log.d(TAG, broadcastList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
                                         sameCreator = true;
                                     }
 
-                                    if (ProjectList.get(i).getApplicantId() != null) {
-                                        if (ProjectList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                    if (broadcastList.get(i).getApplicantId() != null) {
+                                        if (broadcastList.get(i).getApplicantId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             applicantExists = true;
                                         }
                                     }
 
-                                    if (ProjectList.get(i).getWorkersId() != null) {
-                                        if (ProjectList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
+                                    if (broadcastList.get(i).getWorkersId() != null) {
+                                        if (broadcastList.get(i).getWorkersId().contains(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                             workerExists = true;
                                         }
                                     }

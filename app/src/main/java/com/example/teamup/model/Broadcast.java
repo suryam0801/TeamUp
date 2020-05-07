@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Project implements Parcelable{
+public class Broadcast implements Parcelable{
 
     private String creatorId;
 
@@ -14,11 +14,11 @@ public class Project implements Parcelable{
 
     private String creatorName;
 
-    private String projectId;
+    private String broadcastId;
 
-    private String projectName;
+    private String broadcastName;
 
-    private String projectDescription;
+    private String broadcastDescription;
 
     private String category;
 
@@ -26,7 +26,30 @@ public class Project implements Parcelable{
 
     private int newApplicants;
 
-    private List<String> requiredSkills=new ArrayList<>();
+    private List<String> interestTags =new ArrayList<>();
+
+    private List<String> locationTags = new ArrayList<>();
+
+    public Broadcast(String creatorId, String creatorEmail, String creatorName, String broadcastId, String broadcastName, String broadcastDescription, String category, int newTasks, int newApplicants, List<String> interestTags, List<String> locationTags, List<Applicant> applicantList, List<String> applicantId, List<String> workersId, List<Worker> workersList, List<Task> taskList, String broadcastStatus) {
+        this.creatorId = creatorId;
+        this.creatorEmail = creatorEmail;
+        this.creatorName = creatorName;
+        this.broadcastId = broadcastId;
+        this.broadcastName = broadcastName;
+        this.broadcastDescription = broadcastDescription;
+        this.category = category;
+        this.newTasks = newTasks;
+        this.newApplicants = newApplicants;
+        this.interestTags = interestTags;
+        this.locationTags = locationTags;
+        this.applicantList = applicantList;
+        this.applicantId = applicantId;
+        this.workersId = workersId;
+        this.workersList = workersList;
+        this.taskList = taskList;
+        this.broadcastStatus = broadcastStatus;
+    }
+
     private List<Applicant> applicantList=new ArrayList<>();
     private List<String> applicantId=new ArrayList<>();
     private List<String> workersId = new ArrayList<>();
@@ -49,38 +72,38 @@ public class Project implements Parcelable{
         this.newApplicants = newApplicants;
     }
 
-    private String projectStatus;
+    private String broadcastStatus;
 
-
-
-    protected Project(Parcel in) {
+    protected Broadcast(Parcel in) {
         creatorId = in.readString();
         creatorEmail = in.readString();
         creatorName = in.readString();
-        projectId = in.readString();
-        projectName = in.readString();
-        projectDescription = in.readString();
+        broadcastId = in.readString();
+        broadcastName = in.readString();
+        broadcastDescription = in.readString();
         newTasks = in.readInt();
         newApplicants = in.readInt();
-        requiredSkills = in.createStringArrayList();
-        projectStatus = in.readString();
+        interestTags = in.createStringArrayList();
+        broadcastStatus = in.readString();
         category = in.readString();
         applicantId = in.createStringArrayList();
         workersId = in.createStringArrayList();
+        in.readStringList(locationTags);
+        in.readStringList(interestTags);
         in.readTypedList(applicantList, Applicant.CREATOR);
         in.readTypedList(taskList, Task.CREATOR);
         in.readTypedList(workersList, Worker.CREATOR);
     }
 
-    public static final Creator<Project> CREATOR = new Creator<Project>() {
+    public static final Creator<Broadcast> CREATOR = new Creator<Broadcast>() {
         @Override
-        public Project createFromParcel(Parcel in) {
-            return new Project(in);
+        public Broadcast createFromParcel(Parcel in) {
+            return new Broadcast(in);
         }
 
         @Override
-        public Project[] newArray(int size) {
-            return new Project[size];
+        public Broadcast[] newArray(int size) {
+            return new Broadcast[size];
         }
     };
 
@@ -124,37 +147,37 @@ public class Project implements Parcelable{
         this.taskList = taskList;
     }
 
-    public String getProjectId() {
-        return projectId;
+    public String getBroadcastId() {
+        return broadcastId;
     }
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
+    public void setBroadcastId(String broadcastId) {
+        this.broadcastId = broadcastId;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getBroadcastName() {
+        return broadcastName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setBroadcastName(String broadcastName) {
+        this.broadcastName = broadcastName;
     }
 
-    public String getProjectDescription() {
-        return projectDescription;
+    public String getBroadcastDescription() {
+        return broadcastDescription;
     }
 
-    public void setProjectDescription(String projectDescription) {
-        this.projectDescription = projectDescription;
+    public void setBroadcastDescription(String broadcastDescription) {
+        this.broadcastDescription = broadcastDescription;
     }
 
 
-    public List<String> getRequiredSkills() {
-        return requiredSkills;
+    public List<String> getInterestTags() {
+        return interestTags;
     }
 
-    public void setRequiredSkills(List<String> requiredSkills) {
-        this.requiredSkills = requiredSkills;
+    public void setInterestTags(List<String> interestTags) {
+        this.interestTags = interestTags;
     }
 
 
@@ -192,36 +215,47 @@ public class Project implements Parcelable{
         applicantList.add(applicant);
     }
 
-    public String getProjectStatus() {
-        return projectStatus;
+    public String getBroadcastStatus() {
+        return broadcastStatus;
     }
 
-    public void setProjectStatus(String projectStatus) {
-        this.projectStatus = projectStatus;
+    public void setBroadcastStatus(String broadcastStatus) {
+        this.broadcastStatus = broadcastStatus;
     }
 
-    public Project() {
+    public Broadcast() {
     }
 
-    public Project(String creatorId, String category, String creatorEmail, String creatorName, String projectId, String projectName, String projectDescription, List<String> requiredSkills, String projectStatus, List<Applicant> applicantList, List<String> applicantId, List<Worker> workersList, List<Task> TaskList, List<String> workersId, int newApplicants, int newTasks) {
-        this.creatorId = creatorId;
-        this.creatorEmail = creatorEmail;
-        this.creatorName = creatorName;
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.projectDescription = projectDescription;
-        this.requiredSkills = requiredSkills;
-        this.projectStatus = projectStatus;
-        this.applicantList = applicantList;
-        this.applicantId = applicantId;
-        this.workersList = workersList;
-        this.taskList = TaskList;
-        this.workersId = workersId;
-        this.category = category;
-        this.newApplicants = newApplicants;
-        this.newTasks = newTasks;
+    public List<String> getLocationTags() {
+        return locationTags;
     }
 
+    public void setLocationTags(List<String> locationTags) {
+        this.locationTags = locationTags;
+    }
+
+    @Override
+    public String toString() {
+        return "Broadcast{" +
+                "creatorId='" + creatorId + '\'' +
+                ", creatorEmail='" + creatorEmail + '\'' +
+                ", creatorName='" + creatorName + '\'' +
+                ", broadcastId='" + broadcastId + '\'' +
+                ", broadcastName='" + broadcastName + '\'' +
+                ", broadcastDescription='" + broadcastDescription + '\'' +
+                ", category='" + category + '\'' +
+                ", newTasks=" + newTasks +
+                ", newApplicants=" + newApplicants +
+                ", interestTags=" + interestTags +
+                ", locationTags=" + locationTags +
+                ", applicantList=" + applicantList +
+                ", applicantId=" + applicantId +
+                ", workersId=" + workersId +
+                ", workersList=" + workersList +
+                ", taskList=" + taskList +
+                ", broadcastStatus='" + broadcastStatus + '\'' +
+                '}';
+    }
 
     @Override
     public int describeContents() {
@@ -229,40 +263,18 @@ public class Project implements Parcelable{
     }
 
     @Override
-    public String toString() {
-        return "Project{" +
-                "creatorId='" + creatorId + '\'' +
-                ", creatorEmail='" + creatorEmail + '\'' +
-                ", creatorName='" + creatorName + '\'' +
-                ", projectId='" + projectId + '\'' +
-                ", projectName='" + projectName + '\'' +
-                ", projectDescription='" + projectDescription + '\'' +
-                ", category='" + category + '\'' +
-                ", newTasks=" + newTasks +
-                ", newApplicants=" + newApplicants +
-                ", requiredSkills=" + requiredSkills +
-                ", applicantList=" + applicantList +
-                ", applicantId=" + applicantId +
-                ", workersId=" + workersId +
-                ", workersList=" + workersList +
-                ", taskList=" + taskList +
-                ", projectStatus='" + projectStatus + '\'' +
-                '}';
-    }
-
-    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(creatorId);
         dest.writeString(creatorEmail);
         dest.writeString(creatorName);
-        dest.writeString(projectId);
-        dest.writeString(projectName);
+        dest.writeString(broadcastId);
+        dest.writeString(broadcastName);
         dest.writeString(category);
         dest.writeInt(newApplicants);
         dest.writeInt(newTasks);
-        dest.writeString(projectDescription);
-        dest.writeStringList(requiredSkills);
-        dest.writeString(projectStatus);
+        dest.writeString(broadcastDescription);
+        dest.writeStringList(interestTags);
+        dest.writeString(broadcastStatus);
         dest.writeStringList(workersId);
         dest.writeStringList(applicantId);
         dest.writeTypedList(applicantList);

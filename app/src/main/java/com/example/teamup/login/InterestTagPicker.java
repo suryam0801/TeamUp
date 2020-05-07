@@ -89,8 +89,6 @@ public class InterestTagPicker extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        interestTagsEntry.setFocusable(true);
-                        interestTagsEntry.requestFocus();
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.showSoftInput(interestTagsEntry, InputMethodManager.SHOW_IMPLICIT);
                         interestTagsEntry.setShowSoftInputOnFocus(true);

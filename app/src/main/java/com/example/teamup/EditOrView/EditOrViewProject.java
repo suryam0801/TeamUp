@@ -1,6 +1,5 @@
 package com.example.teamup.EditOrView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,31 +14,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.teamup.ControlPanel.ControlPanel;
-import com.example.teamup.CreateProject;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
-import com.example.teamup.model.Project;
-import com.example.teamup.model.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.teamup.model.Broadcast;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
 
 public class EditOrViewProject extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -50,7 +38,7 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
     private List<String> skillset;
     private ChipGroup editProjectChipGroup;
     private ImageButton bck;
-    private Project project;
+    private Broadcast broadcast;
     private Spinner spinner;
     private EditText editprojName, editprojDescription, editskillSetEntry;
     private Button editSkillAdd, finalizeChanges, editDiscard;
@@ -74,11 +62,11 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
 
         skillset = new ArrayList<>();
 
-        project = SessionStorage.getProject(EditOrViewProject.this);
+        broadcast = SessionStorage.getProject(EditOrViewProject.this);
 
-        editprojName.setText(project.getProjectName());
-        editprojDescription.setText(project.getProjectDescription());
-        skillset = project.getRequiredSkills();
+        editprojName.setText(broadcast.getBroadcastName());
+        editprojDescription.setText(broadcast.getBroadcastDescription());
+        skillset = broadcast.getInterestTags();
         for (String s: skillset)
             setTag(s);
 
@@ -90,7 +78,7 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        int index = categoryList.indexOf(project.getCategory());
+        int index = categoryList.indexOf(broadcast.getCategory());
         spinner.setSelection(index);
 
         editSkillAdd.setOnClickListener(new View.OnClickListener() {
@@ -200,12 +188,12 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
             chipsTextList.add(chips.getText().toString());
         }
 
-        project.setProjectName(projectName);
-        project.setProjectDescription(projecDesc);
-        project.setRequiredSkills(chipsTextList);
-        project.setCategory(selectedCategory);
+        broadcast.setBroadcastName(projectName);
+        broadcast.setBroadcastDescription(projecDesc);
+        broadcast.setInterestTags(chipsTextList);
+        broadcast.setCategory(selectedCategory);
 
-        db.collection("Projects").document(project.getProjectId()).set(project);
+        db.collection("Projects").document(broadcast.getBroadcastId()).set(broadcast);
 
         startActivity(new Intent(EditOrViewProject.this, ControlPanel.class));
         finish();
