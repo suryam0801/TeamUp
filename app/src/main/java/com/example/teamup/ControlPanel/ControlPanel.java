@@ -24,10 +24,6 @@ import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
-import com.example.teamup.ControlPanel.ProjectWall.ProjectWall;
-import com.example.teamup.ControlPanel.TaskList.TaskList;
-import com.example.teamup.ControlPanel.chat.ChatRoom;
-import com.example.teamup.ControlPanel.chat.ChatRoomBaseActivity;
 import com.example.teamup.EditOrView.EditOrViewProfile;
 import com.example.teamup.EditOrView.EditOrViewProject;
 import com.example.teamup.Explore.ExploreTab;
@@ -216,16 +212,16 @@ public class ControlPanel extends AppCompatActivity {
                 public void onClick(View view) {
                     switch (finalI) {
                         case 0:
-                            Intent projectWallIntent = new Intent(getApplicationContext(), ProjectWall.class);
-                            startActivity(projectWallIntent);
+                            /*Intent projectWallIntent = new Intent(getApplicationContext(), ProjectWall.class);
+                            startActivity(projectWallIntent);*/
                             break;
                         case 1:
-                            Intent taskListIntent = new Intent(getApplicationContext(), TaskList.class);
-                            startActivity(taskListIntent);
+                            /*Intent taskListIntent = new Intent(getApplicationContext(), TaskList.class);
+                            startActivity(taskListIntent);*/
                             break;
                         case 2:
-                            Intent chatRoomIntent = new Intent(getApplicationContext(), ChatRoomBaseActivity.class);
-                            startActivity(chatRoomIntent);
+                            /*Intent chatRoomIntent = new Intent(getApplicationContext(), ChatRoomBaseActivity.class);
+                            startActivity(chatRoomIntent);*/
                             break;
                         case 3:
                             Intent applicantsIntent = new Intent(getApplicationContext(), ApplicantsTabbedActivity.class);

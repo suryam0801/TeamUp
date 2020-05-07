@@ -3,23 +3,51 @@ package com.example.teamup.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class Worker implements Parcelable {
 
-    private String projectId, workerName,userId, profilePicURL, specialization, location;
+    private String projectId, workerName,userId, profilePicURL;
+    private List<String> locationTags, interestTags;
 
     public Worker() {
     }
 
+    public Worker(String projectId, String workerName, String userId, String profilePicURL, List<String> locationTags, List<String> interestTags) {
+        this.projectId = projectId;
+        this.workerName = workerName;
+        this.userId = userId;
+        this.profilePicURL = profilePicURL;
+        this.locationTags = locationTags;
+        this.interestTags = interestTags;
+    }
+
     @Override
     public String toString() {
-        return "Member{" +
+        return "Worker{" +
                 "projectId='" + projectId + '\'' +
-                ", applicantName='" + workerName + '\'' +
+                ", workerName='" + workerName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", profilePicURL='" + profilePicURL + '\'' +
-                ", primarySkill='" + specialization + '\'' +
-                ", location='" + location + '\'' +
+                ", locationTags=" + locationTags +
+                ", interestTags=" + interestTags +
                 '}';
+    }
+
+    public List<String> getLocationTags() {
+        return locationTags;
+    }
+
+    public void setLocationTags(List<String> locationTags) {
+        this.locationTags = locationTags;
+    }
+
+    public List<String> getInterestTags() {
+        return interestTags;
+    }
+
+    public void setInterestTags(List<String> interestTags) {
+        this.interestTags = interestTags;
     }
 
     public String getProfilePicURL() {
@@ -28,31 +56,6 @@ public class Worker implements Parcelable {
 
     public void setProfilePicURL(String profilePicURL) {
         this.profilePicURL = profilePicURL;
-    }
-
-    public String getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Worker(String projectId, String applicantName, String userId, String profilePicURL, String primarySkill, String location) {
-        this.projectId = projectId;
-        this.workerName = applicantName;
-        this.userId = userId;
-        this.profilePicURL = profilePicURL;
-        this.specialization = primarySkill;
-        this.location = location;
     }
 
     public String getProjectId() {
@@ -91,8 +94,8 @@ public class Worker implements Parcelable {
         parcel.writeString(workerName);
         parcel.writeString(userId);
         parcel.writeString(profilePicURL);
-        parcel.writeString(specialization);
-        parcel.writeString(location);
+        parcel.writeStringList(locationTags);
+        parcel.writeStringList(interestTags);
     }
 
     private Worker(Parcel in) {
@@ -100,8 +103,8 @@ public class Worker implements Parcelable {
         workerName = in.readString();
         userId = in.readString();
         profilePicURL = in.readString();
-        specialization = in.readString();
-        location = in.readString();
+        in.readStringList(locationTags);
+        in.readStringList(interestTags);
     }
 
     public static final Parcelable.Creator<Worker> CREATOR

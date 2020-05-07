@@ -22,8 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.teamup.ControlPanel.TaskList.TaskAdapter;
-import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.Explore.ProjectAdapter;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;

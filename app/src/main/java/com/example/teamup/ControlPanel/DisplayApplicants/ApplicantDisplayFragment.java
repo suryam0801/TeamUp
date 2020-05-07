@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.teamup.ControlPanel.TaskList.TaskList;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
@@ -141,7 +140,6 @@ public class ApplicantDisplayFragment extends Fragment {
                     //each object in the array is a hashmap. We need to read the arrays using key and value from hashmap
                     List<Map<String, String>> group = (List<Map<String, String>>) document.get("applicantList");
                     //reads each object in the array
-
                     if (group != null) {
                         for (Map<String, String> entry : group) {
                             //we need to store "acceptedStatus" as a string, not a boolean. It will read fluently when all values are of a single data type
@@ -149,12 +147,11 @@ public class ApplicantDisplayFragment extends Fragment {
                             String applicantName = "";
                             String applicantId = "";
                             String applicantPitch = "";
-                            String applicantAcceptedStatus = "";
                             String applicantProjectID = "";
                             String applicantEmail = "";
                             String applicantProfPicURL = "";
-                            String applicantSpecialization = "";
-                            String applicantLocation = "";
+                            String applicantInterestTags = "";
+                            String applicantLocationTags = "";
                             String applicantWorkingProjects = "";
 
                             for (String key : entry.keySet()) {
@@ -164,25 +161,23 @@ public class ApplicantDisplayFragment extends Fragment {
                                     applicantId = entry.get(key);
                                 else if (key.equals("shortPitch"))
                                     applicantPitch = entry.get(key);
-                                else if (key.equals("acceptedStatus"))
-                                    applicantAcceptedStatus = entry.get(key);
                                 else if (key.equals("projectId"))
                                     applicantProjectID = entry.get(key);
                                 else if (key.equals("applicantEmail"))
                                     applicantEmail = entry.get(key);
                                 else if (key.equals("profilePicURL"))
                                     applicantProfPicURL = entry.get(key);
-                                else if (key.equals("specialization"))
-                                    applicantSpecialization = entry.get(key);
+                                else if (key.equals("interestTags"))
+                                    applicantInterestTags = entry.get(key);
                                 else if (key.equals("workingProject"))
                                     applicantWorkingProjects = String.valueOf(entry.get(key));
-                                else if (key.equals("location"))
-                                    applicantLocation = entry.get(key);
+                                else if (key.equals("locationTags"))
+                                    applicantLocationTags = entry.get(key);
                             }
 
                             ApplicantList.add(new Applicant(applicantProjectID, applicantName, applicantEmail, applicantId,
-                                    applicantAcceptedStatus, applicantPitch, applicantProfPicURL, applicantSpecialization,
-                                    applicantLocation, Integer.parseInt(applicantWorkingProjects.trim())));
+                                    applicantPitch, applicantProfPicURL, applicantInterestTags,
+                                    applicantLocationTags, Integer.parseInt(applicantWorkingProjects.trim())));
                         }
 
                     }

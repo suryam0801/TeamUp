@@ -1,6 +1,8 @@
 package com.example.teamup.model;
 import android.os.Parcel;
 
+import java.util.List;
+
 
 public class User {
 
@@ -10,21 +12,54 @@ public class User {
 
     }
 
+    public User(String firstName, String lastName, String contact,
+                String profileImageLink, List<String> locationTags,
+                List<String> interestTags, String userId, int createdProjects,
+                int workingProjects, int completedProjects, String token_id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contact = contact;
+        this.profileImageLink = profileImageLink;
+        this.locationTags = locationTags;
+        this.interestTags = interestTags;
+        this.userId = userId;
+        this.createdProjects = createdProjects;
+        this.workingProjects = workingProjects;
+        this.completedProjects = completedProjects;
+        this.token_id = token_id;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "firstName='" + firstName + '\n' +
                 ", lastName='" + lastName + '\n' +
                 ", contact='" + contact + '\n' +
-                ", specialization='" + interests + '\n' +
                 ", profileImageLink='" + profileImageLink + '\n' +
-                ", location='" + location + '\n' +
+                ", locationTags=" + locationTags + '\n' +
+                ", interestTags=" + interestTags + '\n' +
                 ", userId='" + userId + '\n' +
-                ", createdProjects='" + createdProjects + '\n' +
-                ", workingProjects='" + workingProjects + '\n' +
-                ", completedProjects='" + completedProjects + '\n' +
+                ", createdProjects=" + createdProjects + '\n' +
+                ", workingProjects=" + workingProjects + '\n' +
+                ", completedProjects=" + completedProjects + '\n' +
                 ", token_id='" + token_id + '\n' +
                 '}';
+    }
+
+    public List<String> getLocationTags() {
+        return locationTags;
+    }
+
+    public void setLocationTags(List<String> locationTags) {
+        this.locationTags = locationTags;
+    }
+
+    public List<String> getInterestTags() {
+        return interestTags;
+    }
+
+    public void setInterestTags(List<String> interestTags) {
+        this.interestTags = interestTags;
     }
 
     public void setCreatedProjects(int createdProjects) {
@@ -47,49 +82,17 @@ public class User {
         this.completedProjects = completedProjects;
     }
 
-    private User(Parcel in) {
-        firstName = in.readString();
-        lastName = in.readString();
-        contact = in.readString();
-        interests = in.readString();
-        location = in.readString();
-        userId = in.readString();
-        profileImageLink = in.readString();
-        createdProjects = in.readInt();
-        workingProjects = in.readInt();
-        completedProjects = in.readInt();
-        //Token id of a current user
-        token_id = in.readString();
-    }
-
-    public User(String firstName, String lastName, String contact,
-                String interests, String location, String userId, String profileImageLink,
-                int createdProjects, int workingProjects, int completedProjects, String token_id) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.contact=contact;
-        this.interests = interests;
-        this.location = location;
-        this.userId = userId;
-        this.profileImageLink=profileImageLink;
-        this.createdProjects = createdProjects;
-        this.workingProjects = workingProjects;
-        this.completedProjects = completedProjects;
-        this.token_id = token_id;
-
-    }
-
     private String firstName;
 
     private String lastName;
 
     private String contact;
 
-    private String interests;
-
     private String profileImageLink;
 
-    private String location;
+    private List<String> locationTags;
+
+    private List<String> interestTags;
 
     private String userId;
 
@@ -99,6 +102,8 @@ public class User {
 
     private int completedProjects;
     private String token_id;
+
+
 
     public String getToken_id() {
         return token_id;
@@ -119,25 +124,6 @@ public class User {
     public void setProfileImageLink(String profileImageLink) {
         this.profileImageLink = profileImageLink;
     }
-
-    public String getInterests() {
-        return interests;
-    }
-
-    public void setInterests(String interests) {
-        this.interests = interests;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-
-
     public String getFirstName() {
         return firstName;
     }
@@ -153,14 +139,7 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
+
     public String getContact() {
     return contact;
 }

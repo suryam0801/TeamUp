@@ -3,41 +3,58 @@ package com.example.teamup.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class Applicant implements Parcelable {
 
-    private String projectId,applicantName, applicantPhn,userId,shortPitch, profilePicURL, specialization, location;
+    private String projectId,applicantName, applicantPhn,userId,shortPitch, profilePicURL, locationTags, interestTags;
     private long workingProject;
 
     public Applicant() {
     }
 
+    public Applicant(String projectId, String applicantName, String applicantPhn, String userId, String shortPitch,
+                     String profilePicURL, String locationTags, String interestTags, long workingProject) {
+        this.projectId = projectId;
+        this.applicantName = applicantName;
+        this.applicantPhn = applicantPhn;
+        this.userId = userId;
+        this.shortPitch = shortPitch;
+        this.profilePicURL = profilePicURL;
+        this.locationTags = locationTags;
+        this.interestTags = interestTags;
+        this.workingProject = workingProject;
+    }
+
     @Override
     public String toString() {
         return "Applicant{" +
-                "projectId='" + projectId + '\n' +
-                ", applicantName='" + applicantName + '\n' +
-                ", applicantPhn='" + applicantPhn + '\n' +
-                ", userId='" + userId + '\n' +
-                ", shortPitch='" + shortPitch + '\n' +
-                ", profilePicURL='" + profilePicURL + '\n' +
-                ", specialization='" + specialization + '\n' +
-                ", location='" + location + '\n' +
+                "projectId='" + projectId + '\'' +
+                ", applicantName='" + applicantName + '\'' +
+                ", applicantPhn='" + applicantPhn + '\'' +
+                ", userId='" + userId + '\'' +
+                ", shortPitch='" + shortPitch + '\'' +
+                ", profilePicURL='" + profilePicURL + '\'' +
+                ", locationTags=" + locationTags +
+                ", interestTags=" + interestTags +
                 ", workingProject=" + workingProject +
                 '}';
     }
 
-    public Applicant(String projectId, String applicantName, String applicantEmail, String userId, String acceptedStatus,
-                     String shortPitch, String profilePicURL, String primarySkill, String location, long workingProject) {
+    public String getLocationTags() {
+        return locationTags;
+    }
 
-        this.projectId = projectId;
-        this.applicantName = applicantName;
-        this.applicantPhn = applicantEmail;
-        this.userId = userId;
-        this.shortPitch = shortPitch;
-        this.profilePicURL = profilePicURL;
-        this.specialization = primarySkill;
-        this.location = location;
-        this.workingProject = workingProject;
+    public void setLocationTags(String locationTags) {
+        this.locationTags = locationTags;
+    }
+
+    public String getInterestTags() {
+        return interestTags;
+    }
+
+    public void setInterestTags(String interestTags) {
+        this.interestTags = interestTags;
     }
 
     public long getWorkingProject() {
@@ -55,24 +72,6 @@ public class Applicant implements Parcelable {
     public void setProfilePicURL(String profilePicURL) {
         this.profilePicURL = profilePicURL;
     }
-
-    public String getSpecialization() {
-        return specialization;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-
 
     public String getProjectId() {
         return projectId;
@@ -127,8 +126,8 @@ public class Applicant implements Parcelable {
         parcel.writeString(userId);
         parcel.writeString(shortPitch);
         parcel.writeString(profilePicURL);
-        parcel.writeString(specialization);
-        parcel.writeString(location);
+        parcel.writeString(locationTags);
+        parcel.writeString(interestTags);
         parcel.writeLong(workingProject);
     }
 
@@ -139,8 +138,8 @@ public class Applicant implements Parcelable {
         userId = in.readString();
         shortPitch = in.readString();
         profilePicURL = in.readString();
-        specialization = in.readString();
-        location = in.readString();
+        locationTags = in.readString();
+        interestTags = in.readString();
         workingProject = in.readLong();
     }
 

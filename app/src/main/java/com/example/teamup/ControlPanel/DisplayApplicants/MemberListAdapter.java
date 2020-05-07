@@ -65,9 +65,9 @@ public class MemberListAdapter extends BaseAdapter{
 
         //Set text for TextView
         final String nameDisplay = worker.getWorkerName();
-        final String specialization = String.valueOf(worker.getSpecialization());
+        final List<String> interestTags = worker.getInterestTags();
         name.setText(nameDisplay);
-        pitch.setText(specialization);
+        pitch.setText(interestTags.toString());
 
         //Save product id to tag
         v.setTag(workerList.get(position).getUserId());

@@ -30,7 +30,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -95,7 +97,32 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "POSITION: " + project.toString());
-                final Worker newWorker = new Worker(project.getProjectId(), selectedApplicant.getApplicantName(), selectedApplicant.getUserId(), selectedApplicant.getProfilePicURL(), selectedApplicant.getSpecialization(), selectedApplicant.getLocation());
+
+                List<String> locationTags = new ArrayList<>();
+                List<String> interestTags = new ArrayList<>();
+
+                String locString = selectedApplicant.getLocationTags();
+                locString.replace("[", "");
+                locString.replace("]", "");
+
+                String interestString = selectedApplicant.getInterestTags();
+                interestString.replace("[", "");
+                interestString.replace("]", "");
+
+
+                Scanner scanlocation = new Scanner(locString);
+                scanlocation.useDelimiter(", ");
+                while (scanlocation.hasNext()){
+                    locationTags.add(scanlocation.next());
+                }
+
+                Scanner scaninterest = new Scanner(interestString);
+                scaninterest.useDelimiter(", ");
+                while (scaninterest.hasNext()){
+                    interestTags.add(scaninterest.next());
+                }
+
+                final Worker newWorker = new Worker(project.getProjectId(), selectedApplicant.getApplicantName(), selectedApplicant.getUserId(), selectedApplicant.getProfilePicURL(), locationTags, interestTags);
                 ApplicantList.remove(selectedApplicant);
                 db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(newWorker))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
