@@ -388,7 +388,6 @@ public class ExploreTab extends Fragment {
 
         for (String location : locationTags) {
             for (String interest : interestTags) {
-
                 db.collection("MasterProjectCollection")
                         .document(location)
                         .collection(interest)

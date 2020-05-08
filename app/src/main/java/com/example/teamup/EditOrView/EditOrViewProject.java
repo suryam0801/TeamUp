@@ -72,8 +72,8 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
 
         spinner = findViewById(R.id.edit_project_categorySpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.categories, android.R.layout.simple_spinner_item);
-        List<String> categoryList = Arrays.asList((getResources().getStringArray(R.array.categories)));
+                R.array.interactive, android.R.layout.simple_spinner_item);
+        List<String> categoryList = Arrays.asList((getResources().getStringArray(R.array.interactive)));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);

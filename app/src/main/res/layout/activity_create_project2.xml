@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Project Category"
+                android:text="Broadcast Type"
                 android:layout_marginLeft="23dp"
                 android:textSize="12dp"
                 android:textColor="#DEDADA"
@@ -99,8 +99,32 @@
                 android:layout_height="1dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:background="#50AAF8"
-                android:layout_marginBottom="28dp"></View>
+                android:background="#50AAF8"></View>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Description (100 words)"
+                android:textSize="12dp"
+                android:layout_marginLeft="23dp"
+                android:textColor="#DEDADA"
+                android:fontFamily="@font/roboto_regular"></TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="Enter Project Description Here"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/white"
+                android:textSize="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:backgroundTint="#50AAF8"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/projectDescription">
+            </EditText>
 
         </LinearLayout>
 
@@ -112,30 +136,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
-            android:text="Description (100 words)"
-            android:textSize="12dp"
-            android:layout_marginLeft="23dp"
-            android:textColor="#C3BDBD"
-            android:fontFamily="@font/roboto_regular"></TextView>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:hint="Enter Project Description Here"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:textColor="@color/black"
-            android:textColorHint="#9B9696"
-            android:textSize="16dp"
-            android:fontFamily="@font/roboto_regular"
-            android:backgroundTint="@color/black"
-            android:layout_marginBottom="10dp"
-            android:id="@+id/projectDescription">
-        </EditText>
 
         <TextView
             android:layout_width="wrap_content"

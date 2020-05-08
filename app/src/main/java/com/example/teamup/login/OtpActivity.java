@@ -13,7 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;
+import com.example.teamup.model.Broadcast;
+import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -93,27 +96,21 @@ public class OtpActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         if (!task.getResult().isEmpty()) {
                                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                                Log.d("OTPACTIVITY", "INSIDE THE DOCUMENTS CHECK" + task.getResult());
+                                                User user = document.toObject(User.class);
                                                 doc_id = document.getId();
-                                                Log.d("OTPACTIVITY", uid + "::::" + doc_id);
                                                 if (doc_id.equals(uid)) {
-                                                    Log.d("OTPACTIVITY", "regcalled");
-                                                    Log.d("OTPACTIVITY", uid + "::::" + doc_id);
                                                     sendUserToHome();
+                                                    SessionStorage.saveUser(OtpActivity.this, user);
                                                     break;
                                                 } else {
-                                                    Log.d("OTPACTIVITY", "usercalled");
-                                                    Log.d("OTPACTIVITY", uid + "::::" + doc_id);
                                                     senduserToReg();
                                                 }
-
                                             }
                                         } else {
                                             senduserToReg();
                                         }
 
                                     } else {
-                                        Log.d("OTPACTIVITY", "Error getting documents: ", task.getException());
                                     }
                                 }
                             });

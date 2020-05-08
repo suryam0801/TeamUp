@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.Tags;
 import com.example.teamup.model.User;
@@ -269,7 +270,7 @@ public class InterestTagPicker extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        SessionStorage.saveUser(InterestTagPicker.this, user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
