@@ -16,8 +16,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -104,7 +102,7 @@ public class GatherUserDetails extends AppCompatActivity {
 //                contact = "+91"+phn_num.getText().toString();
                 contact = pref.getString("key_name5", null);
 
-                Intent intent = new Intent(GatherUserDetails.this, LocationTagPicker.class);
+                Intent intent = new Intent(GatherUserDetails.this, LoginLocationTagPicker.class);
                 intent.putExtra("fName", fName);
                 intent.putExtra("lName", lName);
                 intent.putExtra("contact", contact);

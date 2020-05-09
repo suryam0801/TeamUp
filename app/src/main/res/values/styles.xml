@@ -22,7 +22,7 @@
 
     <style name="ChipTextStyle_Selected">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">#5B86E5</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 

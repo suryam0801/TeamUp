@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -21,7 +20,7 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationTagPicker extends AppCompatActivity {
+public class LoginLocationTagPicker extends AppCompatActivity {
 
     private String loc, fName, lName, userId, downloadUri, contact;
     private List<String> locationTagsList = new ArrayList<>();
@@ -47,7 +46,7 @@ public class LocationTagPicker extends AppCompatActivity {
         setInterestTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LocationTagPicker.this, InterestTagPicker.class);
+                Intent intent = new Intent(LoginLocationTagPicker.this, LoginInterestTagPicker.class);
                 intent.putExtra("fName", fName);
                 intent.putExtra("lName", lName);
                 intent.putExtra("contact", contact);

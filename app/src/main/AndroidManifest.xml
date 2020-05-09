@@ -17,8 +17,8 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity android:name=".CreateBroadcast.ProjectPickLocationTags"></activity>
         <activity android:name=".CreateBroadcast.ProjectPickInterestTags" />
-        <activity android:name=".login.LocationTagPicker" />
-        <activity android:name=".login.InterestTagPicker" />
+        <activity android:name=".login.LoginLocationTagPicker" />
+        <activity android:name=".login.LoginInterestTagPicker" />
         <activity android:name=".login.OtpActivity" />
         <activity android:name=".login.PhoneLogin" />
         <activity android:name=".EditOrView.EditOrViewProfile" />

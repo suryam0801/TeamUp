@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.teamup.R;
-import com.example.teamup.login.InterestTagPicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 

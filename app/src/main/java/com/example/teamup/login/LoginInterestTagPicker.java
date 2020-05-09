@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class InterestTagPicker extends AppCompatActivity {
+public class LoginInterestTagPicker extends AppCompatActivity {
 
 
     private FirebaseAuth firebaseAuth;
@@ -80,7 +80,7 @@ public class InterestTagPicker extends AppCompatActivity {
         tempLoc = tempLoc.replace("]", "");
         Scanner scan = new Scanner(tempLoc);
         scan.useDelimiter(", ");
-        while (scan.hasNext()){
+        while (scan.hasNext()) {
             locationTags.add(scan.next());
         }
         Log.d("INTERESTTAGPICKER", locationTags.toString());
@@ -169,18 +169,18 @@ public class InterestTagPicker extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(InterestTagPicker.this, "User Registered Successfully", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(InterestTagPicker.this, TabbedActivityMain.class));
+                                Toast.makeText(LoginInterestTagPicker.this, "User Registered Successfully", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(LoginInterestTagPicker.this, TabbedActivityMain.class));
                                 finish();
                             } else {
-                                Toast.makeText(InterestTagPicker.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginInterestTagPicker.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 firebaseAuth.signOut();
                                 firebaseAuth.getCurrentUser().delete();
                             }
                         }
                     });
         } else {
-            Toast.makeText(InterestTagPicker.this, "Enter Valid details", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginInterestTagPicker.this, "Enter Valid details", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -190,36 +190,33 @@ public class InterestTagPicker extends AppCompatActivity {
 
         if (downloadUri != null) {
             user = new User(fName, lName, contact, downloadUri, locationTags, interestTagsList, userId, 0, 0, 0, token_id);
-            tags = new Tags(locationTags,interestTagsList);
+            tags = new Tags(locationTags, interestTagsList);
         } else {
             user = new User(fName, lName, contact, "default", locationTags, interestTagsList, userId, 0, 0, 0, token_id);
-            tags = new Tags(locationTags,interestTagsList);
+            tags = new Tags(locationTags, interestTagsList);
         }
 
         List<String> locationinterest = locationTags;
         HashMap<String, List<String>> List = new HashMap<>();
         List.put("locationTags", locationinterest);
 
-        for(int i=0;i< locationTags.size();i++)
-        {
+        for (int i = 0; i < locationTags.size(); i++) {
             String loc = locationTags.get(i);
             db.collection("Tags")
                     .document("Location-Interest")
-                    .update(loc,FieldValue.arrayUnion(interestTagsList.toArray()))
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                    .update(loc, FieldValue.arrayUnion(interestTagsList.toArray()))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
-                                }
-                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+                }
+            });
         }
-
-
 
 
         List<String> locationlist = locationTags;
@@ -227,10 +224,9 @@ public class InterestTagPicker extends AppCompatActivity {
         ListLocation.put("locationTags", locationlist);
 
 
-
         db.collection("Tags")
                 .document("Location")
-                .update("locationTags",FieldValue.arrayUnion(locationTags.toArray()))
+                .update("locationTags", FieldValue.arrayUnion(locationTags.toArray()))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -243,13 +239,13 @@ public class InterestTagPicker extends AppCompatActivity {
             }
         });
 
-        List<String> interestlist =interestTagsList;
+        List<String> interestlist = interestTagsList;
         HashMap<String, List<String>> InterestList = new HashMap<>();
         InterestList.put("interestTags", interestlist);
 
         db.collection("Tags")
                 .document("Interest")
-                .update("interestTags",FieldValue.arrayUnion(interestlist.toArray()))
+                .update("interestTags", FieldValue.arrayUnion(interestlist.toArray()))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -261,7 +257,6 @@ public class InterestTagPicker extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
             }
         });
-
 
 
         db.collection("Users")
@@ -270,7 +265,7 @@ public class InterestTagPicker extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        SessionStorage.saveUser(InterestTagPicker.this, user);
+                        SessionStorage.saveUser(LoginInterestTagPicker.this, user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

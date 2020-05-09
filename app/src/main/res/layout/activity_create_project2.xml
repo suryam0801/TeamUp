@@ -78,7 +78,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Broadcast Type"
+                android:text="Description (100 words)"
+                android:textSize="12dp"
+                android:layout_marginLeft="23dp"
+                android:textColor="#DEDADA"
+                android:fontFamily="@font/roboto_regular"></TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="Enter Project Description Here"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:backgroundTint="#50AAF8"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/projectDescription">
+            </EditText>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Acceptance Type"
                 android:layout_marginLeft="23dp"
                 android:textSize="12dp"
                 android:textColor="#DEDADA"
@@ -99,32 +125,8 @@
                 android:layout_height="1dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:background="#50AAF8"></View>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Description (100 words)"
-                android:textSize="12dp"
-                android:layout_marginLeft="23dp"
-                android:textColor="#DEDADA"
-                android:fontFamily="@font/roboto_regular"></TextView>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:hint="Enter Project Description Here"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/white"
-                android:textSize="16dp"
-                android:fontFamily="@font/roboto_regular"
-                android:backgroundTint="#50AAF8"
                 android:layout_marginBottom="10dp"
-                android:id="@+id/projectDescription">
-            </EditText>
+                android:background="#50AAF8"></View>
 
         </LinearLayout>
 
@@ -140,30 +142,50 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
-            android:text="Preferred Skills (What skills does your broadcast require?)"
-            android:textSize="15dp"
-            android:layout_marginLeft="23dp"
             android:layout_marginBottom="5dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Location Tags"
             android:textColor="#C3BDBD"
-            android:fontFamily="@font/roboto_regular"></TextView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:textSize="15dp"></TextView>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:text="add"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="#5B86E5"
-                android:fontFamily="@font/roboto_regular"
-                android:gravity="center"
-                android:background="@drawable/create_project_skill_add_button"
-                android:id="@+id/addSkillSet"
-                android:layout_gravity="center"></Button>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/createBroadcastAddLocationTags"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="Select tags"
+            android:textColor="#5B86E5"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Interest Tags"
+            android:textColor="#C3BDBD"
+            android:textSize="15dp"></TextView>
+
+        <TextView
+            android:id="@+id/createBroadcastAddInterestTags"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
+            android:text="Select tags"
+            android:textColor="#5B86E5"></TextView>
     </LinearLayout>
 
     <LinearLayout

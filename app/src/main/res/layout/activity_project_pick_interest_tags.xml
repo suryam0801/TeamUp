@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="380dp"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/tag_picker_popup_background"
     android:orientation="vertical"
-    tools:context=".login.InterestTagPicker">
+    tools:context=".login.LoginInterestTagPicker">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,6 +20,7 @@
             android:id="@+id/bck_locations_tags_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:scaleX=".8"
             android:scaleY=".8"
             android:background="@android:color/transparent"
@@ -100,28 +101,30 @@
                 </Button>
             </RelativeLayout>
 
-            <com.google.android.material.chip.ChipGroup
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/broadcast_interest_tag_chip_group">
-            </com.google.android.material.chip.ChipGroup>
+                android:layout_height="280dp">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp"
+                    android:id="@+id/broadcast_interest_tag_chip_group">
+                </com.google.android.material.chip.ChipGroup>
+
+            </ScrollView>
 
         </LinearLayout>
 
         <Button
             android:id="@+id/broadcast_finalize_interest_tags"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/gradient_button"
+            android:layout_height="60dp"
+            android:background="@drawable/popup_tag_picker_button_background"
             android:fontFamily="@font/roboto_black"
             android:gravity="center"
             android:paddingLeft="19dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
             android:paddingRight="19dp"
-            android:text="Finalize Interest Tags"
+            android:text="Confirm Interest Tags"
             android:textAllCaps="false"
             android:textColor="#FFFFFFFF"
             android:textSize="15dp" />
