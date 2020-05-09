@@ -1,11 +1,14 @@
 package com.example.teamup.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -15,19 +18,31 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.teamup.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LocationTagPicker extends AppCompatActivity {
 
     private String loc, fName, lName, userId, downloadUri, contact;
     private List<String> locationTagsList = new ArrayList<>();
+    private List<String> loadlocList;
     private Button setInterestTags, locationTagAdd;
     private ChipGroup chipGroup;
     private EditText locationTagEntry;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private  List<String> group;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,4 +141,58 @@ public class LocationTagPicker extends AppCompatActivity {
         locationTagEntry.setSelection(locationTagEntry.getText().length());
     }
 
+    private void loadTag()
+    {
+        loadlocList = new ArrayList<String>();
+        if (loadlocList.size() > 0)
+            loadlocList.clear();
+        DocumentReference docRef = db.collection("Tags").document("Location");
+       docRef
+               .get()
+               .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                       if (task.isSuccessful()) {
+                           DocumentSnapshot document = task.getResult();
+                           if (document.exists()) {
+                                loadlocList.add(document.get("locationTags").toString());
+                              group = (List<String>) document.get("locationTags");
+                               for (int i=0;i<group.size();i++)
+                               {
+                                   String loc= group.get(i);
+                                   Log.d("Data", "Array data :"+loc);
+                                   setTag(loc);
+
+                               }
+
+                               Log.d("TAG", "DocumentSnapshot data: " + document.get("locationTags"));
+                               Log.d("Data", "Array data"+group);
+                               group.clear();
+//                               setTag(null);
+
+                           } else {
+                               Log.d("TAG", "No such document");
+                           }
+                       } else {
+                           Log.d("TAG", "get failed with ", task.getException());
+                       }
+                   }
+               });
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        chipGroup.removeAllViews();
+        loadTag();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }else{
+            // Write you code here if permission already given.
+        }
+    }
 }
