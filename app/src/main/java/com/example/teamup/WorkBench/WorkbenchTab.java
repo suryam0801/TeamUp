@@ -21,10 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.teamup.ControlPanel.ControlPanel;
-import com.example.teamup.CreateProject;
-import com.example.teamup.Notification.NotificationActivity;
-import com.example.teamup.TabbedActivityMain;
-import com.example.teamup.model.Project;
+import com.example.teamup.CreateBroadcast.CreateBroadcast;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Worker;
@@ -60,9 +58,9 @@ public class WorkbenchTab extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "WORKBENCHTAB";
     private FirebaseUser firebaseUser;
-    private List<Project> myProjectList = new ArrayList<>();
-    private List<Project> workingProjectList = new ArrayList<>();
-    private List<Project> completedProjectsList = new ArrayList<>();
+    private List<Broadcast> myBroadcastList = new ArrayList<>();
+    private List<Broadcast> workingBroadcastList = new ArrayList<>();
+    private List<Broadcast> completedProjectsList = new ArrayList<>();
     private WorkbenchDisplayAdapter myAdapter;
     private ViewPager viewPager;
     private WorkbenchDisplayAdapter workingAdapter;
@@ -128,7 +126,7 @@ public class WorkbenchTab extends Fragment {
         createProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CreateProject.class));
+                startActivity(new Intent(getActivity(), CreateBroadcast.class));
                 getActivity().finish();
             }
         });
@@ -144,21 +142,21 @@ public class WorkbenchTab extends Fragment {
     }
 
     public void initializeAdapters() {
-        myAdapter = new WorkbenchDisplayAdapter(getActivity(), myProjectList, true);
-        workingAdapter = new WorkbenchDisplayAdapter(getActivity(), workingProjectList, false);
+        myAdapter = new WorkbenchDisplayAdapter(getActivity(), myBroadcastList, true);
+        workingAdapter = new WorkbenchDisplayAdapter(getActivity(), workingBroadcastList, false);
         completedAdapter = new WorkbenchDisplayAdapter(getActivity(), completedProjectsList, false);
     }
 
     public void populateData() {
 
-        if (!myProjectList.isEmpty()) {
+        if (!myBroadcastList.isEmpty()) {
             myProjectsEmpty.setVisibility(View.GONE);
             myProjectsRv.setVisibility(View.VISIBLE);
             myProjectsRv.setAdapter(myAdapter);
             myProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    SessionStorage.saveProject(getActivity(), myProjectList.get(i));
+                    SessionStorage.saveProject(getActivity(), myBroadcastList.get(i));
                     setNewItemValues();
                     Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
                     startActivity(intent);
@@ -170,14 +168,14 @@ public class WorkbenchTab extends Fragment {
             myProjectsRv.setVisibility(View.GONE);
         }
 
-        if (!workingProjectList.isEmpty()) {
+        if (!workingBroadcastList.isEmpty()) {
             workingProjectsEmpty.setVisibility(View.GONE);
             workingProjectsRv.setVisibility(View.VISIBLE);
             workingProjectsRv.setAdapter(workingAdapter);
             workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    SessionStorage.saveProject(getActivity(), workingProjectList.get(i));
+                    SessionStorage.saveProject(getActivity(), workingBroadcastList.get(i));
                     setNewItemValues();
                     Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
                     startActivity(intent);
@@ -226,25 +224,25 @@ public class WorkbenchTab extends Fragment {
 
     public void setNewItemValues() {
 
-        Project p = SessionStorage.getProject(getActivity());
+        Broadcast p = SessionStorage.getProject(getActivity());
 
 
         SharedPreferences prefs = getActivity().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        if (prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE).equals(DEFAULT_RETRIEVE_VALUE)) {
+        if (prefs.getString(p.getBroadcastName(), DEFAULT_RETRIEVE_VALUE).equals(DEFAULT_RETRIEVE_VALUE)) {
             // data stored in format: tasklist / applicants / chatroom / projectwall
-            editor.putString(p.getProjectName(), 0 + "/" + 0 + "/" + 0 + "/" + 0);
+            editor.putString(p.getBroadcastName(), 0 + "/" + 0 + "/" + 0 + "/" + 0);
             editor.commit();
         } else {
-            String values = prefs.getString(p.getProjectName(), DEFAULT_RETRIEVE_VALUE);
+            String values = prefs.getString(p.getBroadcastName(), DEFAULT_RETRIEVE_VALUE);
             Scanner scan = new Scanner(values);
             scan.useDelimiter("/");
 
             int t = Math.abs(p.getTaskList().size() - Integer.parseInt(scan.next()));
             int a = Math.abs(p.getApplicantId().size() - Integer.parseInt(scan.next()));
 
-            editor.putString(p.getProjectName().trim(), t + "/" + a + "/" + 0 + "/" + 0);
+            editor.putString(p.getBroadcastName().trim(), t + "/" + a + "/" + 0 + "/" + 0);
             editor.commit();
         }
     }
@@ -257,12 +255,12 @@ public class WorkbenchTab extends Fragment {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
-                    Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    assert project != null;
-                    if (project.getProjectStatus().equals("Completed")) {
-                        completedProjectsList.add(project);
+                    Broadcast broadcast = queryDocumentSnapshots.getDocuments().get(i).toObject(Broadcast.class);
+                    assert broadcast != null;
+                    if (broadcast.getBroadcastStatus().equals("Completed")) {
+                        completedProjectsList.add(broadcast);
                     } else {
-                        myProjectList.add(project);
+                        myBroadcastList.add(broadcast);
                     }
                 }
                 populateData();
@@ -278,15 +276,15 @@ public class WorkbenchTab extends Fragment {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d(TAG, "onSuccess: " + queryDocumentSnapshots.size());
                 for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
-                    Project project = queryDocumentSnapshots.getDocuments().get(i).toObject(Project.class);
-                    if (project != null && project.getWorkersId() != null && !project.getCreatorId().equals(firebaseUser.getUid())) {
-                        List<Worker> workerList = project.getWorkersList();
+                    Broadcast broadcast = queryDocumentSnapshots.getDocuments().get(i).toObject(Broadcast.class);
+                    if (broadcast != null && broadcast.getWorkersId() != null && !broadcast.getCreatorId().equals(firebaseUser.getUid())) {
+                        List<Worker> workerList = broadcast.getWorkersList();
                         for (Worker worker : workerList) {
                             if (worker.getUserId().equals(firebaseUser.getUid())) {
-                                if (project.getProjectStatus().equals("Completed"))
-                                    completedProjectsList.add(project);
+                                if (broadcast.getBroadcastStatus().equals("Completed"))
+                                    completedProjectsList.add(broadcast);
                                 else
-                                    workingProjectList.add(project);
+                                    workingBroadcastList.add(broadcast);
                             }
                         }
                     }

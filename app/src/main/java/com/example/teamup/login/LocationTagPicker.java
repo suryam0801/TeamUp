@@ -79,8 +79,6 @@ public class LocationTagPicker extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        locationTagEntry.setFocusable(true);
-                        locationTagEntry.requestFocus();
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.showSoftInput(locationTagEntry, InputMethodManager.SHOW_IMPLICIT);
                         locationTagEntry.setShowSoftInputOnFocus(true);

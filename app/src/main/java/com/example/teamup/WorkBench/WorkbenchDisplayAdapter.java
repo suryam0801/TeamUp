@@ -6,13 +6,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import com.example.teamup.model.Project;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
 
 import java.util.List;
@@ -20,13 +19,13 @@ import java.util.List;
 public class WorkbenchDisplayAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<Project> Projectlist;
+    private List<Broadcast> projectlist;
     boolean owner;
     private LinearLayout iconBackground, headerBackground;
 
-    public WorkbenchDisplayAdapter(Context mContext, List<Project> Projectlist, boolean owner) {
+    public WorkbenchDisplayAdapter(Context mContext, List<Broadcast> projectlist, boolean owner) {
         this.mContext = mContext;
-        this.Projectlist = Projectlist;
+        this.projectlist = projectlist;
         this.owner = owner;
     }
 
@@ -34,12 +33,12 @@ public class WorkbenchDisplayAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return Projectlist.size();
+        return projectlist.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return Projectlist.get(position);
+        return projectlist.get(position);
     }
 
     @Override
@@ -57,8 +56,8 @@ public class WorkbenchDisplayAdapter extends BaseAdapter {
         AppCompatImageView iconForeground=pview.findViewById(R.id.workbench_foreground);
 
         //set text for textview
-        final String projectname=Projectlist.get(position).getProjectName();
-        final String creatorName=Projectlist.get(position).getCreatorName();
+        final String projectname= projectlist.get(position).getBroadcastName();
+        final String creatorName= projectlist.get(position).getCreatorName();
 
         if(owner = true)
             procreatorname.setText("You");
@@ -71,7 +70,7 @@ public class WorkbenchDisplayAdapter extends BaseAdapter {
         gd.setShape(GradientDrawable.RECTANGLE);
         gd.setCornerRadius(15.0f); // border corner radius
 
-        switch (Projectlist.get(position).getCategory()){
+        switch (projectlist.get(position).getCategory()){
             case "Physical Fitness":
                 setResources("#D8E9FF", "#158BF1");
                 iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.physical_fitness_icon));
@@ -102,7 +101,7 @@ public class WorkbenchDisplayAdapter extends BaseAdapter {
                 break;
         }
 
-        pview.setTag(Projectlist.get(position).getProjectId());
+        pview.setTag(projectlist.get(position).getBroadcastId());
 
         return pview;
     }

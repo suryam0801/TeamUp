@@ -8,13 +8,8 @@
     <string name="msg_token_fmt">TeamUp</string>
     <string name="default_notification_channel_id">TeamUp_CH 01</string>
 
-    <string-array name="categories">
-        <item>Physical Fitness</item>
-        <item>Creative &amp; Design</item>
-        <item>Engineering &amp; Architecture</item>
-        <item>Software Development</item>
-        <item>Sales &amp; Marketing</item>
-        <item>Volunteering</item>
-        <item>Art &amp; Cuisine</item>
+    <string-array name="AcceptanceType">
+        <item>Open</item>
+        <item>Review</item>
     </string-array>
 </resources>

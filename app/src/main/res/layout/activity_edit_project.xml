@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context=".CreateProject">
+    tools:context=".CreateBroadcast.CreateBroadcast">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Preferred Skills (What skills does your project require?)"
+                    android:text="Preferred Skills (What skills does your broadcast require?)"
                     android:textSize="15dp"
                     android:layout_marginLeft="23dp"
                     android:layout_marginBottom="5dp"

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.teamup.R;
+import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.Tags;
 import com.example.teamup.model.User;
@@ -83,7 +84,7 @@ public class InterestTagPicker extends AppCompatActivity {
         tempLoc = tempLoc.replace("]", "");
         Scanner scan = new Scanner(tempLoc);
         scan.useDelimiter(", ");
-        while (scan.hasNext()){
+        while (scan.hasNext()) {
             locationTags.add(scan.next());
         }
         Log.d("INTERESTTAGPICKER", locationTags.toString());
@@ -93,8 +94,6 @@ public class InterestTagPicker extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        interestTagsEntry.setFocusable(true);
-                        interestTagsEntry.requestFocus();
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.showSoftInput(interestTagsEntry, InputMethodManager.SHOW_IMPLICIT);
                         interestTagsEntry.setShowSoftInputOnFocus(true);
@@ -248,36 +247,33 @@ public class InterestTagPicker extends AppCompatActivity {
 
         if (downloadUri != null) {
             user = new User(fName, lName, contact, downloadUri, locationTags, interestTagsList, userId, 0, 0, 0, token_id);
-            tags = new Tags(locationTags,interestTagsList);
+            tags = new Tags(locationTags, interestTagsList);
         } else {
             user = new User(fName, lName, contact, "default", locationTags, interestTagsList, userId, 0, 0, 0, token_id);
-            tags = new Tags(locationTags,interestTagsList);
+            tags = new Tags(locationTags, interestTagsList);
         }
 
         List<String> locationinterest = locationTags;
         HashMap<String, List<String>> List = new HashMap<>();
         List.put("locationTags", locationinterest);
 
-        for(int i=0;i< locationTags.size();i++)
-        {
+        for (int i = 0; i < locationTags.size(); i++) {
             String loc = locationTags.get(i);
             db.collection("Tags")
                     .document("Location-Interest")
-                    .update(loc,FieldValue.arrayUnion(interestTagsList.toArray()))
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                    .update(loc, FieldValue.arrayUnion(interestTagsList.toArray()))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
-                                }
-                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
+                }
+            });
         }
-
-
 
 
         List<String> locationlist = locationTags;
@@ -285,10 +281,9 @@ public class InterestTagPicker extends AppCompatActivity {
         ListLocation.put("locationTags", locationlist);
 
 
-
         db.collection("Tags")
                 .document("Location")
-                .update("locationTags",FieldValue.arrayUnion(locationTags.toArray()))
+                .update("locationTags", FieldValue.arrayUnion(locationTags.toArray()))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -301,13 +296,13 @@ public class InterestTagPicker extends AppCompatActivity {
             }
         });
 
-        List<String> interestlist =interestTagsList;
+        List<String> interestlist = interestTagsList;
         HashMap<String, List<String>> InterestList = new HashMap<>();
         InterestList.put("interestTags", interestlist);
 
         db.collection("Tags")
                 .document("Interest")
-                .update("interestTags",FieldValue.arrayUnion(interestlist.toArray()))
+                .update("interestTags", FieldValue.arrayUnion(interestlist.toArray()))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -319,7 +314,6 @@ public class InterestTagPicker extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
             }
         });
-
 
 
         db.collection("Users")
@@ -328,7 +322,7 @@ public class InterestTagPicker extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        SessionStorage.saveUser(InterestTagPicker.this, user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

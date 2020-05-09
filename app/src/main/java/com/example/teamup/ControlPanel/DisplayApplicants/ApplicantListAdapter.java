@@ -2,13 +2,10 @@ package com.example.teamup.ControlPanel.DisplayApplicants;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,16 +14,14 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.teamup.Notification.SendNotification;
-import com.example.teamup.login.GatherUserDetails;
 import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Project;
+import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
 import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -40,13 +35,13 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
     private Context mContext;
     private List<Applicant> ApplicantList;
     FirebaseFirestore db;
-    Project project;
+    Broadcast broadcast;
     String TAG = "APPLICANT_LIST_ADAPTER";
 
-    public ApplicantListAdapter(Context mContext, List<Applicant> ApplicantList, Project project) {
+    public ApplicantListAdapter(Context mContext, List<Applicant> ApplicantList, Broadcast broadcast) {
         this.mContext = mContext;
         this.ApplicantList = ApplicantList;
-        this.project = project;
+        this.broadcast = broadcast;
     }
 
     @Override
@@ -96,7 +91,7 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "POSITION: " + project.toString());
+                Log.d(TAG, "POSITION: " + broadcast.toString());
 
                 List<String> locationTags = new ArrayList<>();
                 List<String> interestTags = new ArrayList<>();
@@ -122,20 +117,20 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
                     interestTags.add(scaninterest.next());
                 }
 
-                final Worker newWorker = new Worker(project.getProjectId(), selectedApplicant.getApplicantName(), selectedApplicant.getUserId(), selectedApplicant.getProfilePicURL(), locationTags, interestTags);
+                final Worker newWorker = new Worker(broadcast.getBroadcastId(), selectedApplicant.getApplicantName(), selectedApplicant.getUserId(), selectedApplicant.getProfilePicURL(), locationTags, interestTags);
                 ApplicantList.remove(selectedApplicant);
-                db.collection("Projects").document(project.getProjectId()).update("workersList", FieldValue.arrayUnion(newWorker))
+                db.collection("Projects").document(broadcast.getBroadcastId()).update("workersList", FieldValue.arrayUnion(newWorker))
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    db.collection("Projects").document(project.getProjectId()).update("applicantList", ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    db.collection("Projects").document(broadcast.getBroadcastId()).update("applicantList", ApplicantList).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            db.collection("Projects").document(project.getProjectId()).update("applicantId", FieldValue.arrayRemove(selectedApplicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(broadcast.getBroadcastId()).update("applicantId", FieldValue.arrayRemove(selectedApplicant.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    SendNotification.sendnotification("application accepted", project.getProjectId(), project.getProjectName(), selectedApplicant.getUserId());
+                                                    SendNotification.sendnotification("application accepted", broadcast.getBroadcastId(), broadcast.getBroadcastName(), selectedApplicant.getUserId());
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
@@ -143,7 +138,7 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
                                                 public void onFailure(@NonNull Exception e) {
                                                 }
                                             });
-                                            db.collection("Projects").document(project.getProjectId()).update("workersId", FieldValue.arrayUnion(newWorker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            db.collection("Projects").document(broadcast.getBroadcastId()).update("workersId", FieldValue.arrayUnion(newWorker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Log.d(TAG, "JOB SUCCESSFUL!!!!");
@@ -180,7 +175,7 @@ public class ApplicantListAdapter extends BaseAdapter implements BottomsheetDial
         review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(), selectedApplicant.getShortPitch(), selectedApplicant.getProjectId(), selectedApplicant.getUserId(), selectedApplicant, project.getProjectName(), ApplicantList);
+                BottomsheetDialog bottomSheet = new BottomsheetDialog(selectedApplicant.getApplicantName(), selectedApplicant.getShortPitch(), selectedApplicant.getProjectId(), selectedApplicant.getUserId(), selectedApplicant, broadcast.getBroadcastName(), ApplicantList);
                 bottomSheet.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "exampleBottomSheet");
             }
         });

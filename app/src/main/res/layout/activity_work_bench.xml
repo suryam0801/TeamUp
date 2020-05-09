@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_regular"
                         android:layout_marginTop="20dp"
-                        android:text="Seems like you haven't created any projects in a while. Create a new project and manage it now."
+                        android:text="Seems like you haven't created any projects in a while. Create a new broadcast and manage it now."
                         android:textColor="#B6B6B6">
                     </TextView>
 
@@ -52,7 +52,7 @@
                         android:id="@+id/workbench_create_project_nav"
                         android:background="@drawable/light_blue_nav_button"
                         android:textColor="#6CACFF"
-                        android:text="Create new project"
+                        android:text="Create new broadcast"
                         style="?android:attr/borderlessButtonStyle"
                         android:layout_marginTop="12dp"
                         android:textAllCaps="false"

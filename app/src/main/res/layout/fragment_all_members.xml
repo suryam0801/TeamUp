@@ -27,7 +27,7 @@
             android:fontFamily="@font/roboto_regular"
             android:lineSpacingExtra="5dp"
             android:paddingTop="43dp"
-            android:text="There are no members in the project. Accept an applicant to add them to workers list."
+            android:text="There are no members in the broadcast. Accept an applicant to add them to workers list."
             android:textAlignment="center"
             android:textColor="#828282"
             android:textSize="12dp"></TextView>

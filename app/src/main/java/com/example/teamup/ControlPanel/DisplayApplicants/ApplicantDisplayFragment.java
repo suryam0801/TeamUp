@@ -1,7 +1,5 @@
 package com.example.teamup.ControlPanel.DisplayApplicants;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
-import com.example.teamup.model.Project;
-import com.example.teamup.model.User;
+import com.example.teamup.model.Broadcast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +23,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +51,7 @@ public class ApplicantDisplayFragment extends Fragment {
     private ListView lvApplicant;
     private List<Applicant> ApplicantList;
     private ApplicantListAdapter adapter;
-    private Project project;
+    private Broadcast broadcast;
 
     public ApplicantDisplayFragment() {
         // Required empty public constructor
@@ -98,19 +93,19 @@ public class ApplicantDisplayFragment extends Fragment {
 
         lvApplicant = view.findViewById(R.id.listview_applicant);
         emptyPlaceHolder = view.findViewById(R.id.applicants_empty_display);
-        project = SessionStorage.getProject(getActivity());
-        assert project != null;
+        broadcast = SessionStorage.getProject(getActivity());
+        assert broadcast != null;
         db = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance();
         clearNewApplicantCount();
-        populateApplicantList(project);
+        populateApplicantList(broadcast);
         return view;
     }
 
     public void clearNewApplicantCount() {
-        project.setNewApplicants(0);
-        SessionStorage.saveProject(getActivity(), project);
-        db.collection("Projects").document(project.getProjectId()).update("newApplicants", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
+        broadcast.setNewApplicants(0);
+        SessionStorage.saveProject(getActivity(), broadcast);
+        db.collection("Projects").document(broadcast.getBroadcastId()).update("newApplicants", 0).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "onSuccess: " + "New Applicants Set To 0");
@@ -123,10 +118,10 @@ public class ApplicantDisplayFragment extends Fragment {
         });
     }
 
-    public void populateApplicantList(Project project) {
+    public void populateApplicantList(Broadcast broadcast) {
         currentUser = FirebaseAuth.getInstance();
 
-        loadApplicants(project.getProjectId());
+        loadApplicants(broadcast.getBroadcastId());
     }
 
     public void loadApplicants(String projectQueryID) {
@@ -184,8 +179,8 @@ public class ApplicantDisplayFragment extends Fragment {
                 }
                 if(ApplicantList.isEmpty())
                     emptyPlaceHolder.setVisibility(View.VISIBLE);
-                adapter = new ApplicantListAdapter(getActivity(), ApplicantList, project);
-                project.setApplicantList(ApplicantList);
+                adapter = new ApplicantListAdapter(getActivity(), ApplicantList, broadcast);
+                broadcast.setApplicantList(ApplicantList);
                 lvApplicant.setAdapter(adapter);
             }
         }).addOnFailureListener(new OnFailureListener() {
