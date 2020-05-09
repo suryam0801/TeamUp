@@ -102,6 +102,8 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_height="match_parent">
                 <com.google.android.material.chip.ChipGroup
                     android:layout_width="match_parent"
