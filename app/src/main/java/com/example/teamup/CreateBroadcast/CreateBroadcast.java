@@ -16,11 +16,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,18 +32,20 @@ import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -53,12 +55,13 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     private String TAG = "CreateProject", selectedCategory = "";
     private FirebaseFirestore db;
     private FirebaseAuth currentUser;
-    private EditText broadcastName, broadcastDescription;
-    private List<String> locationTags, interestTags;
+    private EditText broadcastName, broadcastDescription, locationTagEntry, interestTagEntry;
     private Dialog locationTagPicker, interestTagPicker;
     private List<String> locationTagList = new ArrayList<>(), interestTagList = new ArrayList<>();
-    private ChipGroup locationChipGroup, interestChipGroup;
-    private EditText locationTagEntry, interestTagEntry;
+    private ChipGroup locationChipGroup, interestChipGroup, selectedLocationTagGroup, selectedInterestTagGroup;
+    private TextView addLocationTags, addInterestTags;
+    private RadioGroup acceptanceTypeRadioGroup;
+    private RadioButton radioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,27 +77,17 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         currentUser = FirebaseAuth.getInstance();
         locationTagPicker = new Dialog(CreateBroadcast.this);
         interestTagPicker = new Dialog(CreateBroadcast.this);
-
-        if (getIntent().hasExtra("locationTags"))
-            locationTags = getIntent().getExtras().getStringArrayList("locationTags");
-        if (getIntent().hasExtra("interestTags"))
-            interestTags = getIntent().getExtras().getStringArrayList("interestTags");
+        acceptanceTypeRadioGroup = findViewById(R.id.acceptanceRadioGroup);
 
         //initializing all UI elements
         broadcastName = findViewById(R.id.projectName);
         broadcastDescription = findViewById(R.id.projectDescription);
-        Button createProjectSubmit = (Button) findViewById(R.id.createProjectSubmit);
-        TextView addLocationTags = findViewById(R.id.createBroadcastAddLocationTags);
-        TextView addInterestTags = findViewById(R.id.createBroadcastAddInterestTags);
+        selectedLocationTagGroup = findViewById(R.id.selectedLocationTags);
+        selectedInterestTagGroup = findViewById(R.id.selectedInterestTags);
+        Button createProjectSubmit = findViewById(R.id.createProjectSubmit);
+        addLocationTags = findViewById(R.id.createBroadcastAddLocationTags);
+        addInterestTags = findViewById(R.id.createBroadcastAddInterestTags);
         ImageButton back_create = findViewById(R.id.bck_create);
-
-
-        Spinner spinner = findViewById(R.id.categorySpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.AcceptanceType, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
 
         back_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,16 +129,19 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
 
     public void locationTagDialogShow() {
         locationTagPicker.setContentView(R.layout.activity_project_pick_location_tags);
-
         final Button finalizeLocationTag = locationTagPicker.findViewById(R.id.broadcast_finalize_location_tags);
         locationChipGroup = locationTagPicker.findViewById(R.id.broadcast_location_tag_chip_group);
         locationTagEntry = locationTagPicker.findViewById(R.id.broadcast_location_tags_entry);
         final Button locationTagAdd = locationTagPicker.findViewById(R.id.broadcast_location_tag_add_button);
 
+        loadLocationTag();
+
         finalizeLocationTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 locationTagPicker.dismiss();
+                addLocationTags.setVisibility(View.GONE);
+                setSelectedLocationTagsView();
             }
         });
 
@@ -176,7 +172,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
             public void onClick(View view) {
                 String interestTag = locationTagEntry.getText().toString();
                 if (!interestTag.isEmpty()) {
-                    setLocationTag(interestTag);
+                    setLocationTag(interestTag, "new");
                 }
             }
         });
@@ -195,6 +191,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     public void interestTagDialogShow() {
         interestTagPicker.setContentView(R.layout.activity_project_pick_interest_tags);
 
+        loadInterestTag();
+
         final Button finalizeInterestTag = interestTagPicker.findViewById(R.id.broadcast_finalize_interest_tags);
         interestChipGroup = interestTagPicker.findViewById(R.id.broadcast_interest_tag_chip_group);
         interestTagEntry = interestTagPicker.findViewById(R.id.broadcast_interest_tags_entry);
@@ -203,7 +201,9 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         finalizeInterestTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                interestTagPicker.dismiss();
+                addInterestTags.setVisibility(View.GONE);
+                setSelectedInterestTagsView();
             }
         });
 
@@ -234,7 +234,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
             public void onClick(View view) {
                 String interestTag = interestTagEntry.getText().toString();
                 if (!interestTag.isEmpty()) {
-                    setInterestTag(interestTag);
+                    setInterestTag(interestTag, "new");
                 }
             }
         });
@@ -251,13 +251,13 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
 
     }
 
-    private void setLocationTag(final String name) {
-        locationTagList.add(name);
+    private void setLocationTag(final String name, String userNewTag) {
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
                 getResources().getDisplayMetrics()
         );
+        chip.setRippleColor(ColorStateList.valueOf(Color.WHITE));
         chip.setPadding(
                 (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 3,
@@ -265,17 +265,34 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
                 ),
                 paddingDp, paddingDp, paddingDp);
         chip.setText(name);
-        chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
-        chip.setCloseIconResource(R.drawable.ic_clear_black_24dp);
-        chip.setCloseIconEnabled(true);
 
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+        if (userNewTag.equals("new")) {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            chip.setTextColor(Color.WHITE);
+            locationTagList.add(name);
+            Log.d("INTEREST TAG PICKER", "INTEREST TAG LIST: " + locationTagList.toString());
+        } else {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+            chip.setTextColor(Color.BLACK);
+        }
+
+        chip.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                locationChipGroup.removeView(chip);
-                locationTagList.remove(name);
-                Log.d("LOCATIONTAGPICKER", locationTagList.toString());
+            public void onClick(View view) {
+                if (chip.getChipBackgroundColor().getDefaultColor() == -9655041) {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+                    chip.setTextColor(Color.BLACK);
+                    locationTagList.remove(chip.getText().toString());
+                } else {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+                    chip.setTextColor(Color.WHITE);
+                    locationTagList.add(chip.getText().toString());
+
+                }
+
+                Log.d(TAG, "LOCATION TAG LIST: " + locationTagList.toString());
             }
+
         });
 
         locationChipGroup.addView(chip);
@@ -283,7 +300,7 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         locationTagEntry.setSelection(locationTagEntry.getText().length());
     }
 
-    private void setInterestTag(final String name) {
+    private void setInterestTag(final String name, String userNewTag) {
         interestTagList.add(name);
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
@@ -297,29 +314,191 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
                 ),
                 paddingDp, paddingDp, paddingDp);
         chip.setText(name);
-        chip.setTextAppearanceResource(R.style.ChipTextStyle_Selected);
-        chip.setCloseIconResource(R.drawable.ic_clear_black_24dp);
-        chip.setCloseIconEnabled(true);
 
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+        if (userNewTag.equals("new")) {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            chip.setTextColor(Color.WHITE);
+            interestTagList.add(name);
+            Log.d("INTEREST TAG PICKER", "INTEREST TAG LIST: " + interestTagList.toString());
+        } else {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+            chip.setTextColor(Color.BLACK);
+        }
+
+        chip.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                interestChipGroup.removeView(chip);
-                interestTagList.remove(name);
-                Log.d("INTERESTTAGPICKER", interestTagList.toString());
+            public void onClick(View view) {
+                if (chip.getChipBackgroundColor().getDefaultColor() == -9655041) {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+                    chip.setTextColor(Color.BLACK);
+                    interestTagList.remove(chip.getText().toString());
+                } else {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+                    chip.setTextColor(Color.WHITE);
+                    interestTagList.add(chip.getText().toString());
+
+                }
+
+                Log.d("INTEREST TAG PICKER", "INTEREST TAG LIST: " + interestTagList.toString());
             }
+
         });
+
         interestChipGroup.addView(chip);
         interestTagEntry.setText("#");
         interestTagEntry.setSelection(locationTagEntry.getText().length());
     }
 
+    private void setSelectedInterestTagsView() {
+        for (String interest : interestTagList) {
+            final Chip chip = new Chip(this);
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            chip.setRippleColor(ColorStateList.valueOf(Color.WHITE));
+            chip.setPadding(
+                    (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 3,
+                            getResources().getDisplayMetrics()
+                    ),
+                    paddingDp, paddingDp, paddingDp);
+            chip.setText(interest);
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            chip.setTextColor(Color.WHITE);
+
+            selectedInterestTagGroup.addView(chip);
+        }
+    }
+
+    private void setSelectedLocationTagsView() {
+        for (String location : locationTagList) {
+            final Chip chip = new Chip(this);
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            chip.setRippleColor(ColorStateList.valueOf(Color.WHITE));
+            chip.setPadding(
+                    (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 3,
+                            getResources().getDisplayMetrics()
+                    ),
+                    paddingDp, paddingDp, paddingDp);
+            chip.setText(location);
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            chip.setTextColor(Color.WHITE);
+
+            selectedLocationTagGroup.addView(chip);
+        }
+    }
+
+    private void loadLocationTag() {
+        if (locationTagList.size() > 0)
+            locationTagList.clear();
+
+        db.collection("Tags")
+                .document("Location")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                locationTagList = (List<String>) document.get("locationTags");
+                                Log.d("LOCATIONTAGPICKER", "Array data :" + locationTagList);
+
+                                Collections.sort(locationTagList, new Comparator<String>() {
+                                    @Override
+                                    public int compare(String s1, String s2) {
+                                        return s1.compareToIgnoreCase(s2);
+                                    }
+                                });
+
+                                for (String loc : locationTagList) {
+                                    setLocationTag(loc, "old");
+                                }
+
+                                locationTagList.clear();
+
+                            } else {
+                                Log.d("TAG", "No such document");
+                            }
+                        } else {
+                            Log.d("TAG", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+
+    }
+
+    private void loadInterestTag() {
+        if (interestTagList.size() > 0)
+            interestTagList.clear();
+        db.collection("Tags")
+                .document("Location-Interest")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                List<String> interestTagListTemp = new ArrayList<>();
+                                for (String loc : locationTagList) {
+
+                                    if (document.contains(loc)) {
+                                        List<String> group = (List<String>) document.get(loc);
+                                        for (String in : group) {
+                                            if (!interestTagListTemp.contains(in)) {
+                                                interestTagListTemp.add(in);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Collections.sort(interestTagListTemp, new Comparator<String>() {
+                                    @Override
+                                    public int compare(String s1, String s2) {
+                                        return s1.compareToIgnoreCase(s2);
+                                    }
+                                });
+
+                                for (String interest : interestTagListTemp)
+                                    setInterestTag(interest, "old");
+
+                                interestTagList.clear();
+                            } else {
+                                Log.d("TAG", "No such document");
+                            }
+                        } else {
+                            Log.d("TAG", "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
+
     private void createInMasterStore(Broadcast broadcast) {
-        for (String loc : locationTags) {
-            for (String interest : interestTags) {
+        for (String loc : locationTagList) {
+            db.collection("Tags")
+                    .document("Location-Interest")
+                    .update(loc, FieldValue.arrayUnion(interestTagList.toArray()));
+            for (String interest : interestTagList) {
                 db.collection("MasterProjectCollection").document(loc).collection(interest).document(broadcast.getBroadcastId()).set(broadcast);
             }
         }
+
+        db.collection("Tags")
+                .document("Location")
+                .update("locationTags", FieldValue.arrayUnion(locationTagList.toArray()));
+
+        db.collection("Tags")
+                .document("Interest")
+                .update("interestTags", FieldValue.arrayUnion(interestTagList.toArray()));
+
+
     }
 
     @Override
@@ -331,7 +510,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
 
     public void createProject(String projectName, String projecDesc) {
 
-        List<String> chipsTextList = new ArrayList<>();
+        int radioId = acceptanceTypeRadioGroup.getCheckedRadioButtonId();
+        radioButton = findViewById(radioId);
 
         final Broadcast broadcast = new Broadcast();
         broadcast.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
@@ -342,15 +522,15 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
         broadcast.setApplicantId(null);
         broadcast.setApplicantList(null);
         broadcast.setBroadcastStatus("Created");
-        broadcast.setInterestTags(interestTags);
-        broadcast.setLocationTags(locationTags);
+        broadcast.setInterestTags(interestTagList);
+        broadcast.setLocationTags(locationTagList);
         broadcast.setWorkersList(null);
         broadcast.setNewApplicants(0);
         broadcast.setNewTasks(0);
         broadcast.setWorkersId(null);
         broadcast.setBroadcastId(UUID.randomUUID().toString());
         broadcast.setTaskList(null);
-        broadcast.setCategory(selectedCategory);
+        broadcast.setAcceptanceType(radioButton.getText().toString());
 
         createInMasterStore(broadcast);
 

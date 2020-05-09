@@ -78,7 +78,7 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
-        int index = categoryList.indexOf(broadcast.getCategory());
+        int index = categoryList.indexOf(broadcast.getAcceptanceType());
         spinner.setSelection(index);
 
         editSkillAdd.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +191,7 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
         broadcast.setBroadcastName(projectName);
         broadcast.setBroadcastDescription(projecDesc);
         broadcast.setInterestTags(chipsTextList);
-        broadcast.setCategory(selectedCategory);
+        broadcast.setAcceptanceType(selectedCategory);
 
         db.collection("Projects").document(broadcast.getBroadcastId()).set(broadcast);
 

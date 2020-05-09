@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.example.teamup.login.LocationTagPicker;
 import com.example.teamup.login.LoginActivity;
 import com.example.teamup.login.PhoneLogin;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser.getCurrentUser()!=null)
         {
             Log.d(TAG, currentUser.getCurrentUser().getUid());
-            startActivity(new Intent(MainActivity.this, LocationTagPicker.class));
+            startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
             finish();
         } else {
-            startActivity(new Intent(MainActivity.this, LocationTagPicker.class));
+            startActivity(new Intent(MainActivity.this, PhoneLogin.class));
             finish();
         }
     }
@@ -52,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser.getCurrentUser()!=null)
         {
             Log.d(TAG, currentUser.getCurrentUser().getUid());
-            startActivity(new Intent(MainActivity.this, LocationTagPicker.class));
+            startActivity(new Intent(MainActivity.this, TabbedActivityMain.class));
             finish();
         } else {
-            startActivity(new Intent(MainActivity.this, LocationTagPicker.class));
+            startActivity(new Intent(MainActivity.this, PhoneLogin.class));
             finish();
         }
 

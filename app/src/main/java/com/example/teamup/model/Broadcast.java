@@ -20,7 +20,7 @@ public class Broadcast implements Parcelable{
 
     private String broadcastDescription;
 
-    private String category;
+    private String acceptanceType;
 
     private int newTasks;
 
@@ -30,14 +30,14 @@ public class Broadcast implements Parcelable{
 
     private List<String> locationTags = new ArrayList<>();
 
-    public Broadcast(String creatorId, String creatorEmail, String creatorName, String broadcastId, String broadcastName, String broadcastDescription, String category, int newTasks, int newApplicants, List<String> interestTags, List<String> locationTags, List<Applicant> applicantList, List<String> applicantId, List<String> workersId, List<Worker> workersList, List<Task> taskList, String broadcastStatus) {
+    public Broadcast(String creatorId, String creatorEmail, String creatorName, String broadcastId, String broadcastName, String broadcastDescription, String acceptanceType, int newTasks, int newApplicants, List<String> interestTags, List<String> locationTags, List<Applicant> applicantList, List<String> applicantId, List<String> workersId, List<Worker> workersList, List<Task> taskList, String broadcastStatus) {
         this.creatorId = creatorId;
         this.creatorEmail = creatorEmail;
         this.creatorName = creatorName;
         this.broadcastId = broadcastId;
         this.broadcastName = broadcastName;
         this.broadcastDescription = broadcastDescription;
-        this.category = category;
+        this.acceptanceType = acceptanceType;
         this.newTasks = newTasks;
         this.newApplicants = newApplicants;
         this.interestTags = interestTags;
@@ -85,7 +85,7 @@ public class Broadcast implements Parcelable{
         newApplicants = in.readInt();
         interestTags = in.createStringArrayList();
         broadcastStatus = in.readString();
-        category = in.readString();
+        acceptanceType = in.readString();
         applicantId = in.createStringArrayList();
         workersId = in.createStringArrayList();
         in.readStringList(locationTags);
@@ -123,12 +123,12 @@ public class Broadcast implements Parcelable{
         this.creatorEmail = creatorEmail;
     }
 
-    public String getCategory() {
-        return category;
+    public String getAcceptanceType() {
+        return acceptanceType;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setAcceptanceType(String acceptanceType) {
+        this.acceptanceType = acceptanceType;
     }
 
     public String getCreatorName() {
@@ -243,7 +243,7 @@ public class Broadcast implements Parcelable{
                 ", broadcastId='" + broadcastId + '\'' +
                 ", broadcastName='" + broadcastName + '\'' +
                 ", broadcastDescription='" + broadcastDescription + '\'' +
-                ", category='" + category + '\'' +
+                ", category='" + acceptanceType + '\'' +
                 ", newTasks=" + newTasks +
                 ", newApplicants=" + newApplicants +
                 ", interestTags=" + interestTags +
@@ -269,7 +269,7 @@ public class Broadcast implements Parcelable{
         dest.writeString(creatorName);
         dest.writeString(broadcastId);
         dest.writeString(broadcastName);
-        dest.writeString(category);
+        dest.writeString(acceptanceType);
         dest.writeInt(newApplicants);
         dest.writeInt(newTasks);
         dest.writeString(broadcastDescription);

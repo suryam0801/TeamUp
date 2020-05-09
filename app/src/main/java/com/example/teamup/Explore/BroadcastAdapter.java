@@ -67,7 +67,11 @@ public class BroadcastAdapter extends BaseAdapter  {
          prodesc.setText(projectdesc);
          procreatorname.setText(creatorName);
 
-        switch (currentBroadcast.getCategory()){
+        setResources("#D8E9FF", "#158BF1");
+        iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.art_cuisine_icon));
+
+/*
+        switch (currentBroadcast.getAcceptanceType()){
              case "Physical Fitness":
                  setResources("#D8E9FF", "#158BF1");
                  iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.physical_fitness_icon));
@@ -97,6 +101,7 @@ public class BroadcastAdapter extends BaseAdapter  {
                  iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.art_cuisine_icon));
                  break;
          }
+*/
 
          pview.setTag(currentBroadcast.getBroadcastId());
 

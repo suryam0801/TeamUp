@@ -70,7 +70,10 @@ public class WorkbenchDisplayAdapter extends BaseAdapter {
         gd.setShape(GradientDrawable.RECTANGLE);
         gd.setCornerRadius(15.0f); // border corner radius
 
-        switch (projectlist.get(position).getCategory()){
+        setResources("#D8E9FF", "#158BF1");
+        iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.physical_fitness_icon));
+
+/*        switch (projectlist.get(position).getAcceptanceType()){
             case "Physical Fitness":
                 setResources("#D8E9FF", "#158BF1");
                 iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.physical_fitness_icon));
@@ -99,7 +102,7 @@ public class WorkbenchDisplayAdapter extends BaseAdapter {
                 setResources("#D8E9FF", "#158BF1");
                 iconForeground.setBackground(pview.getContext().getResources().getDrawable(R.drawable.art_cuisine_icon));
                 break;
-        }
+        }*/
 
         pview.setTag(projectlist.get(position).getBroadcastId());
 
