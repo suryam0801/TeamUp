@@ -39,9 +39,7 @@ public class LocationTagPicker extends AppCompatActivity {
     private ChipGroup chipGroup;
     private EditText locationTagEntry;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private  List<String> group;
-
-
+    private List<String> group;
 
 
     @Override
@@ -49,6 +47,7 @@ public class LocationTagPicker extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_tag_picker);
 
+        loadTag();
         fName = getIntent().getStringExtra("fName");
         lName = getIntent().getStringExtra("lName");
         downloadUri = getIntent().getStringExtra("uri");
@@ -67,7 +66,7 @@ public class LocationTagPicker extends AppCompatActivity {
                 intent.putExtra("lName", lName);
                 intent.putExtra("contact", contact);
                 intent.putExtra("locationTags", locationTagsList.toString());
-                if(downloadUri != null)
+                if (downloadUri != null)
                     intent.putExtra("uri", downloadUri.toString());
 
                 startActivity(intent);
@@ -139,44 +138,34 @@ public class LocationTagPicker extends AppCompatActivity {
         locationTagEntry.setSelection(locationTagEntry.getText().length());
     }
 
-    private void loadTag()
-    {
+    private void loadTag() {
         loadlocList = new ArrayList<String>();
         if (loadlocList.size() > 0)
             loadlocList.clear();
-        DocumentReference docRef = db.collection("Tags").document("Location");
-       docRef
-               .get()
-               .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                   @Override
-                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                       if (task.isSuccessful()) {
-                           DocumentSnapshot document = task.getResult();
-                           if (document.exists()) {
-                                loadlocList.add(document.get("locationTags").toString());
-                              group = (List<String>) document.get("locationTags");
-                               for (int i=0;i<group.size();i++)
-                               {
-                                   String loc= group.get(i);
-                                   Log.d("Data", "Array data :"+loc);
-                                   setTag(loc);
 
-                               }
+        db.collection("Tags")
+                .document("Location")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                loadlocList = (List<String>) document.get("locationTags");
+                                Log.d("LOCATIONTAGPICKER", "Array data :" + loadlocList);
+                                for(String loc : loadlocList) {
+                                    setTag(loc);
+                                }
 
-                               Log.d("TAG", "DocumentSnapshot data: " + document.get("locationTags"));
-                               Log.d("Data", "Array data"+group);
-                               group.clear();
-//                               setTag(null);
-
-                           } else {
-                               Log.d("TAG", "No such document");
-                           }
-                       } else {
-                           Log.d("TAG", "get failed with ", task.getException());
-                       }
-                   }
-               });
-
+                            } else {
+                                Log.d("TAG", "No such document");
+                            }
+                        } else {
+                            Log.d("TAG", "get failed with ", task.getException());
+                        }
+                    }
+                });
 
 
     }
@@ -185,11 +174,10 @@ public class LocationTagPicker extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         chipGroup.removeAllViews();
-        loadTag();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
-        }else{
+        } else {
             // Write you code here if permission already given.
         }
     }

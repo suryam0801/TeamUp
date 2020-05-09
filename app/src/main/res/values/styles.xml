@@ -21,6 +21,7 @@
 
 
     <style name="ChipTextStyle_Selected">
+        <item name="android:background">@drawable/gradient_button</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
