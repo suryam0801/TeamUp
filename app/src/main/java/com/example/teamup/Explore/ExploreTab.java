@@ -386,8 +386,8 @@ public class ExploreTab extends Fragment {
         List<String> locationTags = user.getLocationTags();
         List<String> interestTags = user.getInterestTags();
 
-        for (String location : locationTags) {
-            for (String interest : interestTags) {
+        for (final String location : locationTags) {
+            for (final String interest : interestTags) {
                 db.collection("MasterProjectCollection")
                         .document(location)
                         .collection(interest)
@@ -398,7 +398,9 @@ public class ExploreTab extends Fragment {
                                 if (task.isSuccessful() && task.getResult() != null) {
                                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                         Broadcast broadcast = documentSnapshot.toObject(Broadcast.class);
-
+                                        Log.d("", "-------------------------------------------------------");
+                                        Log.d("", location + " " + interest);
+                                        Log.d("", "-------------------------------------------------------");
                                         boolean contains = false;
                                         for (Broadcast b : broadcastList) {
                                             if (b.getBroadcastId().equals(broadcast.getBroadcastId())) {

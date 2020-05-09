@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.teamup.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,15 +67,19 @@ public class LocationTagPicker extends AppCompatActivity {
         setInterestTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LocationTagPicker.this, InterestTagPicker.class);
-                intent.putExtra("fName", fName);
-                intent.putExtra("lName", lName);
-                intent.putExtra("contact", contact);
-                intent.putExtra("locationTags", locationTagsList.toString());
-                if (downloadUri != null)
-                    intent.putExtra("uri", downloadUri.toString());
+                if(!locationTagsList.isEmpty()){
+                    Intent intent = new Intent(LocationTagPicker.this, InterestTagPicker.class);
+                    intent.putExtra("fName", fName);
+                    intent.putExtra("lName", lName);
+                    intent.putExtra("contact", contact);
+                    intent.putExtra("locationTags", locationTagsList.toString());
+                    if (downloadUri != null)
+                        intent.putExtra("uri", downloadUri.toString());
 
-                startActivity(intent);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(LocationTagPicker.this,"Select tags before you continue",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -115,6 +123,7 @@ public class LocationTagPicker extends AppCompatActivity {
                 TypedValue.COMPLEX_UNIT_DIP, 10,
                 getResources().getDisplayMetrics()
         );
+        chip.setRippleColor(ColorStateList.valueOf(Color.WHITE));
         chip.setPadding(
                 (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 3,
@@ -161,6 +170,14 @@ public class LocationTagPicker extends AppCompatActivity {
                             if (document.exists()) {
                                 loadlocList = (List<String>) document.get("locationTags");
                                 Log.d("LOCATIONTAGPICKER", "Array data :" + loadlocList);
+
+                                Collections.sort(loadlocList, new Comparator<String>() {
+                                    @Override
+                                    public int compare(String s1, String s2) {
+                                        return s1.compareToIgnoreCase(s2);
+                                    }
+                                });
+
                                 for(String loc : loadlocList) {
                                     setTag(loc);
                                 }

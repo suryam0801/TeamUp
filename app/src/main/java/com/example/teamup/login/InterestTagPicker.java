@@ -143,7 +143,7 @@ public class InterestTagPicker extends AppCompatActivity {
                 TypedValue.COMPLEX_UNIT_DIP, 10,
                 getResources().getDisplayMetrics()
         );
-        chip.setRippleColor(ColorStateList.valueOf(Color.BLACK));
+        chip.setRippleColor(ColorStateList.valueOf(Color.WHITE));
         chip.setPadding(
                 (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 3,
@@ -152,7 +152,6 @@ public class InterestTagPicker extends AppCompatActivity {
                 paddingDp, paddingDp, paddingDp);
         chip.setText(name);
         chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
-
         chip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,6 +224,7 @@ public class InterestTagPicker extends AppCompatActivity {
                                         }
                                     }
                                 }
+
 
                                 Collections.sort(interestTagsList, new Comparator<String>() {
                                     @Override
