@@ -29,6 +29,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -46,11 +48,13 @@ public class InterestTagPicker extends AppCompatActivity {
     private Button register;
     private String tempLoc, fName, lName, userId, downloadUri, contact;
     private List<String> locationTags = new ArrayList<>(), interestTagsList = new ArrayList<>();
+    private List<List<String>> loadinList;
     private EditText interestTagsEntry;
     private User user;
     private Tags tags;
     private ChipGroup chipGroup;
     private Button interestTagAdd;
+    private  List<String> group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +157,9 @@ public class InterestTagPicker extends AppCompatActivity {
             }
         });
         chipGroup.addView(chip);
+        String inchip=chip.getText().toString();
+//        if (inchip.equals(name))
+//            chipGroup.removeView(chip);
         interestTagsEntry.setText("#");
         interestTagsEntry.setSelection(interestTagsEntry.getText().length());
     }
@@ -183,6 +190,56 @@ public class InterestTagPicker extends AppCompatActivity {
         } else {
             Toast.makeText(InterestTagPicker.this, "Enter Valid details", Toast.LENGTH_LONG).show();
         }
+    }
+    private void loadinTag()
+    {
+        loadinList = new ArrayList<List<String>>();
+        if (loadinList.size() > 0)
+            loadinList.clear();
+        DocumentReference docRef = db.collection("Tags").document("Location-Interest");
+        docRef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                for (String loc : locationTags)
+                                {
+//                                    String intField=locationTags.get(i);
+                                    group = (List<String>) document.get(loc);
+                                    for (String in : group)
+                                    {
+                                        Log.d("Data List", "Interest Tag"+in);
+                                        setTag(in);
+                                    }
+
+                                }
+                                group.clear();
+
+                            } else {
+                                Log.d("TAG", "No such document");
+                            }
+                        } else {
+                            Log.d("TAG", "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private List<String> sortedval(List<String> group) {
+        String checkval;
+        for (int i=0;i<group.size();i++)
+        {
+            checkval=group.get(i);
+            String crctval=group.get(i+1);
+            if (checkval.equals(crctval))
+            {
+                group.remove(i+1);
+            }
+        }
+        return group;
     }
 
     private void addUserToCollection() {
@@ -280,6 +337,14 @@ public class InterestTagPicker extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Failed to create user", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        chipGroup.removeAllViews();
+        loadinTag();
+//        chipGroup.removeAllViewsInLayout();
     }
 
 }

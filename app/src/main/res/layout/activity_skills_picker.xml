@@ -100,11 +100,16 @@
                 </Button>
             </RelativeLayout>
 
-            <com.google.android.material.chip.ChipGroup
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/interest_tag_chip_group">
-            </com.google.android.material.chip.ChipGroup>
+                android:layout_height="match_parent">
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/interest_tag_chip_group">
+                </com.google.android.material.chip.ChipGroup>
+            </androidx.core.widget.NestedScrollView>
+
 
         </LinearLayout>
 
