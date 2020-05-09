@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-public class LoginInterestTagPicker extends AppCompatActivity {
+public class interestTagPicker extends AppCompatActivity {
 
 
     private FirebaseAuth firebaseAuth;
@@ -169,18 +169,18 @@ public class LoginInterestTagPicker extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(LoginInterestTagPicker.this, "User Registered Successfully", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(LoginInterestTagPicker.this, TabbedActivityMain.class));
+                                Toast.makeText(interestTagPicker.this, "User Registered Successfully", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(interestTagPicker.this, TabbedActivityMain.class));
                                 finish();
                             } else {
-                                Toast.makeText(LoginInterestTagPicker.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(interestTagPicker.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 firebaseAuth.signOut();
                                 firebaseAuth.getCurrentUser().delete();
                             }
                         }
                     });
         } else {
-            Toast.makeText(LoginInterestTagPicker.this, "Enter Valid details", Toast.LENGTH_LONG).show();
+            Toast.makeText(interestTagPicker.this, "Enter Valid details", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -265,7 +265,7 @@ public class LoginInterestTagPicker extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        SessionStorage.saveUser(LoginInterestTagPicker.this, user);
+                        SessionStorage.saveUser(interestTagPicker.this, user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

@@ -46,7 +46,7 @@ public class LoginLocationTagPicker extends AppCompatActivity {
         setInterestTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginLocationTagPicker.this, LoginInterestTagPicker.class);
+                Intent intent = new Intent(LoginLocationTagPicker.this, interestTagPicker.class);
                 intent.putExtra("fName", fName);
                 intent.putExtra("lName", lName);
                 intent.putExtra("contact", contact);
