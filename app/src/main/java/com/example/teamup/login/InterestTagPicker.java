@@ -2,9 +2,11 @@ package com.example.teamup.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -55,7 +58,7 @@ public class InterestTagPicker extends AppCompatActivity {
     private Tags tags;
     private ChipGroup chipGroup;
     private Button interestTagAdd;
-    private  List<String> group;
+    private List<String> group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,8 @@ public class InterestTagPicker extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+        loadinTag();
 
         fName = getIntent().getStringExtra("fName");
         lName = getIntent().getStringExtra("lName");
@@ -131,12 +136,12 @@ public class InterestTagPicker extends AppCompatActivity {
     }
 
     private void setTag(final String name) {
-        interestTagsList.add(name);
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
                 getResources().getDisplayMetrics()
         );
+        chip.setRippleColor(ColorStateList.valueOf(Color.BLACK));
         chip.setPadding(
                 (int) TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, 3,
@@ -144,21 +149,26 @@ public class InterestTagPicker extends AppCompatActivity {
                 ),
                 paddingDp, paddingDp, paddingDp);
         chip.setText(name);
-        chip.setTextAppearanceResource(R.style.ChipTextStyle_Selected);
-        chip.setCloseIconResource(R.drawable.ic_clear_black_24dp);
-        chip.setCloseIconEnabled(true);
+        chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
 
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+        chip.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                chipGroup.removeView(chip);
-                interestTagsList.remove(name);
+            public void onClick(View view) {
+                if (chip.getChipBackgroundColor().getDefaultColor() == -9655041) {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+                    interestTagsList.remove(chip.getText().toString());
+                } else {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+                    interestTagsList.add(chip.getText().toString());
+
+                }
+
+                Log.d("INTEREST TAG PICKER", "INTEREST TAG LIST: " + interestTagsList.toString());
             }
+
         });
+
         chipGroup.addView(chip);
-        String inchip=chip.getText().toString();
-//        if (inchip.equals(name))
-//            chipGroup.removeView(chip);
         interestTagsEntry.setText("#");
         interestTagsEntry.setSelection(interestTagsEntry.getText().length());
     }
@@ -190,33 +200,32 @@ public class InterestTagPicker extends AppCompatActivity {
             Toast.makeText(InterestTagPicker.this, "Enter Valid details", Toast.LENGTH_LONG).show();
         }
     }
-    private void loadinTag()
-    {
+
+    private void loadinTag() {
         loadinList = new ArrayList<List<String>>();
         if (loadinList.size() > 0)
             loadinList.clear();
-        DocumentReference docRef = db.collection("Tags").document("Location-Interest");
-        docRef
+        db.collection("Tags")
+                .document("Location-Interest")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
+                            Log.d(" INTEREST TAG PICKER", "DOCUMENT SNAPSHOT: " + document.toString());
                             if (document.exists()) {
-                                for (String loc : locationTags)
-                                {
-//                                    String intField=locationTags.get(i);
+                                for (String loc : locationTags) {
                                     group = (List<String>) document.get(loc);
-                                    for (String in : group)
-                                    {
-                                        Log.d("Data List", "Interest Tag"+in);
-                                        setTag(in);
+                                    for (String in : group) {
+                                        if(!interestTagsList.contains(in)) {
+                                            interestTagsList.add(in);
+                                            setTag(in);
+                                        }
                                     }
-
                                 }
+                                interestTagsList.clear();
                                 group.clear();
-
                             } else {
                                 Log.d("TAG", "No such document");
                             }
@@ -229,13 +238,11 @@ public class InterestTagPicker extends AppCompatActivity {
 
     private List<String> sortedval(List<String> group) {
         String checkval;
-        for (int i=0;i<group.size();i++)
-        {
-            checkval=group.get(i);
-            String crctval=group.get(i+1);
-            if (checkval.equals(crctval))
-            {
-                group.remove(i+1);
+        for (int i = 0; i < group.size(); i++) {
+            checkval = group.get(i);
+            String crctval = group.get(i + 1);
+            if (checkval.equals(crctval)) {
+                group.remove(i + 1);
             }
         }
         return group;
@@ -337,7 +344,6 @@ public class InterestTagPicker extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         chipGroup.removeAllViews();
-        loadinTag();
 //        chipGroup.removeAllViewsInLayout();
     }
 
