@@ -20,7 +20,7 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginLocationTagPicker extends AppCompatActivity {
+public class LocationTagPicker extends AppCompatActivity {
 
     private String loc, fName, lName, userId, downloadUri, contact;
     private List<String> locationTagsList = new ArrayList<>();
@@ -46,7 +46,7 @@ public class LoginLocationTagPicker extends AppCompatActivity {
         setInterestTags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginLocationTagPicker.this, interestTagPicker.class);
+                Intent intent = new Intent(LocationTagPicker.this, InterestTagPicker.class);
                 intent.putExtra("fName", fName);
                 intent.putExtra("lName", lName);
                 intent.putExtra("contact", contact);

@@ -102,7 +102,7 @@ public class GatherUserDetails extends AppCompatActivity {
 //                contact = "+91"+phn_num.getText().toString();
                 contact = pref.getString("key_name5", null);
 
-                Intent intent = new Intent(GatherUserDetails.this, LoginLocationTagPicker.class);
+                Intent intent = new Intent(GatherUserDetails.this, LocationTagPicker.class);
                 intent.putExtra("fName", fName);
                 intent.putExtra("lName", lName);
                 intent.putExtra("contact", contact);
