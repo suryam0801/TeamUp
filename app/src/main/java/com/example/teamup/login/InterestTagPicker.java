@@ -40,6 +40,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -220,10 +222,20 @@ public class InterestTagPicker extends AppCompatActivity {
                                     for (String in : group) {
                                         if(!interestTagsList.contains(in)) {
                                             interestTagsList.add(in);
-                                            setTag(in);
                                         }
                                     }
                                 }
+
+                                Collections.sort(interestTagsList, new Comparator<String>() {
+                                    @Override
+                                    public int compare(String s1, String s2) {
+                                        return s1.compareToIgnoreCase(s2);
+                                    }
+                                });
+
+                                for(String interest : interestTagsList)
+                                    setTag(interest);
+
                                 interestTagsList.clear();
                                 group.clear();
                             } else {
@@ -234,18 +246,6 @@ public class InterestTagPicker extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    private List<String> sortedval(List<String> group) {
-        String checkval;
-        for (int i = 0; i < group.size(); i++) {
-            checkval = group.get(i);
-            String crctval = group.get(i + 1);
-            if (checkval.equals(crctval)) {
-                group.remove(i + 1);
-            }
-        }
-        return group;
     }
 
     private void addUserToCollection() {
