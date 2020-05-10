@@ -28,6 +28,7 @@
             android:textSize="16dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/black"
+            android:id="@+id/applyConfirmationTitle"
             android:text="Request send successfully!">
         </TextView>
         
@@ -38,12 +39,13 @@
         android:layout_height="wrap_content"
         android:text="Your request to teamup with the group has been sent successfully! We will notify you when your request is accepted."
         android:textColor="#828282"
+        android:id="@+id/applyConfirmationDescription"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto_regular"></TextView>
     
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="35dp"
         android:layout_gravity="center"
         android:background="@drawable/create_project_skill_add_button"
