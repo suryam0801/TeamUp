@@ -103,6 +103,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
             public void onClick(View view) {
                 String pName = String.valueOf(broadcastName.getText());
                 String pDescription = String.valueOf(broadcastDescription.getText());
+                selectedInterestList.remove("edit");
+                selectedLocationList.remove("edit");
                 if (pName.equals("") || pDescription.equals("") || pName.replaceAll("\\s", "").equals("") || pDescription.replaceAll("\\s", "").equals("")) {
                     Toast.makeText(getApplicationContext(), "Please Fill Out All Fields", Toast.LENGTH_LONG).show();
                 } else if (locationTagList.isEmpty() || interestTagList.isEmpty()) {
@@ -556,6 +558,8 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     }
 
     private void createInMasterStore(Broadcast broadcast) {
+        selectedInterestList.remove("edit");
+        selectedLocationList.remove("edit");
         for (String loc : selectedLocationList) {
             db.collection("Tags")
                     .document("Location-Interest")
@@ -587,6 +591,9 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
 
         int radioId = acceptanceTypeRadioGroup.getCheckedRadioButtonId();
         radioButton = findViewById(radioId);
+
+        selectedInterestList.remove("edit");
+        selectedLocationList.remove("edit");
 
         final Broadcast broadcast = new Broadcast();
         broadcast.setCreatorId(Objects.requireNonNull(currentUser.getCurrentUser()).getUid());
