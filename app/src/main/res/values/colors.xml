@@ -4,12 +4,12 @@
     <color name="colorPrimaryDark">#FFA000</color>
     <color name="colorAccent">#009688</color>
     <color name="card_back">#FFFFFF</color>
-    <color name="color_orange">#FE451E</color>
+    <color name="opaque_orange">#FF9C38</color>
     <color name="chip_unselected_gray">#F8F8F8</color>
     <color name="black">#000000</color>
     <color name="color_blue">#6CACFF</color>
     <color name="color1">#424549</color>
-    <color name="color2">#7e455e</color>
+    <color name="green">#11F692</color>
     <color name="color3">#796e25</color>
     <color name="color4">#59717c</color>
     <color name="grey">#C0C0C0</color>
