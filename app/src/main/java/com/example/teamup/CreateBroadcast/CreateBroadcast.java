@@ -556,22 +556,22 @@ public class CreateBroadcast extends Activity implements AdapterView.OnItemSelec
     }
 
     private void createInMasterStore(Broadcast broadcast) {
-        for (String loc : locationTagList) {
+        for (String loc : selectedLocationList) {
             db.collection("Tags")
                     .document("Location-Interest")
-                    .update(loc, FieldValue.arrayUnion(interestTagList.toArray()));
-            for (String interest : interestTagList) {
+                    .update(loc, FieldValue.arrayUnion(selectedInterestList.toArray()));
+            for (String interest : selectedInterestList) {
                 db.collection("MasterProjectCollection").document(loc).collection(interest).document(broadcast.getBroadcastId()).set(broadcast);
             }
         }
 
         db.collection("Tags")
                 .document("Location")
-                .update("locationTags", FieldValue.arrayUnion(locationTagList.toArray()));
+                .update("locationTags", FieldValue.arrayUnion(selectedLocationList.toArray()));
 
         db.collection("Tags")
                 .document("Interest")
-                .update("interestTags", FieldValue.arrayUnion(interestTagList.toArray()));
+                .update("interestTags", FieldValue.arrayUnion(selectedInterestList.toArray()));
 
 
     }
