@@ -10,15 +10,15 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +35,9 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,6 +45,8 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,21 +54,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EditOrViewProfile extends AppCompatActivity {
 
     private CircleImageView profileImageView;
-    private TextView userName, userEmail, createdProjects, workingProjects, completedProjects, specialization, Hobbies, Location;
-    private Button editProfPic, editSpecialization, editLocation, finalizeChanges, logout;
-    private EditText specializationEdit, locationEdit;
+    private TextView userName, userEmail, createdProjects, workingProjects, completedProjects;
+    private Button editProfPic, finalizeChanges, logout;
     private Dialog removeConfirm;
     private ImageButton back;
+    private ChipGroup locationTags, interestTags;
     private Uri filePath;
     private StorageReference storageReference;
     private Uri downloadUri;
     private FirebaseFirestore db;
+    private List<String> locationTagList, interestTagList;
     private FirebaseAuth firebaseAuth;
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int STORAGE_PERMISSION_CODE = 101;
-
-
-    String userID, flag, TAG = "EDIT OR VIEW PROFILE";
+    private boolean change = false;
+    String userID = "", flag = "", TAG = "EDIT OR VIEW PROFILE";
     User user;
 
     @Override
@@ -80,25 +82,28 @@ public class EditOrViewProfile extends AppCompatActivity {
         createdProjects = findViewById(R.id.viewProfile_createdProjectsCount);
         workingProjects = findViewById(R.id.viewProfileWorkingProjectCount);
         completedProjects = findViewById(R.id.viewProfile_CompletedProjectsCount);
-        specialization = findViewById(R.id.viewProfile_specializedField);
-        Location = findViewById(R.id.viewProfile_location);
         editProfPic = findViewById(R.id.profile_view_profilePicSetterImage);
-        editSpecialization = findViewById(R.id.editSpecialization);
-        editLocation = findViewById(R.id.editLocation);
         profileImageView = findViewById(R.id.profile_view_profile_image);
         finalizeChanges = findViewById(R.id.profile_finalize_changes);
         logout = findViewById(R.id.profile_logout);
         back = findViewById(R.id.bck_view_edit_profile);
-        specializationEdit = findViewById(R.id.viewProfileChangeSpecialization);
-        locationEdit = findViewById(R.id.viewProfileChangeLocation);
+        locationTags = findViewById(R.id.viewProfile_locationTags);
+        interestTags = findViewById(R.id.viewProfile_interestTags);
         removeConfirm = new Dialog(EditOrViewProfile.this);
         firebaseAuth = FirebaseAuth.getInstance();
         storageReference= FirebaseStorage.getInstance().getReference();
+
 
         userID = getIntent().getStringExtra("userID");
         flag = getIntent().getStringExtra("flag");
 
         user = SessionStorage.getUser(EditOrViewProfile.this);
+
+        createdProjects.setText(user.getCreatedProjects() + "");
+        workingProjects.setText(user.getWorkingProjects() + "");
+        completedProjects.setText(user.getCompletedProjects() + "");
+        userName.setText(user.getFirstName() + " " + user.getLastName());
+        userEmail.setText(user.getContact() + "");
 
         Glide.with(EditOrViewProfile.this)
                 .load(user.getProfileImageLink())
@@ -141,36 +146,12 @@ public class EditOrViewProfile extends AppCompatActivity {
                 }
             }
         });
-        editSpecialization.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                specialization.setVisibility(View.GONE);
-                specializationEdit.setVisibility(View.VISIBLE);
-                finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
-                finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
-            }
-        });
-        editLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Location.setVisibility(View.GONE);
-                locationEdit.setVisibility(View.VISIBLE);
-                finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
-                finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
-            }
-        });
         finalizeChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String pSkill = String.valueOf(specializationEdit.getText());
-                String loc = String.valueOf(locationEdit.getText());
+                if(change = true){
 
-                /*if (!pSkill.trim().equals(""))
-                    user.setInterests(pSkill);
-                if (!loc.trim().equals(""))
-                    user.setLocation(loc);*/
-
-                db.collection("Users").document(userID).set(user);
+                }
             }
         });
 
@@ -178,10 +159,10 @@ public class EditOrViewProfile extends AppCompatActivity {
 
         switch (flag) {
             case "applicant":
-                applicantLoad();
+                //applicantLoad();
                 break;
             case "member":
-                memberLoad();
+                //memberLoad();
                 break;
             case "owner":
                 ownerLoad();
@@ -295,9 +276,6 @@ public class EditOrViewProfile extends AppCompatActivity {
         }
     }
 
-
-
-
     public void removeUserConfirmationDialog() {
         removeConfirm.setContentView(R.layout.remove_user_dialog_layout);
         final Button remove = removeConfirm.findViewById(R.id.remove_user_accept_button);
@@ -345,7 +323,8 @@ public class EditOrViewProfile extends AppCompatActivity {
         });
     }
 
-    public void applicantLoad() {
+    //applicant and member profile loading
+    /*public void applicantLoad() {
         editProfPic.setVisibility(View.GONE);
         editSpecialization.setVisibility(View.GONE);
         editLocation.setVisibility(View.GONE);
@@ -370,7 +349,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                /*user = documentSnapshot.toObject(User.class);
+                user = documentSnapshot.toObject(User.class);
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
@@ -380,7 +359,7 @@ public class EditOrViewProfile extends AppCompatActivity {
                 workingProjects.setText(user.getWorkingProjects() + "");
                 completedProjects.setText(user.getCompletedProjects() + "");
                 specialization.setText(user.getInterests());
-                Location.setText(user.getLocation());*/
+                Location.setText(user.getLocation());
             }
         });
     }
@@ -411,7 +390,7 @@ public class EditOrViewProfile extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                /*user = documentSnapshot.toObject(User.class);
+                user = documentSnapshot.toObject(User.class);
 
                 Log.d("EDITORVIEW", "userID: " + user.toString());
 
@@ -422,29 +401,115 @@ public class EditOrViewProfile extends AppCompatActivity {
                 completedProjects.setText(user.getCompletedProjects() + "");
                 specialization.setText(user.getInterests());
 
-                Location.setText(user.getLocation());*/
+                Location.setText(user.getLocation());
             }
         });
     }
+*/
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(getIntent().hasExtra("locationTagList")) {
+            locationTagList = getIntent().getStringArrayListExtra("locationTagList");
+            finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+            finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
+            locationTags.removeAllViews();
+            setLocationTags(true);
+            change = true;
+        }
+        if(getIntent().hasExtra("interestTagList")){
+            interestTagList = getIntent().getStringArrayListExtra("interestTagList");
+            finalizeChanges.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+            finalizeChanges.setTextColor(Color.parseColor("#35C80B"));
+            interestTags.removeAllViews();
+            setInterestTags();
+            change = true;
+        }
+    }
 
     public void ownerLoad() {
-        DocumentReference docRef = db.collection("Users").document(userID);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                /*user = documentSnapshot.toObject(User.class);
+        setLocationTags(false);
+        setInterestTags();
+    }
 
-                Log.d("EDITORVIEW", "userID: " + user.toString());
-
-                userName.setText(user.getFirstName() + " " + user.getLastName());
-                Log.d(TAG, "USER NUMBER: \n" + user.getContact());
-                userEmail.setText(user.getContact() + "(visible only to you)");
-                createdProjects.setText(user.getCreatedProjects() + "");
-                workingProjects.setText(user.getWorkingProjects() + "");
-                completedProjects.setText(user.getCompletedProjects() + "");
-                specialization.setText(user.getInterests());
-                Location.setText(user.getLocation());*/
+    public void setLocationTags(boolean refresh){
+        List<String> locationList = new ArrayList<>();
+        if(refresh == false){
+            locationList = SessionStorage.getUser(EditOrViewProfile.this).getLocationTags();
+        } else {
+            for(String s : locationTagList){
+                locationList.add(s);
             }
-        });
+        }
+
+        locationList.add("edit");
+        for(String s: locationList){
+            final Chip chip = new Chip(this);
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            chip.setPadding(
+                    (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 3,
+                            getResources().getDisplayMetrics()
+                    ),
+                    paddingDp, paddingDp, paddingDp);
+            chip.setText(s);
+            if(s.equals("edit")){
+                chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.opaque_orange)));
+            } else {
+                chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            }
+            chip.setTextColor(Color.WHITE);
+
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(chip.getText().equals("edit")){
+                        startActivity(new Intent(EditOrViewProfile.this, ProjectPickLocationTags.class));
+                    }
+                }
+
+            });
+            locationTags.addView(chip);
+        }
+    }
+
+    public void setInterestTags(){
+        final List<String> interestList = SessionStorage.getUser(EditOrViewProfile.this).getInterestTags();
+        interestList.add("edit");
+        for(String s: interestList){
+            final Chip chip = new Chip(this);
+            int paddingDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 10,
+                    getResources().getDisplayMetrics()
+            );
+            chip.setPadding(
+                    (int) TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP, 3,
+                            getResources().getDisplayMetrics()
+                    ),
+                    paddingDp, paddingDp, paddingDp);
+            chip.setText(s);
+            if(s.equals("edit")){
+                chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.opaque_orange)));
+            } else {
+                chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            }
+            chip.setTextColor(Color.WHITE);
+
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(chip.getText().equals("edit")){
+                        startActivity(new Intent(EditOrViewProfile.this, ProjectPickInterestTags.class));
+                    }
+                }
+
+            });
+            interestTags.addView(chip);
+        }
     }
 }

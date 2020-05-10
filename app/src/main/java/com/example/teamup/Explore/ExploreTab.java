@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -45,6 +46,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,6 +177,8 @@ public class ExploreTab extends Fragment {
         projectName.setText(broadcastList.get(pos).getBroadcastName());
         creatorName.setText(broadcastList.get(pos).getCreatorName());
         projectShortDescription.setText(broadcastList.get(pos).getBroadcastDescription());
+
+        Log.d(TAG, "ACCEPTANCE TYPE: " + broadcastList.get(pos).getAcceptanceType());
 
         if (broadcastList.get(pos).getAcceptanceType().equals("Automatic")) {
             acceptButton.setText("Join");
@@ -373,7 +378,6 @@ public class ExploreTab extends Fragment {
                         .update("workersId", FieldValue.arrayUnion(user.getUserId()));
             }
         }
-
     }
 
     public void saveApplicant(String shortPitch, final String projectId) {
@@ -457,6 +461,13 @@ public class ExploreTab extends Fragment {
         completedDialog.setContentView(R.layout.application_confirmation_popup);
         completedDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         Button button = completedDialog.findViewById(R.id.completedDialogeDoneButton);
+        TextView title = completedDialog.findViewById(R.id.applyConfirmationTitle);
+        TextView description = completedDialog.findViewById(R.id.applyConfirmationDescription);
+
+        if(savingBroadcast.getAcceptanceType().equals("Automatic")) {
+            title.setText("Successfully joined");
+            description.setText("Congratulations! You are now part of the " + savingBroadcast.getBroadcastName() + " circle. Head over to workbench to view the groups activity");
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

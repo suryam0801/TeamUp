@@ -56,24 +56,48 @@
                 android:background="#EEEEEE">
             </View>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="11dp"
-                android:layout_marginRight="11dp">
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_view_profile_image"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/ic_account_circle_black_24dp" />
+
+                    <Button
+                        android:id="@+id/profile_view_profilePicSetterImage"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_alignBottom="@+id/profile_view_profile_image"
+                        android:layout_alignRight="@+id/profile_view_profile_image"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/edit_project_button_background"
+                        android:foreground="@drawable/ic_camera_alt_black_24dp"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:foregroundGravity="center" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="57dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/light_blue_nav_button">
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/viewProfile_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="56dp"
                         android:text="User Name"
                         android:fontFamily="@font/roboto_medium"
                         android:textSize="16dp"
@@ -90,42 +114,29 @@
                         android:fontFamily="@font/roboto_medium"
                         android:textSize="12dp"
                         android:textColor="#828282"
-                        android:layout_marginBottom="22dp"
+                        android:gravity="center"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="(only visible for you)"
+                        android:fontFamily="@font/roboto_medium"
+                        android:textSize="12dp"
+                        android:textColor="#828282"
                         android:gravity="center"></TextView>
 
                 </LinearLayout>
+            </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profile_view_profile_image"
-                        android:layout_width="72dp"
-                        android:layout_height="72dp"
-                        android:background="@drawable/ic_account_circle_black_24dp" />
-
-                    <Button
-                        android:id="@+id/profile_view_profilePicSetterImage"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginTop="45dp"
-                        android:background="@drawable/edit_project_button_background"
-                        android:foreground="@drawable/edit_drawable"
-                        android:foregroundGravity="center"/>
-                </RelativeLayout>
-
-            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
                 android:layout_marginRight="11dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="26dp"
                 android:paddingLeft="26dp"
                 android:paddingRight="26dp"
                 android:paddingBottom="16dp"
@@ -228,9 +239,9 @@
                 android:paddingBottom="20dp"
                 android:paddingRight="16dp"
                 android:paddingLeft="16dp"
+                android:background="@drawable/light_blue_nav_button"
                 android:layout_marginLeft="11dp"
-                android:orientation="vertical"
-                android:background="@drawable/light_blue_nav_button">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -245,48 +256,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:text="Specialized Field"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="Your Location Tags"
                             android:textColor="#828282"
-                            android:fontFamily="@font/roboto_regular">
-                        </TextView>
+                            android:textSize="12dp"></TextView>
 
-                        <TextView
-                            android:id="@+id/viewProfile_specializedField"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Android Developer"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/roboto_regular">
-                        </TextView>
-
-                        <EditText
-                            android:id="@+id/viewProfileChangeSpecialization"
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/viewProfile_locationTags"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter New Specialty"
-                            android:textColorHint="#6CACFF"
-                            android:visibility="gone"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            android:backgroundTint="#6CACFF"></EditText>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end">
-
-                        <Button
-                            android:id="@+id/editSpecialization"
-                            android:layout_width="12dp"
-                            android:layout_height="12sp"
-                            android:background="@drawable/create_24px">
-                        </Button>
+                            android:layout_marginTop="10dp"
+                            >
+                        </com.google.android.material.chip.ChipGroup>
 
                     </LinearLayout>
 
@@ -307,47 +288,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
-                            android:text="Location"
+                            android:text="Your Interest Tags"
                             android:textColor="#828282"
                             android:fontFamily="@font/roboto_regular">
                         </TextView>
 
-                        <TextView
-                            android:id="@+id/viewProfile_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="12dp"
-                            android:layout_marginTop="8dp"
-                            android:text="Android Developer"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/roboto_regular">
-                        </TextView>
-
-                        <EditText
-                            android:id="@+id/viewProfileChangeLocation"
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/viewProfile_interestTags"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter New Specialty"
-                            android:textColorHint="#6CACFF"
-                            android:textColor="@color/black"
-                            android:visibility="gone"
                             android:textSize="12dp"
-                            android:backgroundTint="#6CACFF"></EditText>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end">
-
-                        <Button
-                            android:id="@+id/editLocation"
-                            android:layout_width="12dp"
-                            android:layout_height="12sp"
-                            android:background="@drawable/create_24px">
-                        </Button>
+                            android:layout_marginTop="10dp">
+                        </com.google.android.material.chip.ChipGroup>
 
                     </LinearLayout>
 
@@ -370,6 +322,7 @@
                     android:textAllCaps="false"
                     android:text="Finalize Changes"
                     android:textColor="#828282"
+                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:layout_weight="50"
                     android:gravity="center"
@@ -386,7 +339,6 @@
                     android:layout_weight="50"
                     android:textColor="#6CACFF"
                     android:gravity="center"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginBottom="40dp"
                     android:background="@drawable/light_blue_nav_button">
                 </Button>
