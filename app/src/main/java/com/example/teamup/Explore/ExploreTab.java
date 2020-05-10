@@ -373,7 +373,6 @@ public class ExploreTab extends Fragment {
                         .update("workersId", FieldValue.arrayUnion(user.getUserId()));
             }
         }
-
     }
 
     public void saveApplicant(String shortPitch, final String projectId) {

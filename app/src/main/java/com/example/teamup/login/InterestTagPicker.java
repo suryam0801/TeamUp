@@ -218,11 +218,14 @@ public class InterestTagPicker extends AppCompatActivity {
                             if (document.exists()) {
                                 for (String loc : locationTags) {
                                     group = (List<String>) document.get(loc);
-                                    for (String in : group) {
-                                        if(!interestTagsList.contains(in)) {
-                                            interestTagsList.add(in);
+                                    if(group != null){
+                                        for (String in : group) {
+                                            if (!interestTagsList.contains(in)) {
+                                                interestTagsList.add(in);
+                                            }
                                         }
                                     }
+
                                 }
 
 
@@ -233,7 +236,7 @@ public class InterestTagPicker extends AppCompatActivity {
                                     }
                                 });
 
-                                for(String interest : interestTagsList)
+                                for (String interest : interestTagsList)
                                     setTag(interest);
 
                                 interestTagsList.clear();
