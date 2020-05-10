@@ -34,6 +34,7 @@ import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Applicant;
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.User;
+import com.example.teamup.model.Worker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,7 +65,7 @@ public class ExploreTab extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth currentUser;
     ListView lvBroadcast;
-    Broadcast broadcast;
+    Broadcast broadcast, savingBroadcast;
     User user;
     private ArrayList<Broadcast> broadcastList = new ArrayList<Broadcast>();
     private BroadcastAdapter adapter;
@@ -174,6 +175,12 @@ public class ExploreTab extends Fragment {
         creatorName.setText(broadcastList.get(pos).getCreatorName());
         projectShortDescription.setText(broadcastList.get(pos).getBroadcastDescription());
 
+        if (broadcastList.get(pos).getAcceptanceType().equals("Automatic")) {
+            acceptButton.setText("Join");
+            acceptButton.setTextColor(Color.parseColor("#35C80B"));
+            acceptButton.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+        }
+
         if (sameCreator == true) {
             acceptButton.setText("This is your project");
             acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
@@ -241,20 +248,25 @@ public class ExploreTab extends Fragment {
             public void onClick(View v) {
                 if (applicantExists == false && sameCreator == false && workerExists == false && butttonCounter % 2 == 0) {
 
-                    scrollView.setVisibility(View.GONE);
-                    projectShortDescription.setVisibility(View.GONE);
-                    shortPlaceholder.setVisibility(View.GONE);
-                    projectLongDescription.setVisibility(View.GONE);
-                    entryDisplay.setVisibility(View.VISIBLE);
-                    entryEdit.setVisibility(View.VISIBLE);
+                    if (broadcastList.get(pos).getAcceptanceType().equals("Automatic")) {
+                        savingBroadcast = broadcastList.get(pos);
+                        saveWorker(broadcastList.get(pos).getBroadcastId());
+                    } else {
+                        scrollView.setVisibility(View.GONE);
+                        projectShortDescription.setVisibility(View.GONE);
+                        shortPlaceholder.setVisibility(View.GONE);
+                        projectLongDescription.setVisibility(View.GONE);
+                        entryDisplay.setVisibility(View.VISIBLE);
+                        entryEdit.setVisibility(View.VISIBLE);
 
-                    acceptButton.setBackgroundColor(Color.TRANSPARENT);
-                    acceptButton.setTextColor(Color.parseColor("#828282"));
-                    acceptButton.setText("Back");
-                    cancelButton.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
-                    cancelButton.setTextColor(Color.parseColor("#35C80B"));
-                    cancelButton.setText("Submit Application");
-                    butttonCounter++;
+                        acceptButton.setBackgroundColor(Color.TRANSPARENT);
+                        acceptButton.setTextColor(Color.parseColor("#828282"));
+                        acceptButton.setText("Back");
+                        cancelButton.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+                        cancelButton.setTextColor(Color.parseColor("#35C80B"));
+                        cancelButton.setText("Submit Application");
+                        butttonCounter++;
+                    }
                 } else if (applicantExists == false && sameCreator == false && workerExists == false && butttonCounter % 2 == 1) {
                     scrollView.setVisibility(View.VISIBLE);
                     projectShortDescription.setVisibility(View.VISIBLE);
@@ -284,6 +296,84 @@ public class ExploreTab extends Fragment {
 
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+    public void saveWorker(final String broadcastId) {
+        User user = SessionStorage.getUser(getActivity());
+
+        final Worker worker = new Worker();
+        worker.setUserId(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        worker.setWorkerName(currentUser.getCurrentUser().getDisplayName());
+        worker.setProjectId(broadcastId);
+        worker.setProfilePicURL(user.getProfileImageLink());
+        worker.setLocationTags(user.getLocationTags());
+        worker.setInterestTags(user.getInterestTags());
+
+        Object[] array = {worker};
+
+        db.collection("Projects").document(broadcastId).update("workersList", FieldValue.arrayUnion(array))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: " + "Success");
+                            List<String> workersID = new ArrayList<>();
+                            if (broadcast.getWorkersId() == null) {
+                                workersID.add(worker.getUserId());
+                                db.collection("Projects").document(broadcastId).update("workersId", FieldValue.arrayUnion(workersID)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onSuccess: " + "Applicant Id update");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: " + "Applicant Id update");
+                                    }
+                                });
+                            } else {
+                                db.collection("Projects").document(broadcastId).update("workersId", FieldValue.arrayUnion(worker.getUserId())).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onSuccess: " + "Applicant Id update");
+                                        dialog.dismiss();
+                                        showCompletedDialog();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: " + "Applicant Id update");
+                                    }
+                                });
+                            }
+
+                        } else {
+                            Log.d(TAG, "onComplete: " + "Failure");
+                        }
+                    }
+                });
+
+        List<String> locationTags = savingBroadcast.getLocationTags();
+        List<String> interestTags = savingBroadcast.getInterestTags();
+
+        Log.d(TAG, locationTags.toString() + '\n' + interestTags.toString());
+
+        for (final String location : locationTags) {
+            for (final String interest : interestTags) {
+                db.collection("MasterProjectCollection")
+                        .document(location)
+                        .collection(interest)
+                        .document(broadcastId)
+                        .update("workersList", FieldValue.arrayUnion(array));
+
+                db.collection("MasterProjectCollection")
+                        .document(location)
+                        .collection(interest)
+                        .document(broadcastId)
+                        .update("workersId", FieldValue.arrayUnion(user.getUserId()));
+            }
+        }
+
     }
 
     public void saveApplicant(String shortPitch, final String projectId) {
@@ -398,9 +488,6 @@ public class ExploreTab extends Fragment {
                                 if (task.isSuccessful() && task.getResult() != null) {
                                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                         Broadcast broadcast = documentSnapshot.toObject(Broadcast.class);
-                                        Log.d("", "-------------------------------------------------------");
-                                        Log.d("", location + " " + interest);
-                                        Log.d("", "-------------------------------------------------------");
                                         boolean contains = false;
                                         for (Broadcast b : broadcastList) {
                                             if (b.getBroadcastId().equals(broadcast.getBroadcastId())) {
@@ -436,6 +523,8 @@ public class ExploreTab extends Fragment {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                             applicantExists = false;
+                                            sameCreator = false;
+                                            workerExists = false;
 
                                             if (broadcastList.get(i).getCreatorId().equals(Objects.requireNonNull(currentUser.getCurrentUser()).getUid())) {
                                                 Log.d(TAG, broadcastList.get(i).getCreatorId() + "\n" + currentUser.getCurrentUser().getUid());
