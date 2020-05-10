@@ -98,7 +98,7 @@ public class WorkbenchTab extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         initializeAdapters();
         getMyProjects();
-        //getWorkingProjects();
+        getWorkingProjects();
         assert firebaseUser != null;
 
         if (getArguments() != null) {
@@ -268,7 +268,7 @@ public class WorkbenchTab extends Fragment {
         });
     }
 
-/*    public void getWorkingProjects() {
+    public void getWorkingProjects() {
         //Gets the projects the user is working for
         Query myProjects = db.collection("Projects").whereArrayContains("workersId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -297,5 +297,5 @@ public class WorkbenchTab extends Fragment {
                 Log.d(TAG, "onFailure: " + e.getMessage());
             }
         });
-    }*/
+    }
 }

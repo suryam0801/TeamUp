@@ -92,9 +92,9 @@ public class ProjectPickLocationTags extends AppCompatActivity {
         locationTagAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String interestTag = locationTagEntry.getText().toString();
-                if (!interestTag.isEmpty()) {
-                    setTag(interestTag, true);
+                String locationTag = locationTagEntry.getText().toString().trim();
+                if (!locationTag.isEmpty() && !locationTag.equals("#")) {
+                    setTag(locationTag, true);
                 }
             }
         });
