@@ -174,6 +174,12 @@ public class ExploreTab extends Fragment {
         creatorName.setText(broadcastList.get(pos).getCreatorName());
         projectShortDescription.setText(broadcastList.get(pos).getBroadcastDescription());
 
+        if(broadcastList.get(pos).getAcceptanceType().equals("Open")){
+            acceptButton.setText("Join");
+            acceptButton.setTextColor(Color.parseColor("#35C80B"));
+            acceptButton.setBackground(getResources().getDrawable(R.drawable.confirm_application_buttom_background));
+        }
+
         if (sameCreator == true) {
             acceptButton.setText("This is your project");
             acceptButton.setTextColor(Color.parseColor("#D1D1D1"));
@@ -398,9 +404,6 @@ public class ExploreTab extends Fragment {
                                 if (task.isSuccessful() && task.getResult() != null) {
                                     for (DocumentSnapshot documentSnapshot : task.getResult()) {
                                         Broadcast broadcast = documentSnapshot.toObject(Broadcast.class);
-                                        Log.d("", "-------------------------------------------------------");
-                                        Log.d("", location + " " + interest);
-                                        Log.d("", "-------------------------------------------------------");
                                         boolean contains = false;
                                         for (Broadcast b : broadcastList) {
                                             if (b.getBroadcastId().equals(broadcast.getBroadcastId())) {
