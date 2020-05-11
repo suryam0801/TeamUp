@@ -20,6 +20,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.teamup.CircleWall.CircleWall;
 import com.example.teamup.CreateBroadcast.CreateBroadcast;
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
@@ -157,8 +158,8 @@ public class WorkbenchTab extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     SessionStorage.saveProject(getActivity(), myBroadcastList.get(i));
                     setNewItemValues();
-                    /*Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                    startActivity(intent);*/
+                    Intent intent = new Intent(getActivity().getBaseContext(), CircleWall.class);
+                    startActivity(intent);
                 }
             });
             Utility.setListViewHeightBasedOnChildren(myProjectsRv);
@@ -174,10 +175,11 @@ public class WorkbenchTab extends Fragment {
             workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.d(TAG, "WORKBENCH ACTIVITY: " + workingBroadcastList.get(i).toString());
                     SessionStorage.saveProject(getActivity(), workingBroadcastList.get(i));
                     setNewItemValues();
-                    /*Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                    startActivity(intent);*/
+                    Intent intent = new Intent(getActivity().getBaseContext(), CircleWall.class);
+                    startActivity(intent);
                 }
             });
             Utility.setListViewHeightBasedOnChildren(workingProjectsRv);

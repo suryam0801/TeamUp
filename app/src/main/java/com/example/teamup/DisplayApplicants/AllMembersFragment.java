@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.DisplayApplicants;
+package com.example.teamup.DisplayApplicants;
 
 import android.content.Intent;
 import android.os.Bundle;

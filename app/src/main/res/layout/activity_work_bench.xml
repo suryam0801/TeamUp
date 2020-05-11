@@ -26,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Created Projects"
+                    android:text="Your Circles"
                     android:textColor="@color/black"
                     android:textSize="16dp" />
 
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="In Progress"
+                    android:text="Participating Circles"
                     android:textColor="@color/black"
                     android:textSize="16dp" />
 
@@ -134,6 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:fontFamily="@font/roboto_bold"
+                    android:visibility="gone"
                     android:text="Completed"
                     android:textColor="@color/black"
                     android:textSize="16dp" />
@@ -143,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
+                    android:visibility="gone"
                     android:dividerHeight="12dp" />
 
             </LinearLayout>

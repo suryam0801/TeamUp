@@ -1,9 +1,8 @@
-package com.example.teamup.ControlPanel.DisplayApplicants;
+package com.example.teamup.DisplayApplicants;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
