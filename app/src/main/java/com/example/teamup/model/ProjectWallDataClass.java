@@ -21,6 +21,10 @@ public class ProjectWallDataClass {
         this.ownerPicURL = ownerPicURL;
     }
 
+
+    public ProjectWallDataClass() {
+    }
+
     @Override
     public String toString() {
         return "ProjectWallDataClass{" +
@@ -52,10 +56,6 @@ public class ProjectWallDataClass {
     }
 
     private String ownerPicURL;
-
-
-    public ProjectWallDataClass() {
-    }
 
     public String getOwnerPicURL() {
         return ownerPicURL;

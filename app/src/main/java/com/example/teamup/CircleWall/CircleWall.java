@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +27,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
+import com.example.teamup.model.Poll;
 import com.example.teamup.model.ProjectWallDataClass;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,8 +39,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -63,15 +61,15 @@ public class CircleWall extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 100;
     private FloatingActionButton fab;
 
-    private DatabaseReference mDatabase;
-    private RecyclerView recyclerView;
+    private ListView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private Broadcast broadcast;
     private Uri filePath = null;
     private LinearLayout fileSelect, pollCreateDisplay, pollCreateAnswerOptionsDisplay;
     private Button createPoll, addOption, sendBroadcast;
     private ArrayList<ProjectWallDataClass> arrayList;
-    private List<String> pollAnswerOptionsList = new ArrayList<>();
+    private List<Poll> pollList = new ArrayList<>();
+    private List<String> pollAnswerOptionsList = null, retrievalPollOptions = new ArrayList<>();
     private LinearLayout emptyPlaceHolder;
     private String uniqueID, downloadUri;
     private ImageButton back;
@@ -100,7 +98,6 @@ public class CircleWall extends AppCompatActivity {
 
         arrayList = new ArrayList<>();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -111,15 +108,11 @@ public class CircleWall extends AppCompatActivity {
         broadcast = SessionStorage.getProject(this);
         uniqueID = UUID.randomUUID().toString();
 
+        final CircleWallAdapter circleWallAdapter = new CircleWallAdapter(CircleWall.this, arrayList, pollList);
+
 
         final Query query = firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
                 .collection("Broadcasts").orderBy("Time", Query.Direction.DESCENDING);
-
-        final CircleWallAdapter circleWallAdapter = new CircleWallAdapter(CircleWall.this, arrayList);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(circleWallAdapter);
-        recyclerView.setHasFixedSize(true);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,12 +128,43 @@ public class CircleWall extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     arrayList.clear();
                     for (DocumentSnapshot doc : task.getResult()) {
-                        ProjectWallDataClass projectWallDataClass = doc.toObject(ProjectWallDataClass.class);
-
-                        arrayList.add(projectWallDataClass);
-
-                        circleWallAdapter.notifyDataSetChanged();
+                        final ProjectWallDataClass projectWallDataClass = doc.toObject(ProjectWallDataClass.class);
+                        if(projectWallDataClass.isHasPoll() == true){
+                            DocumentReference docRef = firebaseFirestore.collection("ProjectWall")
+                                    .document(broadcast.getBroadcastId())
+                                    .collection("Polls")
+                                    .document(projectWallDataClass.getPollID());
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot poll = task.getResult();
+                                        if (poll != null) {
+                                            int numOfOptions = Integer.parseInt(poll.getString("NumberOfOptions"));
+                                            String question = poll.getString("Question");
+                                            for (int i = 0; i < numOfOptions; i++) {
+                                                retrievalPollOptions.add(poll.getString("Option " + (i+1)));
+                                            }
+                                            Poll pollObject = new Poll(question, retrievalPollOptions, projectWallDataClass.getPollID());
+                                            Log.d("CIRCLE WALL POLL DISPLAYYYYYYYYYYY", pollObject.toString());
+                                            pollList.add(pollObject);
+                                            arrayList.add(projectWallDataClass);
+                                            circleWallAdapter.notifyDataSetChanged();
+                                        } else {
+                                            Log.d("LOGGER", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("LOGGER", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                        } else {
+                            arrayList.add(projectWallDataClass);
+                        }
                     }
+                    recyclerView.setAdapter(circleWallAdapter);
+                    circleWallAdapter.notifyDataSetChanged();
+
                     if (arrayList.isEmpty())
                         emptyPlaceHolder.setVisibility(View.VISIBLE);
                 }
@@ -199,6 +223,7 @@ public class CircleWall extends AppCompatActivity {
                 addOption.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        pollAnswerOptionsList = new ArrayList<>();
                         if (!pollCreateAnswerEntry.getText().toString().isEmpty() && !pollCreateQuestionEntry.getText().toString().isEmpty()) {
                             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -351,7 +376,7 @@ public class CircleWall extends AppCompatActivity {
             map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
 
             firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
-                    .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    .collection("Broadcasts").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
