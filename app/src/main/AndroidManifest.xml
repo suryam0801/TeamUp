@@ -21,17 +21,18 @@
         <activity android:name=".EditOrView.ProjectPickInterestTags" />
         <activity android:name=".login.LocationTagPicker" />
         <activity android:name=".login.InterestTagPicker" />
+        <activity android:name=".CircleWall.CircleWall"></activity>
+        <activity android:name=".CircleWall.FileComments"></activity>
         <activity android:name=".login.OtpActivity" />
         <activity android:name=".login.PhoneLogin" />
         <activity android:name=".EditOrView.EditOrViewProfile" />
         <activity android:name=".EditOrView.EditOrViewProject" />
         <activity android:name=".login.GatherUserDetails" />
-        <activity android:name=".ControlPanel.DisplayApplicants.ApplicantsTabbedActivity" />
+        <activity android:name=".DisplayApplicants.ApplicantsTabbedActivity" />
         <activity
             android:name=".TabbedActivityMain"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Notification.NotificationActivity" />
-        <activity android:name=".ControlPanel.ControlPanel" />
         <activity android:name=".login.SignUpActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity

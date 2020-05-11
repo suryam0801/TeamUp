@@ -93,13 +93,12 @@ public class ProjectPickInterestTags extends AppCompatActivity {
         interestTagAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String interestTag = interestTagEntry.getText().toString();
-                if (!interestTag.isEmpty()) {
+                String interestTag = interestTagEntry.getText().toString().trim();
+                if (!interestTag.isEmpty() && !interestTag.equals("#")) {
                     setTag(interestTag, true);
                 }
             }
         });
-
     }
 
     private void setTag(final String name, final Boolean newTag) {

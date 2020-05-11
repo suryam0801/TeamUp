@@ -1,12 +1,9 @@
-package com.example.teamup.ControlPanel.DisplayApplicants;
+package com.example.teamup.DisplayApplicants;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantDisplayFragment;
-import com.example.teamup.WorkBench.WorkbenchTab;
 
 
 public class PagerAdapterApplicants extends FragmentPagerAdapter {

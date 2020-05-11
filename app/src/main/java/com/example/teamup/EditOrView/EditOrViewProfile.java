@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.teamup.ControlPanel.DisplayApplicants.ApplicantsTabbedActivity;
+import com.example.teamup.DisplayApplicants.ApplicantsTabbedActivity;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.TabbedActivityMain;

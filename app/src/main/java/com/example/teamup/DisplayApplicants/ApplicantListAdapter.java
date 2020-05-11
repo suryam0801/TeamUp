@@ -1,4 +1,4 @@
-package com.example.teamup.ControlPanel.DisplayApplicants;
+package com.example.teamup.DisplayApplicants;
 
 import android.content.Context;
 import android.util.Log;

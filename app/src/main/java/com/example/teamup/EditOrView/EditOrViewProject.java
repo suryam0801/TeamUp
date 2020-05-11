@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Broadcast;
@@ -147,8 +146,8 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
         editDiscard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EditOrViewProject.this, ControlPanel.class));
-                finish();
+                /*startActivity(new Intent(EditOrViewProject.this, ControlPanel.class));
+                finish();*/
             }
         });
     }
@@ -195,8 +194,8 @@ public class EditOrViewProject extends AppCompatActivity implements AdapterView.
 
         db.collection("Projects").document(broadcast.getBroadcastId()).set(broadcast);
 
-        startActivity(new Intent(EditOrViewProject.this, ControlPanel.class));
-        finish();
+        /*startActivity(new Intent(EditOrViewProject.this, ControlPanel.class));
+        finish();*/
     }
 
     @Override

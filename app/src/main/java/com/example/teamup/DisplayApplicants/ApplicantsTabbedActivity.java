@@ -1,9 +1,8 @@
-package com.example.teamup.ControlPanel.DisplayApplicants;
+package com.example.teamup.DisplayApplicants;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -45,8 +43,8 @@ public class ApplicantsTabbedActivity extends AppCompatActivity  implements Bott
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ApplicantsTabbedActivity.this, ControlPanel.class));
-                finish();
+                /*startActivity(new Intent(ApplicantsTabbedActivity.this, ControlPanel.class));
+                finish();*/
             }
         });
 

@@ -20,7 +20,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.teamup.ControlPanel.ControlPanel;
+import com.example.teamup.CircleWall.CircleWall;
 import com.example.teamup.CreateBroadcast.CreateBroadcast;
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
@@ -98,7 +98,7 @@ public class WorkbenchTab extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         initializeAdapters();
         getMyProjects();
-        //getWorkingProjects();
+        getWorkingProjects();
         assert firebaseUser != null;
 
         if (getArguments() != null) {
@@ -158,7 +158,7 @@ public class WorkbenchTab extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     SessionStorage.saveProject(getActivity(), myBroadcastList.get(i));
                     setNewItemValues();
-                    Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                    Intent intent = new Intent(getActivity().getBaseContext(), CircleWall.class);
                     startActivity(intent);
                 }
             });
@@ -175,9 +175,10 @@ public class WorkbenchTab extends Fragment {
             workingProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.d(TAG, "WORKBENCH ACTIVITY: " + workingBroadcastList.get(i).toString());
                     SessionStorage.saveProject(getActivity(), workingBroadcastList.get(i));
                     setNewItemValues();
-                    Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                    Intent intent = new Intent(getActivity().getBaseContext(), CircleWall.class);
                     startActivity(intent);
                 }
             });
@@ -186,7 +187,6 @@ public class WorkbenchTab extends Fragment {
             workingProjectsEmpty.setVisibility(View.VISIBLE);
             workingProjectsRv.setVisibility(View.GONE);
         }
-
 
         pastProjectsRv.setAdapter(completedAdapter);
         pastProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -268,7 +268,7 @@ public class WorkbenchTab extends Fragment {
         });
     }
 
-/*    public void getWorkingProjects() {
+    public void getWorkingProjects() {
         //Gets the projects the user is working for
         Query myProjects = db.collection("Projects").whereArrayContains("workersId", Objects.requireNonNull(firebaseUser.getUid()));
         myProjects.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -297,5 +297,5 @@ public class WorkbenchTab extends Fragment {
                 Log.d(TAG, "onFailure: " + e.getMessage());
             }
         });
-    }*/
+    }
 }
