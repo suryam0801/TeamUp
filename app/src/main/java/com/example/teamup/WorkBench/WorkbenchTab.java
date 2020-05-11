@@ -20,7 +20,6 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.teamup.ControlPanel.ControlPanel;
 import com.example.teamup.CreateBroadcast.CreateBroadcast;
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.R;
@@ -158,8 +157,8 @@ public class WorkbenchTab extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     SessionStorage.saveProject(getActivity(), myBroadcastList.get(i));
                     setNewItemValues();
-                    Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                    startActivity(intent);
+                    /*Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                    startActivity(intent);*/
                 }
             });
             Utility.setListViewHeightBasedOnChildren(myProjectsRv);
@@ -177,8 +176,8 @@ public class WorkbenchTab extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     SessionStorage.saveProject(getActivity(), workingBroadcastList.get(i));
                     setNewItemValues();
-                    Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
-                    startActivity(intent);
+                    /*Intent intent = new Intent(getActivity().getBaseContext(), ControlPanel.class);
+                    startActivity(intent);*/
                 }
             });
             Utility.setListViewHeightBasedOnChildren(workingProjectsRv);
@@ -186,7 +185,6 @@ public class WorkbenchTab extends Fragment {
             workingProjectsEmpty.setVisibility(View.VISIBLE);
             workingProjectsRv.setVisibility(View.GONE);
         }
-
 
         pastProjectsRv.setAdapter(completedAdapter);
         pastProjectsRv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
