@@ -151,7 +151,7 @@ public class NotificationAdapter extends BaseAdapter{
                 backgroundColor.setBackground(gd);
                 notificationTitle.setText("New Resource");
                 resourceAdded.setSpan(fcsSkyBlue, 29, 29 + notif.getProjectName().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_attach_file_black_24dp));
+                foregroundIcon.setBackground(v.getContext().getResources().getDrawable(R.drawable.ic_remove_circle_outline_black_24dp));
                 notificationDescription.setText(resourceAdded);
                 break;
         }

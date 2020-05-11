@@ -2,6 +2,7 @@ package com.example.teamup.CircleWall;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,6 @@ public class CircleWallAdapter extends RecyclerView.Adapter<CircleWallAdapter.Vi
 
         ProjectWallDataClass projectWallDataClass=arrayList.get(position);
 
-        String fileName=projectWallDataClass.getFileName();
         String description=projectWallDataClass.getDescription();
         String ownerName=projectWallDataClass.getOwnerName();
         long createdTime = projectWallDataClass.getTime();
@@ -54,7 +54,6 @@ public class CircleWallAdapter extends RecyclerView.Adapter<CircleWallAdapter.Vi
         long minutes = TimeUnit.MILLISECONDS.toMinutes(currentTime - createdTime);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(currentTime - createdTime);
 
-        holder.fileName.setText(fileName);
         holder.ownerName.setText(ownerName);
         holder.description.setText(description);
 
@@ -92,7 +91,7 @@ public class CircleWallAdapter extends RecyclerView.Adapter<CircleWallAdapter.Vi
 
     public class Viewholder extends RecyclerView.ViewHolder {
 
-        private TextView ownerName, description, timeSincePosting, fileName, viewAllComments;
+        private TextView ownerName, description, timeSincePosting, viewAllComments;
         private CircleImageView profPic;
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -100,7 +99,6 @@ public class CircleWallAdapter extends RecyclerView.Adapter<CircleWallAdapter.Vi
             ownerName =itemView.findViewById(R.id.projectWall_object_ownerName);
             profPic =itemView.findViewById(R.id.projectWall_profilePicture);
             description =itemView.findViewById(R.id.projectWall_object_Description);
-            fileName =itemView.findViewById(R.id.project_wall_fileName);
             timeSincePosting =itemView.findViewById(R.id.projectWall_object_postedTime);
             viewAllComments =itemView.findViewById(R.id.projectWall_object_viewComments);
 

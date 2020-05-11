@@ -1,59 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/project_info_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add new files"
-        android:textColor="#3B3B3B"
-        android:fontFamily="@font/roboto_bold"
-        android:drawableEnd="@drawable/ic_clear_black_24dp"
-        android:textSize="16dp">
-    </TextView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose file to upload"
-        android:textColor="#9D9D9D"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="5.5dp"
-        android:fontFamily="@font/roboto_regular"
-        android:textSize="12dp">
-    </TextView>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:id="@+id/fileSelectAlertButton"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@drawable/dashed_background">
-
-        <ImageView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:background="@drawable/ic_cloud_upload_black_24dp">
-        </ImageView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create New Broadcast"
+            android:textColor="#3B3B3B"
+            android:fontFamily="@font/roboto_bold"
+            android:drawableEnd="@drawable/ic_clear_black_24dp"
+            android:textSize="16dp">
+        </TextView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#6CACFF"
-            android:layout_marginLeft="13dp"
-            android:text="Click here to upload files"
-            android:textSize="12dp"
-            android:fontFamily="@font/roboto_regular">
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Description"
+            android:textColor="#9D9D9D"
+            android:textSize="12dp"></TextView>
+
+        <EditText
+            android:id="@+id/fileDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:background="@drawable/unpressable_button"></EditText>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:id="@+id/fileSelectAlertButton"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/dashed_background">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_broadcast_file_upload_cloud_image_button"
+                android:background="@drawable/ic_cloud_upload_black_24dp">
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#6CACFF"
+                android:id="@+id/create_broadcast_file_upload_text"
+                android:layout_marginLeft="13dp"
+                android:text="Click here to upload files"
+                android:textSize="12dp"
+                android:fontFamily="@font/roboto_regular">
+            </TextView>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="click to add poll"
+            android:textColor="@color/black">
         </TextView>
 
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/poll_add_button"
+            android:background="@drawable/ic_add_circle_outline_black_24dp">
+        </Button>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:id="@+id/poll_create_layout"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your poll question"
+                android:textColor="@color/black"
+                android:id="@+id/poll_create_question_editText"
+                android:textColorHint="@color/black"
+                android:backgroundTint="@color/black">
+            </EditText>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/poll_create_answer_option_display"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="100"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="enter answer option"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:id="@+id/poll_create_answer_option_editText"
+                    android:backgroundTint="@color/black"
+                    android:layout_weight="1"></EditText>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/poll_create_answer_option_add_buttom"
+                    android:text="Add Option">
+                </Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/send_broadcast_message"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_button"
+            android:text="Send Broadcast">
+        </Button>
     </LinearLayout>
 
 
 
-</LinearLayout>
+</ScrollView>
