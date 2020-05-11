@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -49,7 +53,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CircleWall extends AppCompatActivity {
 
@@ -57,20 +63,27 @@ public class CircleWall extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 100;
     private FloatingActionButton fab;
 
+    private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
     private FirebaseFirestore firebaseFirestore;
     private Broadcast broadcast;
-    private Uri filePath;
+    private Uri filePath = null;
+    private LinearLayout fileSelect, pollCreateDisplay, pollCreateAnswerOptionsDisplay;
+    private Button createPoll, addOption, sendBroadcast;
     private ArrayList<ProjectWallDataClass> arrayList;
+    private List<String> pollAnswerOptionsList = new ArrayList<>();
     private LinearLayout emptyPlaceHolder;
+    private String uniqueID, downloadUri;
     private ImageButton back;
+    private ImageView uploadFileCloudButton;
+    private TextView uploadFileTextView;
+    private EditText broadcastDescription, pollCreateQuestionEntry, pollCreateAnswerEntry;
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
     private LayoutInflater inflater;
     private View dialogue;
     private StorageReference storageReference;
     private static final int STORAGE_PERMISSION_CODE = 101;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +96,11 @@ public class CircleWall extends AppCompatActivity {
 
         setContentView(R.layout.activity_project_wall);
 
-
         fab = findViewById(R.id.newResourceFAB);
 
         arrayList = new ArrayList<>();
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -96,11 +109,13 @@ public class CircleWall extends AppCompatActivity {
         recyclerView = findViewById(R.id.projectViewRecyclerView);
         back = findViewById(R.id.bck_projectwall);
         broadcast = SessionStorage.getProject(this);
+        uniqueID = UUID.randomUUID().toString();
+
 
         final Query query = firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
-                .collection("Files").orderBy("Time", Query.Direction.DESCENDING);
+                .collection("Broadcasts").orderBy("Time", Query.Direction.DESCENDING);
 
-        final CircleWallAdapter circleWallAdapter = new CircleWallAdapter(this, arrayList);
+        final CircleWallAdapter circleWallAdapter = new CircleWallAdapter(CircleWall.this, arrayList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(circleWallAdapter);
@@ -145,8 +160,17 @@ public class CircleWall extends AppCompatActivity {
 
                 builder.setView(dialogue);
 
-
-                final LinearLayout fileSelect = dialogue.findViewById(R.id.fileSelectAlertButton);
+                fileSelect = dialogue.findViewById(R.id.fileSelectAlertButton);
+                uploadFileCloudButton = dialogue.findViewById(R.id.create_broadcast_file_upload_cloud_image_button);
+                uploadFileTextView = dialogue.findViewById(R.id.create_broadcast_file_upload_text);
+                broadcastDescription = dialogue.findViewById(R.id.fileDescriptionEditText);
+                pollCreateDisplay = dialogue.findViewById(R.id.poll_create_layout);
+                pollCreateAnswerOptionsDisplay = dialogue.findViewById(R.id.poll_create_answer_option_display);
+                createPoll = dialogue.findViewById(R.id.poll_add_button);
+                addOption = dialogue.findViewById(R.id.poll_create_answer_option_add_buttom);
+                pollCreateQuestionEntry = dialogue.findViewById(R.id.poll_create_question_editText);
+                pollCreateAnswerEntry = dialogue.findViewById(R.id.poll_create_answer_option_editText);
+                sendBroadcast = dialogue.findViewById(R.id.send_broadcast_message);
 
                 fileSelect.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -163,13 +187,45 @@ public class CircleWall extends AppCompatActivity {
                         }
                     }
                 });
+
+                createPoll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        pollCreateDisplay.setVisibility(View.VISIBLE);
+                        createPoll.setVisibility(View.GONE);
+                    }
+                });
+
+                addOption.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!pollCreateAnswerEntry.getText().toString().isEmpty() && !pollCreateQuestionEntry.getText().toString().isEmpty()) {
+                            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            TextView tv = new TextView(CircleWall.this);
+                            tv.setLayoutParams(lparams);
+                            tv.setText(pollCreateAnswerEntry.getText().toString());
+                            tv.setTextColor(Color.BLACK);
+                            pollAnswerOptionsList.add(pollCreateAnswerEntry.getText().toString());
+                            pollCreateAnswerOptionsDisplay.addView(tv);
+                        }
+                    }
+                });
+
+                sendBroadcast.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        publishBroadcast();
+                    }
+                });
+
                 alertDialog = builder.create();
                 alertDialog.show();
             }
         });
     }
 
-    public void pickFile () {
+    public void pickFile() {
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -204,134 +260,229 @@ public class CircleWall extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
-            alertDialog.dismiss();
 
+            final StorageReference riversRef = storageReference.child("ProjectWall/" + broadcast.getBroadcastId() + "/" + uniqueID);
+
+            final ProgressDialog progressDialog = new ProgressDialog(CircleWall.this);
+            progressDialog.setTitle("Uploading");
+            progressDialog.show();
 
             ContentResolver contentResolver = getContentResolver();
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
             String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(filePath));
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(CircleWall.this);
+            riversRef.putFile(filePath).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
-            LayoutInflater inflater = getLayoutInflater();
+                    //displaying percentage in progress dialog
+                    progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                }
+            })
+                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
 
-            final View dialogue = inflater.inflate(R.layout.file_upload_alert_layout_2, null);
+                            // Continue with the task to get the download URL
+                            return riversRef.getDownloadUrl();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    downloadUri = uri.toString();
+                    progressDialog.dismiss();
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            //if the upload is not successfull
+                            //hiding the progress dialog
+                            progressDialog.dismiss();
 
-            builder.setView(dialogue);
-
-
-            final ImageView imageView = dialogue.findViewById(R.id.filePreviewImage);
-            final EditText nameEditText = dialogue.findViewById(R.id.fileNameEditText);
-            final EditText descriptionEditText = dialogue.findViewById(R.id.fileDescriptionEditText);
-            final Button button = dialogue.findViewById(R.id.fileUploadAlertButton);
-
+                            //and displaying error message
+                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
 
             if (extension != null) {
                 switch (extension) {
                     case "pdf":
-                        imageView.setImageResource(R.drawable.pdf_image);
+                        uploadFileCloudButton.setBackground(getResources().getDrawable(R.drawable.pdf_image));
                         break;
                     case "ppt":
-                        imageView.setImageResource(R.drawable.ppt_image);
+                        uploadFileCloudButton.setBackground(getResources().getDrawable(R.drawable.ppt_image));
                         break;
                     case "doc":
-                        imageView.setImageResource(R.drawable.word_image);
+                        uploadFileCloudButton.setBackground(getResources().getDrawable(R.drawable.doc_image));
                         break;
                     case "jpg":
                     case "jpeg":
                     case "png":
                     case "webp":
-                        imageView.setImageURI(filePath);
+                        uploadFileCloudButton.setImageURI(filePath);
                 }
             }
 
-            button.setOnClickListener(new View.OnClickListener() {
+            uploadFileTextView.setVisibility(View.GONE);
+        }
+    }
+
+    public void publishBroadcast() {
+        final String file_description = broadcastDescription.getText().toString();
+
+        if (filePath == null && pollAnswerOptionsList == null) {
+
+            Log.d("CIRCLE WALL TAB", "ONLY 1 CONDITION SATISFIED");
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("Link", null);
+            map.put("Time", System.currentTimeMillis());
+            map.put("ownerId", SessionStorage.getUser(CircleWall.this).getUserId());
+            map.put("ownerName", SessionStorage.getUser(CircleWall.this).getFirstName().trim() + " " +
+                    SessionStorage.getUser(CircleWall.this).getLastName().trim());
+            map.put("hasPoll", false);
+            map.put("pollID", null);
+            map.put("description", file_description);
+            map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
+
+            firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
+                    .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onClick(View v) {
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        alertDialog.dismiss();
+                        /*Intent intent = new Intent(CircleWall.this, CircleWall.class);
+                        intent.putExtra("project", broadcast);
+                        startActivity(intent);*/
+                    }
+                }
+            });
+        } else if (filePath != null && pollAnswerOptionsList == null) {
+            //displaying a progress dialog while upload is going on
 
-                    final String file_name = nameEditText.getText().toString();
-                    final String file_description = descriptionEditText.getText().toString();
-                    if (!TextUtils.isEmpty(file_name) && filePath != null) {
-                        //displaying a progress dialog while upload is going on
-                        final ProgressDialog progressDialog = new ProgressDialog(CircleWall.this);
-                        progressDialog.setTitle("Uploading");
-                        progressDialog.show();
+            Log.d("CIRCLE WALL TAB", "ONLY 2 CONDITIONS SATISFIED");
 
-                        final StorageReference riversRef = storageReference.child("ProjectWall/" + broadcast.getBroadcastId() + "/" + file_name);
+            Map<String, Object> map = new HashMap<>();
+            map.put("Link", downloadUri.toString());
+            map.put("Time", System.currentTimeMillis());
+            map.put("ownerId", SessionStorage.getUser(CircleWall.this).getUserId());
+            map.put("ownerName", SessionStorage.getUser(CircleWall.this).getFirstName().trim() + " " +
+                    SessionStorage.getUser(CircleWall.this).getLastName().trim());
+            map.put("hasPoll", false);
+            map.put("pollID", null);
+            map.put("description", file_description);
+            map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
 
-                        riversRef.putFile(filePath).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                                //displaying percentage in progress dialog
-                                progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-                            }
-                        })
-                                .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                    @Override
-                                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                        if (!task.isSuccessful()) {
-                                            throw task.getException();
-                                        }
-
-                                        // Continue with the task to get the download URL
-                                        return riversRef.getDownloadUrl();
-                                    }
-                                }).addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                progressDialog.dismiss();
-                                alertDialog.dismiss();
-
-                                //and displaying a success toast
-                                Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-                                Uri downloadUri = uri;
-
-                                Map<String, Object> map = new HashMap<>();
-                                map.put("Link", downloadUri.toString());
-                                map.put("Time", System.currentTimeMillis());
-                                map.put("FileName", file_name);
-                                map.put("ownerId", SessionStorage.getUser(CircleWall.this).getUserId());
-                                map.put("ownerName", SessionStorage.getUser(CircleWall.this).getFirstName().trim() + " " +
-                                        SessionStorage.getUser(CircleWall.this).getLastName().trim());
-                                map.put("description", file_description);
-                                map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
-
-                                firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
-                                        .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Intent intent = new Intent(CircleWall.this, CircleWall.class);
-                                            intent.putExtra("project", broadcast);
-                                            startActivity(intent);
-                                        }
-                                    }
-                                });
-
-
-                            }
-                        })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        //if the upload is not successfull
-                                        //hiding the progress dialog
-                                        progressDialog.dismiss();
-
-                                        //and displaying error message
-                                        Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                });
+            firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
+                    .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        alertDialog.dismiss();
+                                /*Intent intent = new Intent(CircleWall.this, CircleWall.class);
+                                intent.putExtra("project", broadcast);
+                                startActivity(intent);*/
                     }
                 }
             });
 
-            alertDialog = builder.create();
-            alertDialog.show();
+        } else if (filePath == null && pollAnswerOptionsList != null) {
+            Log.d("CIRCLE WALL TAB", "ONLY POLLING ");
 
+            Map<String, Object> map = new HashMap<>();
+            map.put("Link", null);
+            map.put("Time", System.currentTimeMillis());
+            map.put("ownerId", SessionStorage.getUser(CircleWall.this).getUserId());
+            map.put("ownerName", SessionStorage.getUser(CircleWall.this).getFirstName().trim() + " " +
+                    SessionStorage.getUser(CircleWall.this).getLastName().trim());
+            map.put("description", file_description);
+            map.put("hasPoll", true);
+            map.put("pollID", uniqueID);
+            map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
 
+            Map<String, Object> pollmap = new HashMap<>();
+            pollmap.put("Question", pollCreateQuestionEntry.getText().toString());
+            int i = 1;
+            for (String opt : pollAnswerOptionsList) {
+                pollmap.put("Option " + i, opt);
+                i++;
+            }
+            pollmap.put("NumberOfOptions", i-1);
+
+            firebaseFirestore.collection("ProjectWall")
+                    .document(broadcast.getBroadcastId())
+                    .collection("Polls")
+                    .document(uniqueID)
+                    .set(pollmap);
+
+            firebaseFirestore.collection("ProjectWall")
+                    .document(broadcast.getBroadcastId())
+                    .collection("Broadcasts")
+                    .document()
+                    .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        alertDialog.dismiss();
+                                /*Intent intent = new Intent(CircleWall.this, CircleWall.class);
+                                intent.putExtra("project", broadcast);
+                                startActivity(intent);*/
+                    }
+                }
+            });
+
+        } else if (filePath != null && pollAnswerOptionsList != null) {
+
+            Log.d("CIRCLE WALL TAB", "ALL CONDITIONS SATISFIED");
+            Map<String, Object> map = new HashMap<>();
+            map.put("Link", downloadUri.toString());
+            map.put("Time", System.currentTimeMillis());
+            map.put("ownerId", SessionStorage.getUser(CircleWall.this).getUserId());
+            map.put("ownerName", SessionStorage.getUser(CircleWall.this).getFirstName().trim() + " " +
+                    SessionStorage.getUser(CircleWall.this).getLastName().trim());
+            map.put("description", file_description);
+            map.put("hasPoll", true);
+            map.put("pollID", uniqueID);
+            map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
+
+            Map<String, Object> pollmap = new HashMap<>();
+            pollmap.put("Question", pollCreateQuestionEntry.getText().toString());
+            int i = 1;
+            for (String opt : pollAnswerOptionsList) {
+                pollmap.put("Option " + i, opt);
+                i++;
+            }
+            pollmap.put("NumberOfOptions", i-1);
+
+            Log.d("CIRCLE WALL TAB", map.toString());
+            Log.d("CIRCLE WALL TAB", pollmap.toString());
+
+            firebaseFirestore.collection("ProjectWall")
+                    .document(broadcast.getBroadcastId())
+                    .collection("Polls")
+                    .document(uniqueID)
+                    .set(pollmap);
+
+            firebaseFirestore.collection("ProjectWall")
+                    .document(broadcast.getBroadcastId())
+                    .collection("Broadcasts")
+                    .document()
+                    .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        alertDialog.dismiss();
+                                /*Intent intent = new Intent(CircleWall.this, CircleWall.class);
+                                intent.putExtra("project", broadcast);
+                                startActivity(intent);*/
+                    }
+                }
+            });
         }
     }
 }
