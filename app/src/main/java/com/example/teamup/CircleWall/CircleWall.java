@@ -129,37 +129,11 @@ public class CircleWall extends AppCompatActivity {
                     arrayList.clear();
                     for (DocumentSnapshot doc : task.getResult()) {
                         final ProjectWallDataClass projectWallDataClass = doc.toObject(ProjectWallDataClass.class);
+                        Log.d("CIRCLE WALL CLASS", projectWallDataClass.toString());
                         if(projectWallDataClass.isHasPoll() == true){
-                            DocumentReference docRef = firebaseFirestore.collection("ProjectWall")
-                                    .document(broadcast.getBroadcastId())
-                                    .collection("Polls")
-                                    .document(projectWallDataClass.getPollID());
-                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot poll = task.getResult();
-                                        if (poll != null) {
-                                            int numOfOptions = Integer.parseInt(poll.getString("NumberOfOptions"));
-                                            String question = poll.getString("Question");
-                                            for (int i = 0; i < numOfOptions; i++) {
-                                                retrievalPollOptions.add(poll.getString("Option " + (i+1)));
-                                            }
-                                            Poll pollObject = new Poll(question, retrievalPollOptions, projectWallDataClass.getPollID());
-                                            Log.d("CIRCLE WALL POLL DISPLAYYYYYYYYYYY", pollObject.toString());
-                                            pollList.add(pollObject);
-                                            arrayList.add(projectWallDataClass);
-                                            circleWallAdapter.notifyDataSetChanged();
-                                        } else {
-                                            Log.d("LOGGER", "No such document");
-                                        }
-                                    } else {
-                                        Log.d("LOGGER", "get failed with ", task.getException());
-                                    }
-                                }
-                            });
-                        } else {
                             arrayList.add(projectWallDataClass);
+                        } else {
+
                         }
                     }
                     recyclerView.setAdapter(circleWallAdapter);
@@ -220,10 +194,10 @@ public class CircleWall extends AppCompatActivity {
                     }
                 });
 
+                pollAnswerOptionsList = new ArrayList<>();
                 addOption.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        pollAnswerOptionsList = new ArrayList<>();
                         if (!pollCreateAnswerEntry.getText().toString().isEmpty() && !pollCreateQuestionEntry.getText().toString().isEmpty()) {
                             LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -232,6 +206,7 @@ public class CircleWall extends AppCompatActivity {
                             tv.setText(pollCreateAnswerEntry.getText().toString());
                             tv.setTextColor(Color.BLACK);
                             pollAnswerOptionsList.add(pollCreateAnswerEntry.getText().toString());
+                            Log.d("CIRCLE WALL, ", pollAnswerOptionsList.toString());
                             pollCreateAnswerOptionsDisplay.addView(tv);
                         }
                     }
@@ -404,7 +379,7 @@ public class CircleWall extends AppCompatActivity {
             map.put("ownerPicURL", SessionStorage.getUser(CircleWall.this).getProfileImageLink());
 
             firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
-                    .collection("Files").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    .collection("Broadcasts").document().set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -439,11 +414,7 @@ public class CircleWall extends AppCompatActivity {
             }
             pollmap.put("NumberOfOptions", i-1);
 
-            firebaseFirestore.collection("ProjectWall")
-                    .document(broadcast.getBroadcastId())
-                    .collection("Polls")
-                    .document(uniqueID)
-                    .set(pollmap);
+            map.put("Poll", pollmap);
 
             firebaseFirestore.collection("ProjectWall")
                     .document(broadcast.getBroadcastId())
@@ -484,14 +455,7 @@ public class CircleWall extends AppCompatActivity {
             }
             pollmap.put("NumberOfOptions", i-1);
 
-            Log.d("CIRCLE WALL TAB", map.toString());
-            Log.d("CIRCLE WALL TAB", pollmap.toString());
-
-            firebaseFirestore.collection("ProjectWall")
-                    .document(broadcast.getBroadcastId())
-                    .collection("Polls")
-                    .document(uniqueID)
-                    .set(pollmap);
+            map.put("Poll", pollmap);
 
             firebaseFirestore.collection("ProjectWall")
                     .document(broadcast.getBroadcastId())

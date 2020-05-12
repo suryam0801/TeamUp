@@ -3,6 +3,8 @@ package com.example.teamup.CircleWall;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -94,30 +97,46 @@ public class CircleWallAdapter extends BaseAdapter {
             }
         });
 
-        final ProjectWallDataClass projectWallDataClass=arrayList.get(i);
+        final ProjectWallDataClass projectWallDataObject=arrayList.get(i);
 
-        if(projectWallDataClass.getLink() != null){
+        if(projectWallDataObject.getLink() != null){
             fileDisplay.setVisibility(View.VISIBLE);
         }
 
-        if(projectWallDataClass.isHasPoll() == true) {
+        if(projectWallDataObject.isHasPoll() == true) {
             pollDisplay.setVisibility(View.VISIBLE);
+            HashMap<String, Object> pollOnly = new HashMap<>();
+            pollOnly.putAll(projectWallDataObject.getPoll());
 
-            for(Poll p : pollList){
-                if(p.getId().equals(projectWallDataClass.getPollID())){
-                    pollTitle.setText(p.getQuestion());
-                    for(String option : p.getOptions()){
-                        RadioButton button = new RadioButton(context);
-                        button.setText(option);
-                        pollOptionsGroup.addView(button);
-                    }
-                }
+            String question = String.valueOf(pollOnly.get("Question"));
+            pollTitle.setText(question);
+            long numberOfOptions = (long) pollOnly.get("NumberOfOptions");
+            for(int x = 1; x <= numberOfOptions; x++){
+                String answerOption = String.valueOf(pollOnly.get("Option " + x));
+                RadioButton button = new RadioButton(context);
+                button.setHighlightColor(Color.BLACK);
+                ColorStateList colorStateList = new ColorStateList(
+                        new int[][]{
+                                new int[]{-android.R.attr.state_enabled}, //disabled
+                                new int[]{android.R.attr.state_enabled} //enabled
+                        },
+                        new int[] {
+
+                                Color.BLACK //disabled
+                                ,Color.BLUE //enabled
+
+                        }
+                );
+                button.setButtonTintList(colorStateList);
+                button.setTextColor(Color.BLACK);
+                button.setText(answerOption);
+                pollOptionsGroup.addView(button);
             }
         }
 
-        String descriptionString=projectWallDataClass.getDescription();
-        String ownerNameString=projectWallDataClass.getOwnerName();
-        long createdTime = projectWallDataClass.getTime();
+        String descriptionString=projectWallDataObject.getDescription();
+        String ownerNameString=projectWallDataObject.getOwnerName();
+        long createdTime = projectWallDataObject.getTime();
 
         long currentTime = System.currentTimeMillis();
 
@@ -151,7 +170,7 @@ public class CircleWallAdapter extends BaseAdapter {
 */
 
         Glide.with(context)
-                .load(projectWallDataClass.getOwnerPicURL())
+                .load(projectWallDataObject.getOwnerPicURL())
                 .placeholder(ContextCompat.getDrawable(context, R.drawable.ic_account_circle_black_24dp))
                 .into(profPic);
 

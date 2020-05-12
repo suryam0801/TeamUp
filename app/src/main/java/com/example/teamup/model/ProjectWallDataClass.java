@@ -1,5 +1,10 @@
 package com.example.teamup.model;
 
+import android.widget.ListView;
+
+import java.util.HashMap;
+import java.util.List;
+
 public class ProjectWallDataClass {
 
     private String Link;
@@ -8,9 +13,10 @@ public class ProjectWallDataClass {
     private String ownerId;
     private String ownerName;
     private String pollID;
+    private HashMap<String, Object> Poll;
     private boolean hasPoll;
 
-    public ProjectWallDataClass(String link, long time, String description, String ownerId, String ownerName, String pollID, boolean hasPoll, String ownerPicURL) {
+    public ProjectWallDataClass(String link, long time, String description, String ownerId, String ownerName, String pollID, boolean hasPoll, String ownerPicURL, HashMap<String, Object> Poll) {
         Link = link;
         Time = time;
         this.description = description;
@@ -19,6 +25,7 @@ public class ProjectWallDataClass {
         this.pollID = pollID;
         this.hasPoll = hasPoll;
         this.ownerPicURL = ownerPicURL;
+        this.Poll = Poll;
     }
 
 
@@ -34,9 +41,18 @@ public class ProjectWallDataClass {
                 ", ownerId='" + ownerId + '\'' +
                 ", ownerName='" + ownerName + '\'' +
                 ", pollID='" + pollID + '\'' +
+                ", Poll=" + Poll +
                 ", hasPoll=" + hasPoll +
                 ", ownerPicURL='" + ownerPicURL + '\'' +
                 '}';
+    }
+
+    public HashMap<String, Object> getPoll() {
+        return Poll;
+    }
+
+    public void setPoll(HashMap<String, Object> poll) {
+        Poll = poll;
     }
 
     public String getPollID() {
