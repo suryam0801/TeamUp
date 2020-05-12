@@ -60,7 +60,7 @@ public class InterestTagPicker extends AppCompatActivity {
     private Tags tags;
     private ChipGroup chipGroup;
     private Button interestTagAdd;
-    private List<String> group;
+    private List<String> group = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,14 +130,14 @@ public class InterestTagPicker extends AppCompatActivity {
             public void onClick(View view) {
                 String interestTag = interestTagsEntry.getText().toString();
                 if (!interestTag.isEmpty()) {
-                    setTag(interestTag);
+                    setTag(interestTag, true);
                 }
             }
         });
 
     }
 
-    private void setTag(final String name) {
+    private void setTag(final String name, boolean userCreate) {
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -151,17 +151,26 @@ public class InterestTagPicker extends AppCompatActivity {
                 ),
                 paddingDp, paddingDp, paddingDp);
         chip.setText(name);
-        chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+        if(userCreate == true){
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            chip.setTextColor(Color.WHITE);
+            interestTagsList.add(chip.getText().toString());
+        } else {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+            chip.setTextColor(Color.BLACK);
+        }
+
         chip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (chip.getChipBackgroundColor().getDefaultColor() == -9655041) {
                     chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+                    chip.setTextColor(Color.BLACK);
                     interestTagsList.remove(chip.getText().toString());
                 } else {
                     chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+                    chip.setTextColor(Color.WHITE);
                     interestTagsList.add(chip.getText().toString());
-
                 }
 
                 Log.d("INTEREST TAG PICKER", "INTEREST TAG LIST: " + interestTagsList.toString());
@@ -237,10 +246,9 @@ public class InterestTagPicker extends AppCompatActivity {
                                 });
 
                                 for (String interest : interestTagsList)
-                                    setTag(interest);
+                                    setTag(interest, false);
 
                                 interestTagsList.clear();
-                                group.clear();
                             } else {
                                 Log.d("TAG", "No such document");
                             }

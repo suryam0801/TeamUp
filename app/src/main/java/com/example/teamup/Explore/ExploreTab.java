@@ -239,10 +239,12 @@ public class ExploreTab extends Fragment {
                 if (butttonCounter % 2 == 0) {
                     dialog.dismiss();
                 } else if (butttonCounter % 2 == 1) {
+                    Toast.makeText(getContext(), "SAVING APPLICANT", Toast.LENGTH_SHORT);
                     String reason = String.valueOf(entryEdit.getText());
                     if (reason == null || reason.equals("") || reason.replaceAll("\\s", "").equals("")) {
                     } else {
                         saveApplicant(reason, broadcastList.get(pos).getBroadcastId());
+                        savingBroadcast = broadcastList.get(pos);
                     }
                 }
             }

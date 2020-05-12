@@ -110,14 +110,14 @@ public class LocationTagPicker extends AppCompatActivity {
             public void onClick(View view) {
                 String interestTag = locationTagEntry.getText().toString();
                 if (!interestTag.isEmpty()) {
-                    setTag(interestTag);
+                    setTag(interestTag, true);
                 }
             }
         });
 
     }
 
-    private void setTag(final String name) {
+    private void setTag(final String name, boolean userCreate) {
         final Chip chip = new Chip(this);
         int paddingDp = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -131,18 +131,26 @@ public class LocationTagPicker extends AppCompatActivity {
                 ),
                 paddingDp, paddingDp, paddingDp);
         chip.setText(name);
-        chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+        if(userCreate == true) {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+            chip.setTextColor(Color.WHITE);
+            locationTagsList.add(chip.getText().toString());
+        } else {
+            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+            chip.setTextColor(Color.BLACK);
+        }
 
         chip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (chip.getChipBackgroundColor().getDefaultColor() == -9655041) {
                     chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.chip_unselected_gray)));
+                    chip.setTextColor(Color.BLACK);
                     locationTagsList.remove(chip.getText().toString());
                 } else {
                     chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(getApplicationContext(), R.color.color_blue)));
+                    chip.setTextColor(Color.WHITE);
                     locationTagsList.add(chip.getText().toString());
-
                 }
 
                 Log.d("LOCATION TAG PICKER", "LOCATION TAG LIST: " + locationTagsList.toString());
@@ -179,7 +187,7 @@ public class LocationTagPicker extends AppCompatActivity {
                                 });
 
                                 for(String loc : loadlocList) {
-                                    setTag(loc);
+                                    setTag(loc, false);
                                 }
 
                             } else {
