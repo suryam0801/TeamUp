@@ -42,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:id="@+id/fileSelectAlertButton"
             android:gravity="center"
             android:orientation="horizontal"
@@ -67,28 +68,24 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="click to add poll"
-            android:textColor="@color/black">
-        </TextView>
-
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/poll_add_button"
-            android:background="@drawable/ic_add_circle_outline_black_24dp">
-        </Button>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
             android:visibility="gone"
             android:id="@+id/poll_create_layout"
             android:layout_height="wrap_content"
+
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Poll"
+                android:textColor="#3B3B3B"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="16dp">
+            </TextView>
 
             <EditText
                 android:layout_width="match_parent"
@@ -96,8 +93,11 @@
                 android:hint="Enter your poll question"
                 android:textColor="@color/black"
                 android:id="@+id/poll_create_question_editText"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black">
+                android:textColorHint="#9D9D9D"
+                android:textSize="12dp"
+                android:padding="20dp"
+                android:fontFamily="@font/roboto_medium"
+                android:background="@drawable/unpressable_button">
             </EditText>
 
             <LinearLayout
@@ -118,19 +118,62 @@
                     android:layout_height="wrap_content"
                     android:hint="enter answer option"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/black"
+                    android:textSize="12dp"
+                    android:paddingLeft="5dp"
+                    android:textColorHint="#9D9D9D"
                     android:id="@+id/poll_create_answer_option_editText"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="#9D9D9D"
                     android:layout_weight="1"></EditText>
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/poll_create_answer_option_add_buttom"
-                    android:text="Add Option">
+                    android:textAllCaps="false"
+                    android:text="Add">
                 </Button>
 
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/new_file_or_poll_layout"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click to "
+                android:textSize="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#9D9D9D"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/upload_file_button"
+                android:text="upload file "
+                android:textSize="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#6CACFF"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/upload_or_poll_or_textview"
+                android:text="or "
+                android:textSize="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#9D9D9D"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/poll_add_button"
+                android:text="create poll"
+                android:textSize="12dp"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="#6CACFF"></TextView>
 
         </LinearLayout>
 

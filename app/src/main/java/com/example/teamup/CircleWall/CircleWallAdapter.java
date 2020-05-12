@@ -85,7 +85,6 @@ public class CircleWallAdapter extends BaseAdapter {
         pollDisplay = pview.findViewById(R.id.poll_display);
         pollOptionsGroup = pview.findViewById(R.id.poll_options_radio_group);
         fileDisplay = pview.findViewById(R.id.attachment_display);
-        pollSubmit = pview.findViewById(R.id.poll_submit_button);
         pollDisplay.setVisibility(View.GONE);
         fileDisplay.setVisibility(View.GONE);
 

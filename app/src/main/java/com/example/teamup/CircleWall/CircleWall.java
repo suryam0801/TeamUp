@@ -7,9 +7,11 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -65,8 +67,8 @@ public class CircleWall extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private Broadcast broadcast;
     private Uri filePath = null;
-    private LinearLayout fileSelect, pollCreateDisplay, pollCreateAnswerOptionsDisplay;
-    private Button createPoll, addOption, sendBroadcast;
+    private LinearLayout fileSelect, pollCreateDisplay, pollCreateAnswerOptionsDisplay, newFilePollTextview;
+    private Button addOption, sendBroadcast;
     private ArrayList<ProjectWallDataClass> arrayList;
     private List<Poll> pollList = new ArrayList<>();
     private List<String> pollAnswerOptionsList = null, retrievalPollOptions = new ArrayList<>();
@@ -74,13 +76,14 @@ public class CircleWall extends AppCompatActivity {
     private String uniqueID, downloadUri;
     private ImageButton back;
     private ImageView uploadFileCloudButton;
-    private TextView uploadFileTextView;
+    private TextView uploadFileTextView, createPoll, orFillerTextView, uploadFile;
     private EditText broadcastDescription, pollCreateQuestionEntry, pollCreateAnswerEntry;
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
     private LayoutInflater inflater;
     private View dialogue;
     private StorageReference storageReference;
+    private int counter = 0;
     private static final int STORAGE_PERMISSION_CODE = 101;
 
     @Override
@@ -159,16 +162,19 @@ public class CircleWall extends AppCompatActivity {
                 builder.setView(dialogue);
 
                 fileSelect = dialogue.findViewById(R.id.fileSelectAlertButton);
+                newFilePollTextview = dialogue.findViewById(R.id.new_file_or_poll_layout);
                 uploadFileCloudButton = dialogue.findViewById(R.id.create_broadcast_file_upload_cloud_image_button);
                 uploadFileTextView = dialogue.findViewById(R.id.create_broadcast_file_upload_text);
                 broadcastDescription = dialogue.findViewById(R.id.fileDescriptionEditText);
                 pollCreateDisplay = dialogue.findViewById(R.id.poll_create_layout);
                 pollCreateAnswerOptionsDisplay = dialogue.findViewById(R.id.poll_create_answer_option_display);
                 createPoll = dialogue.findViewById(R.id.poll_add_button);
+                uploadFile = dialogue.findViewById(R.id.upload_file_button);
                 addOption = dialogue.findViewById(R.id.poll_create_answer_option_add_buttom);
                 pollCreateQuestionEntry = dialogue.findViewById(R.id.poll_create_question_editText);
                 pollCreateAnswerEntry = dialogue.findViewById(R.id.poll_create_answer_option_editText);
                 sendBroadcast = dialogue.findViewById(R.id.send_broadcast_message);
+                orFillerTextView = dialogue.findViewById(R.id.upload_or_poll_or_textview);
 
                 fileSelect.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -189,8 +195,26 @@ public class CircleWall extends AppCompatActivity {
                 createPoll.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        counter = counter + 1;
                         pollCreateDisplay.setVisibility(View.VISIBLE);
                         createPoll.setVisibility(View.GONE);
+                        if(counter == 2)
+                            newFilePollTextview.setVisibility(View.GONE);
+                        else
+                            orFillerTextView.setVisibility(View.GONE);
+                    }
+                });
+
+                uploadFile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        counter = counter + 1;
+                        fileSelect.setVisibility(View.VISIBLE);
+                        uploadFile.setVisibility(View.GONE);
+                        if(counter == 2)
+                            newFilePollTextview.setVisibility(View.GONE);
+                        else
+                            orFillerTextView.setVisibility(View.GONE);
                     }
                 });
 
@@ -199,12 +223,25 @@ public class CircleWall extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (!pollCreateAnswerEntry.getText().toString().isEmpty() && !pollCreateQuestionEntry.getText().toString().isEmpty()) {
-                            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            TextView tv = new TextView(CircleWall.this);
+                            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            lparams.setMargins(0, 10, 20, 0);
+                            final TextView tv = new TextView(CircleWall.this);
                             tv.setLayoutParams(lparams);
                             tv.setText(pollCreateAnswerEntry.getText().toString());
                             tv.setTextColor(Color.BLACK);
+                            tv.setBackground(getResources().getDrawable(R.drawable.light_blue_nav_button));
+                            tv.setGravity(Gravity.CENTER);
+                            tv.setCompoundDrawablesWithIntrinsicBounds(0,0 , R.drawable.ic_clear_black_24dp, 0);
+                            tv.setPaddingRelative(10,10,10,10);
+                            tv.setTextColor(Color.parseColor("#6CACFF"));
+                            tv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    pollCreateAnswerOptionsDisplay.removeView(tv);
+                                    pollAnswerOptionsList.remove(tv.getText());
+                                    Log.d("CIRCLE WALL, ", pollAnswerOptionsList.toString());
+                                }
+                            });
                             pollAnswerOptionsList.add(pollCreateAnswerEntry.getText().toString());
                             Log.d("CIRCLE WALL, ", pollAnswerOptionsList.toString());
                             pollCreateAnswerOptionsDisplay.addView(tv);
