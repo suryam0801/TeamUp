@@ -95,6 +95,7 @@ public class TabbedActivityMain extends AppCompatActivity {
                             .load(user.getProfileImageLink())
                             .placeholder(ContextCompat.getDrawable(TabbedActivityMain.this, R.drawable.profile_image))
                             .into(profPic);
+                    setTabs();
                 }
 
             }
@@ -118,7 +119,9 @@ public class TabbedActivityMain extends AppCompatActivity {
                 startActivity(new Intent(TabbedActivityMain.this, NotificationActivity.class));
             }
         });
+    }
 
+    public void setTabs () {
         pagerAdapter = new PageAdapterMainPage(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
 

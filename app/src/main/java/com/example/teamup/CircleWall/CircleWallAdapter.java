@@ -144,7 +144,6 @@ public class CircleWallAdapter extends BaseAdapter {
                 pollOptionsGroup.addView(button);
                 if(currentPollAsnwers.get(user.getUserId()).equals(answerOption))
                     pollOptionsGroup.check(button.getId());
-
             }
 
             pollOptionsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
