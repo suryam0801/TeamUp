@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-//import com.example.teamup.ControlPanel.DisplayApplicants.Applicant;
 import com.example.teamup.CreateBroadcast.CreateBroadcast;
 import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
@@ -217,7 +216,7 @@ public class ExploreTab extends Fragment {
         allChips.add(chip14);
         allChips.add(chip15);
 
-        List<String> skillsArray = new ArrayList<>();
+        List<String> skillsArray;
         skillsArray = (broadcastList.get(pos).getInterestTags());
 
         int i = 0;

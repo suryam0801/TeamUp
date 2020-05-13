@@ -35,6 +35,7 @@ import com.example.teamup.R;
 import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Poll;
 import com.example.teamup.model.ProjectWallDataClass;
+import com.example.teamup.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -71,7 +72,7 @@ public class CircleWall extends AppCompatActivity {
     private Button addOption, sendBroadcast;
     private ArrayList<ProjectWallDataClass> arrayList;
     private List<Poll> pollList = new ArrayList<>();
-    private List<String> pollAnswerOptionsList = null, retrievalPollOptions = new ArrayList<>();
+    private List<String> pollAnswerOptionsList = null;
     private LinearLayout emptyPlaceHolder;
     private String uniqueID, downloadUri;
     private ImageButton back;
@@ -82,6 +83,7 @@ public class CircleWall extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private LayoutInflater inflater;
     private View dialogue;
+    private User currentUser;
     private StorageReference storageReference;
     private int counter = 0;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -101,6 +103,8 @@ public class CircleWall extends AppCompatActivity {
 
         arrayList = new ArrayList<>();
 
+        currentUser = SessionStorage.getUser(CircleWall.this);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -111,11 +115,11 @@ public class CircleWall extends AppCompatActivity {
         broadcast = SessionStorage.getProject(this);
         uniqueID = UUID.randomUUID().toString();
 
-        final CircleWallAdapter circleWallAdapter = new CircleWallAdapter(CircleWall.this, arrayList, pollList);
-
+        final CircleWallAdapter circleWallAdapter = new CircleWallAdapter(CircleWall.this, arrayList, pollList, broadcast.getBroadcastId());
 
         final Query query = firebaseFirestore.collection("ProjectWall").document(broadcast.getBroadcastId())
                 .collection("Broadcasts").orderBy("Time", Query.Direction.DESCENDING);
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,11 +137,7 @@ public class CircleWall extends AppCompatActivity {
                     for (DocumentSnapshot doc : task.getResult()) {
                         final ProjectWallDataClass projectWallDataClass = doc.toObject(ProjectWallDataClass.class);
                         Log.d("CIRCLE WALL CLASS", projectWallDataClass.toString());
-                        if(projectWallDataClass.isHasPoll() == true){
-                            arrayList.add(projectWallDataClass);
-                        } else {
-
-                        }
+                        arrayList.add(projectWallDataClass);
                     }
                     recyclerView.setAdapter(circleWallAdapter);
                     circleWallAdapter.notifyDataSetChanged();
@@ -147,7 +147,6 @@ public class CircleWall extends AppCompatActivity {
                 }
             }
         });
-
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,8 +373,6 @@ public class CircleWall extends AppCompatActivity {
 
         if (filePath == null && pollAnswerOptionsList == null) {
 
-            Log.d("CIRCLE WALL TAB", "ONLY 1 CONDITION SATISFIED");
-
             Map<String, Object> map = new HashMap<>();
             map.put("Link", null);
             map.put("Time", System.currentTimeMillis());
@@ -402,8 +399,6 @@ public class CircleWall extends AppCompatActivity {
         } else if (filePath != null && pollAnswerOptionsList == null) {
             //displaying a progress dialog while upload is going on
 
-            Log.d("CIRCLE WALL TAB", "ONLY 2 CONDITIONS SATISFIED");
-
             Map<String, Object> map = new HashMap<>();
             map.put("Link", downloadUri.toString());
             map.put("Time", System.currentTimeMillis());
@@ -429,7 +424,6 @@ public class CircleWall extends AppCompatActivity {
             });
 
         } else if (filePath == null && pollAnswerOptionsList != null) {
-            Log.d("CIRCLE WALL TAB", "ONLY POLLING ");
 
             Map<String, Object> map = new HashMap<>();
             map.put("Link", null);
@@ -471,7 +465,6 @@ public class CircleWall extends AppCompatActivity {
 
         } else if (filePath != null && pollAnswerOptionsList != null) {
 
-            Log.d("CIRCLE WALL TAB", "ALL CONDITIONS SATISFIED");
             Map<String, Object> map = new HashMap<>();
             map.put("Link", downloadUri.toString());
             map.put("Time", System.currentTimeMillis());

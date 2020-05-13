@@ -22,15 +22,20 @@ import com.example.teamup.SessionStorage;
 import com.example.teamup.model.Broadcast;
 import com.example.teamup.model.Poll;
 import com.example.teamup.model.ProjectWallDataClass;
+import com.example.teamup.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -45,15 +50,22 @@ public class CircleWallAdapter extends BaseAdapter {
     private TextView ownerName, description, timeSincePosting, fileName, viewAllComments, pollTitle;
     private Button pollSubmit;
     private RadioGroup pollOptionsGroup;
+    private User user;
     private List<Poll> pollList;
     private LinearLayout fileDisplay, pollDisplay;
     private CircleImageView profPic;
+    private String broadcastID;
+    private Map<String, Object> pollUserAnswers;
+
     private FirebaseFirestore firebaseFirestore;
 
-    public CircleWallAdapter(Context context, ArrayList<ProjectWallDataClass> arrayList, List<Poll> pollList) {
+    public CircleWallAdapter(Context context, ArrayList<ProjectWallDataClass> arrayList, List<Poll> pollList, String broadcastID) {
         this.context = context;
         this.arrayList = arrayList;
         this.pollList = pollList;
+        this.broadcastID = broadcastID;
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        loadPollAnswers();
     }
 
     @Override
@@ -75,19 +87,20 @@ public class CircleWallAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         final View pview = View.inflate(context, R.layout.file_display_template, null);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        ownerName =pview.findViewById(R.id.projectWall_object_ownerName);
-        profPic =pview.findViewById(R.id.projectWall_profilePicture);
-        description =pview.findViewById(R.id.projectWall_object_Description);
-        fileName =pview.findViewById(R.id.project_wall_fileName);
-        timeSincePosting =pview.findViewById(R.id.projectWall_object_postedTime);
-        viewAllComments =pview.findViewById(R.id.projectWall_object_viewComments);
-        pollTitle =pview.findViewById(R.id.poll_question_textview);
+        ownerName = pview.findViewById(R.id.projectWall_object_ownerName);
+        profPic = pview.findViewById(R.id.projectWall_profilePicture);
+        description = pview.findViewById(R.id.projectWall_object_Description);
+        fileName = pview.findViewById(R.id.project_wall_fileName);
+        timeSincePosting = pview.findViewById(R.id.projectWall_object_postedTime);
+        viewAllComments = pview.findViewById(R.id.projectWall_object_viewComments);
+        pollTitle = pview.findViewById(R.id.poll_question_textview);
         pollDisplay = pview.findViewById(R.id.poll_display);
         pollOptionsGroup = pview.findViewById(R.id.poll_options_radio_group);
         fileDisplay = pview.findViewById(R.id.attachment_display);
         pollDisplay.setVisibility(View.GONE);
         fileDisplay.setVisibility(View.GONE);
 
+        user = SessionStorage.getUser((CircleWall) context);
 
         viewAllComments.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,21 +109,21 @@ public class CircleWallAdapter extends BaseAdapter {
             }
         });
 
-        final ProjectWallDataClass projectWallDataObject=arrayList.get(i);
+        final ProjectWallDataClass projectWallDataObject = arrayList.get(i);
 
-        if(projectWallDataObject.getLink() != null){
+        if (projectWallDataObject.getLink() != null) {
             fileDisplay.setVisibility(View.VISIBLE);
         }
 
-        if(projectWallDataObject.isHasPoll() == true) {
+        if (projectWallDataObject.isHasPoll() == true) {
             pollDisplay.setVisibility(View.VISIBLE);
-            HashMap<String, Object> pollOnly = new HashMap<>();
+            final HashMap<String, Object> pollOnly = new HashMap<>();
             pollOnly.putAll(projectWallDataObject.getPoll());
 
             String question = String.valueOf(pollOnly.get("Question"));
             pollTitle.setText(question);
             long numberOfOptions = (long) pollOnly.get("NumberOfOptions");
-            for(int x = 1; x <= numberOfOptions; x++){
+            for (int x = 1; x <= numberOfOptions; x++) {
                 String answerOption = String.valueOf(pollOnly.get("Option " + x));
                 RadioButton button = new RadioButton(context);
                 button.setHighlightColor(Color.BLACK);
@@ -119,22 +132,38 @@ public class CircleWallAdapter extends BaseAdapter {
                                 new int[]{-android.R.attr.state_enabled}, //disabled
                                 new int[]{android.R.attr.state_enabled} //enabled
                         },
-                        new int[] {
-
+                        new int[]{
                                 Color.BLACK //disabled
-                                ,Color.BLUE //enabled
-
+                                , Color.BLUE //enabled
                         }
                 );
                 button.setButtonTintList(colorStateList);
                 button.setTextColor(Color.BLACK);
                 button.setText(answerOption);
+                HashMap<String, String> currentPollAsnwers = (HashMap<String, String>) pollUserAnswers.get(projectWallDataObject.getPollID());
                 pollOptionsGroup.addView(button);
+                if(currentPollAsnwers.get(user.getUserId()).equals(answerOption))
+                    pollOptionsGroup.check(button.getId());
+
             }
+
+            pollOptionsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    RadioButton rb = pview.findViewById(checkedId);
+                    HashMap<String, String> answer = new HashMap<>();
+                    answer.put(user.getUserId(), rb.getText().toString());
+                    HashMap<String, Object> store = new HashMap<>();
+                    store.put(projectWallDataObject.getPollID(), answer);
+                    Log.d("BROADCASTID: ", broadcastID);
+                    firebaseFirestore.collection("ProjectWall").document(broadcastID).set(store, SetOptions.merge());
+                }
+            });
+
         }
 
-        String descriptionString=projectWallDataObject.getDescription();
-        String ownerNameString=projectWallDataObject.getOwnerName();
+        String descriptionString = projectWallDataObject.getDescription();
+        String ownerNameString = projectWallDataObject.getOwnerName();
         long createdTime = projectWallDataObject.getTime();
 
         long currentTime = System.currentTimeMillis();
@@ -148,25 +177,18 @@ public class CircleWallAdapter extends BaseAdapter {
         ownerName.setText(ownerNameString);
         description.setText(descriptionString);
 
-        if(seconds < 60) {
+        if (seconds < 60) {
             timeSincePosting.setText(seconds + "s ago");
-        } else if (minutes > 1 && minutes < 60){
+        } else if (minutes > 1 && minutes < 60) {
             timeSincePosting.setText(minutes + "m ago");
         } else if (hours > 1 && hours < 24) {
             timeSincePosting.setText(hours + "h ago");
-        } else if (days > 1 && days < 365 ) {
-            if(days > 7)
-                timeSincePosting.setText((days/7) + "w ago");
+        } else if (days > 1 && days < 365) {
+            if (days > 7)
+                timeSincePosting.setText((days / 7) + "w ago");
             else
                 timeSincePosting.setText(days + "d ago");
         }
-
-/*
-        if(minutes > 60)
-            holder.timeSincePosting.setText("Posted " + hours + "h ago");
-        else
-            holder.timeSincePosting.setText("Posted " + minutes + "min ago");
-*/
 
         Glide.with(context)
                 .load(projectWallDataObject.getOwnerPicURL())
@@ -174,6 +196,24 @@ public class CircleWallAdapter extends BaseAdapter {
                 .into(profPic);
 
         return pview;
+    }
+
+    public void loadPollAnswers() {
+        firebaseFirestore
+                .collection("ProjectWall")
+                .document(broadcastID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                pollUserAnswers = document.getData();
+                            }
+                        }
+                    }
+                });
     }
 
 }
